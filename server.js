@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 
-app.get('/api/customers', (req, res) => {
-    const customers = [
-        {id: 1, first_name: 'John', second_name: 'Doe'}
+app.get('/api/users', (req, res) => {
+    const users = [
+        {id: 1, firstName: 'John', lastName: 'Doe'}
     ]
-    res.json(customers)
+    res.json(users)
 })
 
 const port = 5000
