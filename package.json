@@ -4,9 +4,7 @@
   "description": "Dating website",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "start": "concurrently \"npm run-script server\" \"npm run-script client\""
+    "start": "nodemon server.js"
   },
   "author": "Maxym Rybak",
   "license": "MIT",
