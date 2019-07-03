@@ -2,20 +2,6 @@ const mysql = require("../config/db")
 const express = require("express");
 const router = express.Router();
 
-const users = [
-    {
-        id: 1,
-        firstName: 'Bob',
-        lastName: 'Marley'
-    },
-    {
-        id: 2,
-        firstName: 'John',
-        lastName: 'Snow'
-    }
-]
-
-
 // @route   api/users
 // @desc    Get all users
 // @access  Public
