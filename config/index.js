@@ -3,7 +3,7 @@ const errorCodes = require('./errorCodes')
 const knex = require('./knex')
 const folders = require('./folders')
 const roles = require('./roles')
-const email = require('./email')
+// const email = require('./email')
 
 module.exports = {
   app,
@@ -11,5 +11,5 @@ module.exports = {
   knex,
   folders,
   roles,
-  email
+//   email
 }

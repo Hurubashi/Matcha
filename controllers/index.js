@@ -1,5 +1,5 @@
-const RootController = require('./RootController')
+// const RootController = require('./RootController')
 
-module.exports = [
-  RootController
-]
+// module.exports = [
+//   RootController
+// ]

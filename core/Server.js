@@ -24,36 +24,36 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
     /**
      * middlewares initialization
      */
-    for (const middleware of middlewares) {
-      try {
-        await middleware.init()
-        app.use(middleware.handler())
-      } catch (e) {
-        return reject(e)
-      }
-    }
+    // for (const middleware of middlewares) {
+    //   try {
+    //     await middleware.init()
+    //     app.use(middleware.handler())
+    //   } catch (e) {
+    //     return reject(e)
+    //   }
+    // }
 
     /**
      * controllers initialization
      */
-    for (const item of controllers) {
-      try {
-        await item.init()
-        app.use(item.router)
-      } catch (e) {
-        return reject(e)
-      }
-    }
+    // for (const item of controllers) {
+    //   try {
+    //     await item.init()
+    //     app.use(item.router)
+    //   } catch (e) {
+    //     return reject(e)
+    //   }
+    // }
 
     /**
      * error handler
      */
-    try {
-      await errorMiddleware.init()
-      app.use(errorMiddleware.handler())
-    } catch (e) {
-      return reject(`Default error middleware failed. ${e}`)
-    }
+    // try {
+    //   await errorMiddleware.init()
+    //   app.use(errorMiddleware.handler())
+    // } catch (e) {
+    //   return reject(`Default error middleware failed. ${e}`)
+    // }
 
     /**
      * Not found route handler
