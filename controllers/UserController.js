@@ -1,26 +1,26 @@
 const router = require('express').Router()
 
-const actions = require('../actions/users')
+const actions = require('../actions/user')
 const BaseController = require('../core/BaseController')
 
 class UsersController extends BaseController {
   get router () {
     router.param('id', prepareUserId)
 
-    router.get('/users', this.actionRunner(actions.ListAction))
-    router.get('/users/current', this.actionRunner(actions.GetCurrentUserAction))
-    router.get('/users/:id', this.actionRunner(actions.GetByIdAction))
-    router.post('/users', this.actionRunner(actions.CreateAction))
-    router.patch('/users', this.actionRunner(actions.UpdateAction))
-    router.delete('/users/:id', this.actionRunner(actions.RemoveAction))
+    router.get('/user', this.actionRunner(actions.ListAction))
+    router.get('/user/current', this.actionRunner(actions.GetCurrentUserAction))
+    router.get('/user/:id', this.actionRunner(actions.GetByIdAction))
+    router.post('/user', this.actionRunner(actions.CreateAction))
+    router.patch('/user', this.actionRunner(actions.UpdateAction))
+    router.delete('/user/:id', this.actionRunner(actions.RemoveAction))
 
-    router.post('/users/change-password', this.actionRunner(actions.ChangePasswordAction))
-    router.post('/users/send-reset-email', this.actionRunner(actions.SendResetEmailAction))
-    router.post('/users/reset-password', this.actionRunner(actions.ResetPasswordAction))
+    router.post('/user/change-password', this.actionRunner(actions.ChangePasswordAction))
+    router.post('/user/send-reset-email', this.actionRunner(actions.SendResetEmailAction))
+    router.post('/user/reset-password', this.actionRunner(actions.ResetPasswordAction))
 
-    router.post('/users/confirm-email', this.actionRunner(actions.ConfirmEmailAction))
-    router.post('/users/send-email-confirm-token', this.actionRunner(actions.SendEmailConfirmTokenAction))
-    router.post('/users/change-email', this.actionRunner(actions.ChangeEmailAction))
+    router.post('/user/confirm-email', this.actionRunner(actions.ConfirmEmailAction))
+    router.post('/user/send-email-confirm-token', this.actionRunner(actions.SendEmailConfirmTokenAction))
+    router.post('/user/change-email', this.actionRunner(actions.ChangeEmailAction))
 
     return router
   }
@@ -36,5 +36,5 @@ function prepareUserId (req, res, next) {
   next()
 }
 
-module.exports = new UsersController()
+module.exports = new UserController()
 

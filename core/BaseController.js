@@ -1,4 +1,4 @@
-const joi = require('@hapi/joi')
+const joi = require('joi')
 const JoiToJsonSchema = require('joi-to-json-schema')
 const { checkAccessByTagService } = require('../services/security')
 
@@ -12,8 +12,6 @@ class BaseController {
   }
 
   async validate (ctx, rules) {
-    __typecheck(ctx, __type.object, true)
-    __typecheck(rules, __type.object, true)
 
     // map list of validation schemas
     let validationSchemas = Object.keys(rules).map(key => {
@@ -25,7 +23,6 @@ class BaseController {
   }
 
   actionRunner (action) {
-    __typecheck(action, __type.function, true)
 
     if (!action.hasOwnProperty('accessTag')) {
       throw new Error(`'accessTag' getter not declared in invoked '${action.name}' action`)
@@ -36,9 +33,6 @@ class BaseController {
     }
 
     return async (req, res, next) => {
-      __typecheck(req, __type.object, true)
-      __typecheck(res, __type.object, true)
-      __typecheck(next, __type.function, true)
 
       const ctx = {
         currentUser: req.currentUser,
