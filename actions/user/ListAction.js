@@ -1,12 +1,12 @@
 const BaseAction = require('../BaseAction')
-const UserDAO = require('../../dao/UserDAO')
+const UserModel = require('../../models/UserModel')
 
 /**
  * @description return users list
  */
 class ListAction extends BaseAction {
   static get accessTag () {
-    return 'users:list'
+    return 'user:list'
   }
 
   static get validationRules () {
@@ -22,14 +22,9 @@ class ListAction extends BaseAction {
 
   static async run (req) {
     const { query } = req
-    const data = await UserDAO.baseGetList({ ...query })
+    const data = await UserModel.baseGetList({ ...query })
 
-    return this.result({
-      data: data.results,
-      headers: {
-        'X-Total-Count': data.total
-      }
-    })
+    return data
   }
 }
 

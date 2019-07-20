@@ -1,6 +1,6 @@
 const joi = require('joi')
-const JoiToJsonSchema = require('joi-to-json-schema')
-const { checkAccessByTagService } = require('../services/security')
+// const JoiToJsonSchema = require('joi-to-json-schema')
+// const { checkAccessByTagService } = require('../services/security')
 
 class BaseController {
   async init () {
@@ -58,11 +58,6 @@ class BaseController {
         }
 
         /**
-         * check access to action by access tag
-         */
-        await checkAccessByTagService(action.accessTag, ctx.currentUser)
-
-        /**
          * validate action input data
          */
         if (action.validationRules) {
@@ -77,16 +72,17 @@ class BaseController {
         /**
          * set headers
          */
-        if (response.headers) res.set(response.headers)
+        // if (response.headers) res.set(response.headers)
 
         /**
          * set status and return result to client
          */
-        return res.status(response.status).json({
-          success: response.success,
-          message: response.message,
-          data: response.data
-        })
+        // return res.status(response.status).json({
+        //   success: response.success,
+        //   message: response.message,
+        //   data: response.data
+        // })
+        return res.json(response)
       } catch (error) {
         error.req = ctx
         next(error)

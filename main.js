@@ -30,10 +30,8 @@ new Server({
 
     try {
       await knexInstance.raw('select 1+1 as result')
-    } catch (e) {
-      throw e
     } finally {
-      knexInstance.destroy()
+      // knexInstance.destroy()
     }
   }
 

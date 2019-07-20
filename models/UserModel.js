@@ -1,24 +1,26 @@
-class UserModel {
+const BaseModel = require('../core/BaseModel')
+
+class UserModel extends BaseModel{
   static get tableName () {
-    return 'users'
+    return 'user'
   }
 
   static get jsonAttributes () {
     return ['refreshTokensMap']
   }
 
-  static get relationMappings () {
-    return {
-      posts: {
-        relation: BaseDAO.HasManyRelation,
-        modelClass: `${__dirname}/PostDAO`,
-        join: {
-          from: 'users.id',
-          to: 'posts.userId'
-        }
-      }
-    }
-  }
+  // static get relationMappings () {
+  //   return {
+  //     posts: {
+  //       relation: UserModel.HasManyRelation,
+  //       modelClass: `${__dirname}/UserModel`,
+  //       join: {
+  //         from: 'user.id',
+  //         to: 'post.userId'
+  //       }
+  //     }
+  //   }
+  // }
 
   /**
    * ------------------------------
@@ -43,7 +45,7 @@ class UserModel {
 
   static Create (data) {
     return this.query().insert(data)
-  };
+  }
 
   static getByEmail (email) {
 
@@ -67,4 +69,4 @@ class UserModel {
   }
 }
 
-module.exports = UserDAO
+module.exports = UserModel

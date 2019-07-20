@@ -16,7 +16,6 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
   return new Promise(async (resolve, reject) => {
     const app = express()
 
-    if (process.env.NODE_ENV !== 'production') app.use(logger('dev'))
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: false }))
     // app.use(cookieParser())
@@ -36,14 +35,14 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
     /**
      * controllers initialization
      */
-    // for (const item of controllers) {
-    //   try {
-    //     await item.init()
-    //     app.use(item.router)
-    //   } catch (e) {
-    //     return reject(e)
-    //   }
-    // }
+    for (const item of controllers) {
+      try {
+        await item.init()
+        app.use(item.router)
+      } catch (e) {
+        return reject(e)
+      }
+    }
 
     /**
      * error handler
