@@ -3,7 +3,7 @@ const router = require('express').Router()
 const actions = require('../actions/user')
 const BaseController = require('../core/BaseController')
 
-class UsersController extends BaseController {
+class UserController extends BaseController {
   get router () {
     router.param('id', prepareUserId)
 

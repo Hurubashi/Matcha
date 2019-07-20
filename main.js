@@ -25,7 +25,7 @@ new Server({
       __logger.error('Database fails to initialize...', error)
       process.exit(1)
     })
-  
+
   async function testDbConnection (knexInstance) {
 
     try {
@@ -36,7 +36,6 @@ new Server({
       knexInstance.destroy()
     }
   }
-  
 
 
 

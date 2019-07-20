@@ -42,14 +42,10 @@ class UserModel {
    */
 
   static Create (data) {
-    __typecheck(data, __type.object, true)
-    __typecheck(data.passwordHash, __type.string, true, 'Invalid \'passwordHash\' field')
-
     return this.query().insert(data)
   };
 
   static getByEmail (email) {
-    __typecheck(email, __type.string, true)
 
     return this.query().where({ email }).first()
       .then(data => {
@@ -64,7 +60,6 @@ class UserModel {
    * @returns {Promise<boolean>}
    */
   static IsEmailExist (email) {
-    __typecheck(email, __type.string, true)
 
     return this.query().where({ email }).first()
       .then(data => Boolean(data))
