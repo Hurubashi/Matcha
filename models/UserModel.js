@@ -1,6 +1,8 @@
-const BaseModel = require('../core/BaseModel')
+const config = require('./../config')
+const Knex = require('knex')(config.knex)
 
-class UserModel extends BaseModel{
+class UserModel extends Knex {
+
   static get tableName () {
     return 'user'
   }
@@ -9,63 +11,37 @@ class UserModel extends BaseModel{
     return ['refreshTokensMap']
   }
 
-  // static get relationMappings () {
-  //   return {
-  //     posts: {
-  //       relation: UserModel.HasManyRelation,
-  //       modelClass: `${__dirname}/UserModel`,
-  //       join: {
-  //         from: 'user.id',
-  //         to: 'post.userId'
-  //       }
-  //     }
-  //   }
-  // }
-
-  /**
-   * ------------------------------
-   * @HOOKS
-   * ------------------------------
-   */
-  $formatJson (json) {
-    json = super.$formatJson(json)
-
-    delete json.passwordHash
-    delete json.tokenReset
-    delete json.avatar
-
-    return json
-  }
-
   /**
    * ------------------------------
    * @METHODS
    * ------------------------------
    */
 
-  static Create (data) {
-    return this.query().insert(data)
+  static async create (entity) {
   }
 
-  static getByEmail (email) {
-
-    return this.query().where({ email }).first()
-      .then(data => {
-        if (!data) throw this.errorEmptyResponse()
-        return data
-      }).catch(error => { throw error })
+  static async getList ({ page, limit, filter}) {
+    return this.select("*").from(this.tableName)
   }
 
-  /**
-   * @description check email availability in DB.
-   * @param email
-   * @returns {Promise<boolean>}
-   */
-  static IsEmailExist (email) {
+  static async getCount (filter = {}) {
 
-    return this.query().where({ email }).first()
-      .then(data => Boolean(data))
-      .catch(error => { throw error })
+  }
+
+  static async getById (id) {
+    
+  }
+
+  static update (id, entity) {
+
+  }
+  
+  static remove (id) {
+
+  }
+
+  static removeWhere (where = {}) {
+
   }
 }
 

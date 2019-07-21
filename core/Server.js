@@ -20,21 +20,7 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
     app.use(bodyParser.urlencoded({ extended: false }))
     // app.use(cookieParser())
 
-    /**
-     * middlewares initialization
-     */
-    // for (const middleware of middlewares) {
-    //   try {
-    //     await middleware.init()
-    //     app.use(middleware.handler())
-    //   } catch (e) {
-    //     return reject(e)
-    //   }
-    // }
-
-    /**
-     * controllers initialization
-     */
+    // Controllers initialization
     for (const item of controllers) {
       try {
         await item.init()
@@ -54,28 +40,9 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
     //   return reject(`Default error middleware failed. ${e}`)
     // }
 
-    /**
-     * Not found route handler
-     */
+    // Not found route handler
     app.use((req, res) => {
       res.status(404).json({ message: 'Route not found' })
-    })
-
-    process.on('unhandledRejection', (reason, promise) => {
-      __logger.error('unhandledRejection', reason)
-    })
-
-    process.on('rejectionHandled', promise => {
-      __logger.warn('rejectionHandled', promise)
-    })
-
-    process.on('multipleResolves', (type, promise, reason) => {
-      __logger.error('multipleResolves', { type, promise, reason })
-    })
-
-    process.on('uncaughtException', error => {
-      __logger.fatal('uncaughtException', error.stack)
-      process.exit(1)
     })
 
     return app.listen(port, host, () => resolve({ port, host }))

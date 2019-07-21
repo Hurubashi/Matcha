@@ -9,20 +9,9 @@ class ListAction extends BaseAction {
     return 'user:list'
   }
 
-  static get validationRules () {
-    return {
-      query: this.joi.object().keys({
-        ...this.baseQueryParams,
-        filter: this.joi.object().keys({
-          username: this.joi.string().min(3)
-        })
-      })
-    }
-  }
-
   static async run (req) {
     const { query } = req
-    const data = await UserModel.baseGetList({ ...query })
+    const data = await UserModel.getList({ ...query })
 
     return data
   }
