@@ -4,6 +4,7 @@ class BaseAction {
   static get joi () {
     return joi
   }
+  
 
 }
 

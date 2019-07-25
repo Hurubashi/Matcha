@@ -3,13 +3,6 @@ const joi = require('joi')
 // const { checkAccessByTagService } = require('../services/security')
 
 class BaseController {
-  async init () {
-    throw new Error(`${this.constructor.name} should implement 'init' method.`)
-  }
-
-  get router () {
-    throw new Error(`${this.constructor.name} should implement 'router' getter.`)
-  }
 
   async validate (ctx, rules) {
 
@@ -23,10 +16,6 @@ class BaseController {
   }
 
   actionRunner (action) {
-
-    if (!action.hasOwnProperty('accessTag')) {
-      throw new Error(`'accessTag' getter not declared in invoked '${action.name}' action`)
-    }
 
     if (!action.hasOwnProperty('run')) {
       throw new Error(`'run' method not declared in invoked '${action.name}' action`)
@@ -50,39 +39,23 @@ class BaseController {
       }
 
       try {
-        /**
-         * it will return request schema
-         */
-        if (action.validationRules && ctx.query.schema && ['POST', 'PATCH', 'GET'].includes(ctx.method)) {
-          return res.json(JoiToJsonSchema(joi.object().keys(action.validationRules)))
-        }
+        // Validate action input data
+        // if (action.validationRules) {
+        //   await this.validate(ctx, action.validationRules)
+        // }
 
-        /**
-         * validate action input data
-         */
-        if (action.validationRules) {
-          await this.validate(ctx, action.validationRules)
-        }
-
-        /**
-         * fire action
-         */
+        // Fire action
         const response = await action.run(ctx)
-
-        /**
-         * set headers
-         */
+      
+        // Set headers
         // if (response.headers) res.set(response.headers)
 
-        /**
-         * set status and return result to client
-         */
+        return res.json(response)
         // return res.status(response.status).json({
         //   success: response.success,
         //   message: response.message,
         //   data: response.data
         // })
-        return res.json(response)
       } catch (error) {
         error.req = ctx
         next(error)
