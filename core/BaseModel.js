@@ -8,7 +8,7 @@ class BaseModel extends Knex {
     }
 
     static async create (entity) {
-    
+      console.log('create user')
     }
   
     static async getList ({ page, limit, filter}) {

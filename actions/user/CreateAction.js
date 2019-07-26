@@ -8,6 +8,7 @@ class ListAction extends BaseAction {
   
     static async run (req) {
         const { query } = req
+        console.log(req)
         const data = await UserModel.create({ ...query })    
         return data
     }
