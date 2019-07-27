@@ -1,5 +1,4 @@
 const express = require('express')
-// const path = require('path')
 const logger = require('morgan')
 // const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -29,16 +28,6 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
         return reject(e)
       }
     }
-
-    /**
-     * error handler
-     */
-    // try {
-    //   await errorMiddleware.init()
-    //   app.use(errorMiddleware.handler())
-    // } catch (e) {
-    //   return reject(`Default error middleware failed. ${e}`)
-    // }
 
     // Not found route handler
     app.use((req, res) => {

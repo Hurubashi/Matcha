@@ -14,12 +14,12 @@ class UserModel extends BaseModel {
       password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).min(6).required(),
       firstname: Joi.string().min(2).max(16),
       lastname: Joi.string().min(2).max(16)
-    }).with('username', 'password');
+    })
   }
 
 // You can also pass a callback which will be called synchronously with the validation result.
 static validate(req){
-  return this.schema.validate({req}, function(err, value) {});
+  return Joi.validate(req, this.schema);
   // err === null -> valid
 }
 
@@ -30,9 +30,11 @@ static validate(req){
    */
 
    static create(entity) {
-     this.validate(entity.body)
+    //  console.log('Body: ' + entity.body)
+     let gg = 'validation: ' + JSON.stringify(this.validate(entity.body))
+     console.log(gg)
      super.create()
-     return entity
+     return entity.body
    }
 }
 

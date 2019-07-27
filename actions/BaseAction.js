@@ -1,8 +1,8 @@
-const joi = require('joi')
+const Joi = require('joi')
 
 class BaseAction {
   static get joi () {
-    return joi
+    return Joi
   }
   
 
