@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction')
-const UserModel = require('../../models/UserModel')
+const UsersModel = require('../../models/UsersModel')
 const Joi = require('joi')
 
 /**
@@ -11,13 +11,13 @@ class CreateAction extends BaseAction {
         console.log(req)
 
         let result = undefined
-        Joi.validate(req.body, UserModel.schema, (err, value) => {
+        Joi.validate(req.body, UsersModel.schema, (err, value) => {
             if (err) {
                 result = err.details
             }
             else {
                 console.log('Before queue')
-                UserModel.create(req.body)
+                UsersModel.create(req.body)
                 console.log('After queue')
                 result = {result: value.username + 'successfully registered'}
             }

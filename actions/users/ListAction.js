@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction')
-const UserModel = require('../../models/UserModel')
+const UsersModel = require('../../models/UsersModel')
 
 /**
  * @description return users list
@@ -16,7 +16,7 @@ class ListAction extends BaseAction {
 
   static async run (req) {
     const { query } = req
-    const data = await UserModel.getList({ ...query })
+    const data = await UsersModel.getList({ ...query })
     return data
   }
 }

@@ -12,7 +12,6 @@ class BaseModel {
     }
 
     static async create (entity) {
-      // Knex.
       return Knex(this.tableName).insert(entity)
     }
   

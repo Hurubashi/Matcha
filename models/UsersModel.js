@@ -1,10 +1,10 @@
 const BaseModel = require('../core/BaseModel')
 const Joi = require('joi')
 
-class UserModel extends BaseModel {
+class UsersModel extends BaseModel {
 
   static get tableName () {
-    return 'user'
+    return 'users'
   }
 
   static get schema() {
@@ -26,4 +26,4 @@ class UserModel extends BaseModel {
 
 }
 
-module.exports = UserModel
+module.exports = UsersModel
