@@ -1,18 +1,23 @@
 const config = require('./../config')
 const Knex = require('knex')(config.knex)
 
-class BaseModel extends Knex {
+class BaseModel {
 
     get knex() {
         return Knex
     }
 
+    static get tableName () {
+      throw new Error(`${this.name} should implement 'tablename' method.`)
+    }
+
     static async create (entity) {
-      console.log('create user')
+      // Knex.
+      return Knex(this.tableName).insert(entity)
     }
   
     static async getList ({ page, limit, filter}) {
-      return this.select("*").from(this.tableName)
+      return Knew.select("*").from(this.tableName)
     }
   
     static async getCount (filter = {}) {
