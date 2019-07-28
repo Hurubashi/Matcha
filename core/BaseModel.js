@@ -17,6 +17,9 @@ class BaseModel {
   
     static async getList ({ page, limit, filter}) {
       return Knew.select("*").from(this.tableName)
+      .catch(function (error){
+        console.error(error)
+      })
     }
   
     static async getCount (filter = {}) {

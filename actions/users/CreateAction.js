@@ -17,9 +17,16 @@ class CreateAction extends BaseAction {
             }
             else {
                 console.log('Before queue')
-                UsersModel.create(req.body)
+                UsersModel.create(req.body).catch(function (error){
+                    if(error) {
+                        return error
+                    } else {
+                        return {result: this.tableName + 'successfully created'}
+                    }
+                })
+                
                 console.log('After queue')
-                result = {result: value.username + 'successfully registered'}
+                // result = {result: value.username + 'successfully registered'}
             }
         });
         return result
