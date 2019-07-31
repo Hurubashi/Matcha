@@ -1,11 +1,16 @@
 const BaseAction = require('../BaseAction')
 const UsersModel = require('../../models/UsersModel')
 const Joi = require('joi')
+const bcrypt = require('bcrypt')
+
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
 
 /**
  * @description return users list
  */
 class CreateAction extends BaseAction {
+    
   
     static async run (req) {
         console.log(req)
@@ -16,7 +21,11 @@ class CreateAction extends BaseAction {
                 result = err.details
             }
             else {
-                console.log('Before queue')
+
+                bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+                    // Store hash in your password DB.
+                });
+
                 UsersModel.create(req.body).catch(function (error){
                     if(error) {
                         return error
