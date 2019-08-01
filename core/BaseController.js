@@ -49,7 +49,7 @@ class BaseController {
       
         // Set headers
         // if (response.headers) res.set(response.headers)
-
+        console.log('responce: ' + response)
         return res.json(response)
         // return res.status(response.status).json({
         //   success: response.success,
