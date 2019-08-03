@@ -1,14 +1,6 @@
-const pino = require('pino')
-
 require('dotenv').config()
 const joi = require('joi')
 
-const warnLogger = pino({
-  name: 'env-warning',
-  prettyPrint: {
-    translateTime: 'SYS:standard'
-  }
-})
 
 class BaseConfig {
   /**
@@ -29,7 +21,6 @@ class BaseConfig {
         throw new Error(`Missing default value "${env}".`)
       }
       value = defaultVal
-      warnLogger.warn(`Missing env variable: "${env}". Default value was applied: ${defaultVal}`)
     }
 
     if (validator && (typeof validator === 'function' || validator.isJoi)) {
