@@ -1,9 +1,12 @@
 const express = require('express')
+const logger = require('morgan')
 // const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 class Server {
   constructor ({ port, host, controllers, middlewares, errorMiddleware }) {
+
+    __logger.info('Server start initialization...')
     return start({ port, host, controllers, middlewares, errorMiddleware })
   }
 }

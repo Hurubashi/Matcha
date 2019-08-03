@@ -13,16 +13,16 @@ new Server({
     controllers,
     // middlewares,
   }).then(serverParams => {
-    console.log('Server initialized...', serverParams)
-    console.log('--- Configs ---')
-    console.log('App config:', config.app)
-  }).catch(error => console.log.error('Server fails to initialize...', error))
+    __logger.trace('Server initialized...', serverParams)
+    __logger.info('--- Configs ---')
+    __logger.info('App config:', config.app)
+  }).catch(error => __logger.error('Server fails to initialize...', error))
     .then(() => testDbConnection(Knex(config.knex)))
     .then(() => {
-      console.log('--- Database ---')
-      console.log('Database initialized...', config.knex)
+      __logger.info('--- Database ---')
+      __logger.info('Database initialized...', config.knex)
     }).catch(error => {
-      console.log('Database fails to initialize...', error)
+      __logger.error('Database fails to initialize...', error)
       process.exit(1)
     })
 
