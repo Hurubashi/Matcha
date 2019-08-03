@@ -8,6 +8,8 @@ Dating website API
 3. Specify .env file
 4. Run migrations "knex migrate:latest"
 
+## API
+All avaliable request you can find in postmantCollection folder
 
 ## Available Scripts
 
