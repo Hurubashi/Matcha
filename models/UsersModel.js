@@ -7,6 +7,13 @@ class UsersModel extends BaseModel {
     return 'users'
   }
 
+  static get errorList (){
+    return {
+        'users_email_unique' : 'This email is already taken',
+        'users_username_unique' : 'This username is already taken'
+    }
+}
+
   static get schema() {
     return Joi.object({
       email: Joi.string().email(),
