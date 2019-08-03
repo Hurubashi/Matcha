@@ -12,11 +12,11 @@ class CreateAction extends BaseAction {
     
     static async run (req) {
 
-        await Joi.validate(req.body, UsersModel.schema, (err, value) => {
-            if (err) {
-                return {error: err.details}
-            }
-        })
+        try {
+            await UsersModel.schema.validate(req.body)
+        } catch (err) { 
+            return {error: err.details[0].message}
+        }
 
         req.body.password = await bcrypt.hash(req.body.password, saltRounds)
 
