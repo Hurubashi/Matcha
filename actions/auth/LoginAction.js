@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 /**
- * @description return users list
+ * @description 
  */
-class CreateAction extends BaseAction {
+class LoginAction extends BaseAction {
     
     static async run (req) {
 
@@ -16,6 +16,6 @@ class CreateAction extends BaseAction {
 
 }
 
-module.exports = CreateAction
+module.exports = LoginAction
 
 

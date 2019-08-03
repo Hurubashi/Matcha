@@ -6,15 +6,15 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 /**
- * @description return users list
+ * @description User creation
  */
 class CreateAction extends BaseAction {
     
     static async run (req) {
 
-        Joi.validate(req.body, UsersModel.schema, (err, value) => {
+        await Joi.validate(req.body, UsersModel.schema, (err, value) => {
             if (err) {
-                return err.details
+                return {error: err.details}
             }
         })
 
@@ -29,7 +29,7 @@ class CreateAction extends BaseAction {
 
             for (var key in errorList) {
                 if (error.sqlMessage.includes(key))
-                    return errorList[key]
+                    return {error: errorList[key]}
             }
         }
     }
