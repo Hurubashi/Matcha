@@ -6,8 +6,10 @@ Dating website API
 1. Run "npm install"
 2. Install Knex globaly for convinience with "npm install -g knex" or use knex from your node_modules.
 3. Specify .env file
-4. Run migrations "knex migrate:latest"
+4. Create database and run migrations "knex migrate:latest"
 
+## API
+All avaliable request you can find in postmantCollection folder
 
 ## Available Scripts
 
