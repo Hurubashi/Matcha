@@ -6,11 +6,12 @@ class BaseController {
 
   async validate (ctx, rules) {
 
-    // map list of validation schemas
+  /**
+  * map list of validation schemas
+  */
     let validationSchemas = Object.keys(rules).map(key => {
       return joi.validate(ctx[key], rules[key])
     })
-
     // execute validation
     await Promise.all(validationSchemas)
   }
@@ -22,7 +23,7 @@ class BaseController {
     }
 
     return async (req, res, next) => {
-
+    
       const ctx = {
         currentUser: req.currentUser,
         body: req.body,
@@ -38,28 +39,23 @@ class BaseController {
         }
       }
 
-      try {
-        // Validate action input data
-        // if (action.validationRules) {
-        //   await this.validate(ctx, action.validationRules)
-        // }
-
-        // Fire action
-        const response = await action.run(ctx)
-      
-        // Set headers
-        // if (response.headers) res.set(response.headers)
-        console.log('responce: ' + response)
-        return res.json(response)
-        // return res.status(response.status).json({
-        //   success: response.success,
-        //   message: response.message,
-        //   data: response.data
-        // })
-      } catch (error) {
-        error.req = ctx
-        next(error)
+    try {
+      if (action.validationRules) {
+        await this.validate(ctx, action.validationRules)
       }
+    } catch (err) { 
+      return res.json({error: err.details[0].message})
+    }
+    
+    const response = await action.run(ctx)
+    // Set headers
+    // if (response.headers) res.set(response.headers)
+    return res.json(response)
+    // return res.status(response.status).json({
+    //   success: response.success,
+    //   message: response.message,
+    //   data: response.data
+    // })
     }
   }
 }

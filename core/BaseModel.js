@@ -16,15 +16,15 @@ class BaseModel {
     }
   
     static async getList ({ page, limit, filter}) {
-      return Knew.select("*").from(this.tableName)
+      return Knex.select("*").from(this.tableName)
     }
   
     static async getCount (filter = {}) {
   
     }
   
-    static async getById (id) {
-      
+    static async getByRow (rowName, value) {
+      return Knex.select("*").from(this.tableName).where(rowName, value)
     }
   
     static update (id, entity) {
