@@ -1,13 +1,13 @@
 FROM node:10.16.2
 
-WORKDIR /usr/src/app
+WORKDIR .
 
-COPY package*.json ./
+COPY package.json .
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+CMD npm start
 
-CMD ["npm", "start"]
+EXPOSE 5000
