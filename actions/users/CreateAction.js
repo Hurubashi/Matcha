@@ -33,8 +33,7 @@ class CreateAction extends BaseAction {
             await UsersModel.create(req.body)
 
             // let text = fs.readFile('./public/letters/AccountCreated', 'utf8')
-            // text = text + uuidv1()
-            await MailService.sendMail(req.email, 'Account creation', uuidv1())
+            await MailService.sendMail(req.body.email, 'Account creation', uuidv1())
             return {result: UsersModel.tableName + ' ' + 'successfully created'}
         } catch(err) {
             /**

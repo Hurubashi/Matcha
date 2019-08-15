@@ -4,7 +4,7 @@
   "description": "Dating website",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "nodemon main.js"
   },
   "author": "Maxym Rybak",
   "license": "MIT",

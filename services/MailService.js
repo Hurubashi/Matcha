@@ -15,8 +15,8 @@ class MailService {
 			host: 'smtp.ethereal.email',
 			port: 587,
 			auth: {
-				user: 'edd.russel@ethereal.email',
-				pass: 'z1S2RvKZwfvcMjAD2v'
+				user: 'brycen.bailey40@ethereal.email',
+				pass: 'HshV9FM19QPgkuX3kJ'
 			}
 		});
 		// send mail with defined transport object
