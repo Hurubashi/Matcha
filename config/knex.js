@@ -9,10 +9,10 @@ class KnexConfig extends BaseConfig {
     this.client = 'mysql'
     this.connection = {
       host: this.set('DB_HOST', this.joi.string().min(4).max(100).required(), 'localhost'),
-      port: this.set('DB_PORT', this.joi.number().required(), '5432'),
-      user: this.set('DB_USER', this.joi.string().min(4).max(100).required(), 'postgres'),
-      password: this.set('DB_PASSWORD', this.joi.string().allow(['']).required()),
-      database: this.set('DB_NAME', this.joi.string().min(4).max(100).required()),
+      port: this.set('DB_PORT', this.joi.number().required(), '3306'),
+      user: this.set('DB_USER', this.joi.string().min(4).max(100).required(), 'root'),
+      password: this.set('DB_PASSWORD', this.joi.string().allow(['']).required(), ''),
+      database: this.set('DB_NAME', this.joi.string().min(4).max(100).required(), 'matcha'),
       charset: this.set('DB_CHARSET', this.joi.valid(['utf8']).required(), 'utf8')
     }
     this.pool = {

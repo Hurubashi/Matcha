@@ -30,11 +30,15 @@ class CreateAction extends BaseAction {
         req.body.password = await bcrypt.hash(req.body.password, saltRounds)
 
         try {
-            await UsersModel.create(req.body)
+            // await UsersModel.create(req.body)
 
-            // let text = fs.readFile('./public/letters/AccountCreated', 'utf8')
-            await MailService.sendMail(req.body.email, 'Account creation', uuidv1())
-            return {result: UsersModel.tableName + ' ' + 'successfully created'}
+            let text = await fs.readFile('./public/letters/AccountCreated', 'utf8', function (res) {
+                console.log(res)
+            })
+            // await MailService.sendMail(req.body.email, 'Account creation', uuidv1())
+            return {
+
+                result: UsersModel.tableName + text + 'successfully created' + text}
         } catch(err) {
             /**
              * Rotate
@@ -43,7 +47,7 @@ class CreateAction extends BaseAction {
                 if (err.sqlMessage && err.sqlMessage.includes(key))
                     return {error: UsersModel.errorList[key]}
             }
-            return {error: err}
+            return {error: err ? err : 'Somethig went wrong'}
         }
     }
 
