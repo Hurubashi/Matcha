@@ -17,6 +17,7 @@ function start ({ port, host, controllers, middlewares, errorMiddleware }) {
 
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: false }))
+    app.use('/images', express.static('public/images'));
     // app.use(cookieParser())
 
     // Controllers initialization

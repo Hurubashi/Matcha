@@ -3,7 +3,9 @@ const UsersModel    = require('../../models/UsersModel')
 const MailService   = require('../../services/MailService')
 const bcrypt        = require('bcrypt')
 const uuidv1        = require('uuid/v1')
-const fs            = require('fs')
+const pug           = require('pug')
+const uuidOperatin  = require('../../models/UUIDToOperationModel')
+
 
 const saltRounds = 10;
 
@@ -30,12 +32,19 @@ class CreateAction extends BaseAction {
         req.body.password = await bcrypt.hash(req.body.password, saltRounds)
 
         try {
-            // await UsersModel.create(req.body)
-
-            let text = await fs.readFile('./public/letters/AccountCreated', 'utf8', function (res) {
-                console.log(res)
-            })
-            // await MailService.sendMail(req.body.email, 'Account creation', uuidv1())
+            await UsersModel.create(req.body)
+            const user = await UsersModel
+            .getWhere({username: req.body.username})
+            .then((res) => { return res[0] })
+            let uuid = uuidv1();
+            await uuidOperatin.create({user_id: user.id, uuid: uuid, operation: uuidOperatin.passwordChange})
+            let letter = pug.renderFile('./public/letters/AccountCreated.pug', {
+                name: req.body.first_name + req.body.last_name,
+                link: __serverRoute + '/auth/emailConfirmation/' + 
+                ':' + user.id + '&' + ':' + uuid,
+                imgSrc: __serverRoute + "/images/dating.jpg"
+            });
+            await MailService.sendMail(req.body.email, 'Account creation', letter)
             return {
 
                 result: UsersModel.tableName + text + 'successfully created' + text}
@@ -49,6 +58,10 @@ class CreateAction extends BaseAction {
             }
             return {error: err ? err : 'Somethig went wrong'}
         }
+    }
+
+    composeLetter(params) {
+        
     }
 
 }

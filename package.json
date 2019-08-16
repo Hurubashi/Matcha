@@ -22,6 +22,7 @@
     "passport": "^0.4.0",
     "pino": "^5.12.6",
     "pino-pretty": "^3.2.0",
+    "pug": "^2.0.4",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

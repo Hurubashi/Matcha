@@ -24,12 +24,11 @@ class MailService {
 			from: 'account@matcha.email', // sender address
 			to: email,
 			subject: subject, // Subject line
-			text: text, // plain text body
+			html: text
 		});
 
 		// Preview only available when sending through an Ethereal account
 		console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-		// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 	}
 
 }

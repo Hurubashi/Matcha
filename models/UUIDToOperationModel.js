@@ -10,6 +10,10 @@ class UUIDToOperationModel extends BaseModel {
 		return 'email confirtaion';
 	}
 
+	static get passwordChange() {
+		return 'password change';
+	}
+
 	static get avaliableOperations() {
 		return  [
 					'email confirmation',
@@ -22,7 +26,6 @@ class UUIDToOperationModel extends BaseModel {
 	 * @METHODS
 	 * ------------------------------
 	 */
-
 
 }
 
