@@ -7,19 +7,10 @@ const uuidOperation = require('../../models/UUIDToOperationModel')
  */
 class EmailConfirmationAction extends BaseAction {
 
-	static get validationRules() {
-		return {
-			body: this.joi.object().keys({
-				// username: this.joi.string().alphanum().min(3).max(16).required(),
-				// password: this.joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).min(6).required(),
-			})
-		}
-	}
-
 	static async run(req) {
 		
 		// const match = await bcrypt.compare(req.body.password, user[0].password)
-
+		
 		const uuid = await uuidOperation.getWhere(
 			{user_id: req.params.id})
 			// .then((res) => {return res[0].uuid})
