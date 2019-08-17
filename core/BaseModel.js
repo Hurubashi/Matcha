@@ -28,7 +28,7 @@ class BaseModel {
     }
   
     static update(id, entity) {
-  
+      return Knex(this.tableName).where('id', id).update(entity)
     }
     
     static remove(id) {

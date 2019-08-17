@@ -41,7 +41,7 @@ class CreateAction extends BaseAction {
             let letter = pug.renderFile('./public/letters/AccountCreated.pug', {
                 name: req.body.first_name + req.body.last_name,
                 link: __serverRoute + '/auth/emailConfirmation/' + 
-                ':' + user.id + '&' + ':' + uuid,
+                user.id + uuid,
                 imgSrc: __serverRoute + "/images/dating.jpg"
             });
             await MailService.sendMail(req.body.email, 'Account creation', letter)
