@@ -56,7 +56,7 @@ class CreateAction extends BaseAction {
                 if (err.sqlMessage && err.sqlMessage.includes(key))
                     return {error: UsersModel.errorList[key]}
             }
-            return {error: err ? err : 'Somethig went wrong'}
+            return {error: err ? err : 'Something went wrong'}
         }
     }
 

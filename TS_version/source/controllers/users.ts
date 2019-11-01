@@ -10,10 +10,7 @@ export default class UserController {
 	 */
 
 	public static getUsers(req: Request, res: Response, next: NextFunction): Response {
-		let user = new User()
-		user.attributes.username = "Vasya"
-		user.attributes.email = "vasya@gmail.com"
-		return res.json("Get users" + `Current NODE_ENV is ${process.env.NODE_ENV}`)
+		return res.json("Get users" + `Current NODE_ENV is ${process.env.NODE_ENV}` + req.params['username'])
 	}
 
 	/**
@@ -33,8 +30,19 @@ export default class UserController {
 	 * @access  Public
 	 */
 
-	public static createUser(req: Request, res: Response, next: NextFunction) {
-		return res.json("Create user")
+	public static async createUser(req: Request, res: Response, next: NextFunction) {
+		let user = new User()
+
+		user.attributes.email = req.body.email
+		user.attributes.username = req.body.username
+		user.attributes.first_name = req.body.first_name
+		user.attributes.last_name = req.body.last_name
+		user.attributes.password = req.body.password
+		user.attributes.is_verified = req.body.is_verified
+
+		for(var k in user.attributes) user.attributes =firstObject[k];
+		await user.create()
+		return res.json("Create user" + req.body.email)
 	}
 
 	/**

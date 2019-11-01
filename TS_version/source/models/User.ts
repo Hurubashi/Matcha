@@ -1,6 +1,6 @@
 import knex from 'knex'
 import {knexConfig} from "../config"
-knex(knexConfig)
+let db = knex(knexConfig)
 
 export default class User {
 
@@ -16,7 +16,10 @@ export default class User {
 	}
 
 	public async create() {
-		return knex(this.tableName).insert(this.attributes)
+		return db(this.tableName).insert(this.attributes)
 	}
 
+	public async getUsers(){
+		return db.select("*").from(this.tableName)
+	}
 }

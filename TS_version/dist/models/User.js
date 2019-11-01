@@ -40,18 +40,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var knex_1 = __importDefault(require("knex"));
+var config_1 = require("../config");
+var db = knex_1.default(config_1.knexConfig);
 var User = /** @class */ (function () {
     function User() {
         this.tableName = 'users';
         this.attributes = {
+            email: "",
             username: "",
-            email: ""
+            first_name: "",
+            last_name: "",
+            password: "",
+            is_verified: ""
         };
     }
     User.prototype.create = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, knex_1.default(this.tableName).insert(this.attributes)];
+                return [2 /*return*/, db(this.tableName).insert(this.attributes)];
+            });
+        });
+    };
+    User.prototype.getUsers = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, db.select("*").from(this.tableName)];
             });
         });
     };
