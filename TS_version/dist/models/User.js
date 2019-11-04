@@ -41,23 +41,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var knex_1 = __importDefault(require("knex"));
 var config_1 = require("../config");
+var joi_1 = __importDefault(require("joi"));
 var db = knex_1.default(config_1.knexConfig);
 var User = /** @class */ (function () {
     function User() {
+        var _this = this;
         this.tableName = 'users';
-        this.attributes = {
-            email: "",
-            username: "",
-            first_name: "",
-            last_name: "",
-            password: "",
-            is_verified: ""
+        this.accessible = {
+            email: joi_1.default.string().email().min(3).required().error(function (errors) {
+                return _this.manageJoiErrors(errors, 'Email');
+            }),
+            username: joi_1.default.string().min(3).required().error(function (errors) {
+                return _this.manageJoiErrors(errors, 'User name');
+            }),
+            first_name: joi_1.default.string().required().error(function (errors) {
+                return _this.manageJoiErrors(errors, 'First name');
+            }),
+            last_name: joi_1.default.string().required().error(function (errors) {
+                return _this.manageJoiErrors(errors, 'Last name');
+            }),
+            password: joi_1.default.string().min(6).required().error(function (errors) {
+                return _this.manageJoiErrors(errors, 'Password');
+            }),
+        };
+        this.visible = {
+            is_verified: 0
         };
     }
+    User.prototype.manageJoiErrors = function (errors, field) {
+        errors.forEach(function (err) {
+            switch (err.type) {
+                case "string.email":
+                    err.message = field + " should be valid!";
+                    break;
+                case "any.empty":
+                    err.message = field + " should not be empty!";
+                    break;
+                case "string.min":
+                    err.message = field + " should have at least " + (err.context ? err.context.limit : "") + " characters!";
+                    break;
+                default:
+                    break;
+            }
+        });
+        return errors;
+    };
     User.prototype.create = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, db(this.tableName).insert(this.attributes)];
+                return [2 /*return*/, db(this.tableName).insert(this.accessible)];
             });
         });
     };
@@ -68,6 +100,16 @@ var User = /** @class */ (function () {
             });
         });
     };
+    Object.defineProperty(User, "errorList", {
+        get: function () {
+            return {
+                'users_email_unique': 'This email is already taken',
+                'users_username_unique': 'This username is already taken'
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
     return User;
 }());
 exports.default = User;

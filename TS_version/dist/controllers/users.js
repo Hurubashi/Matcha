@@ -40,6 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var User_1 = __importDefault(require("../models/User"));
+var lodash_1 = __importDefault(require("lodash"));
+var joi_1 = __importDefault(require("joi"));
 var UserController = /** @class */ (function () {
     function UserController() {
     }
@@ -68,20 +70,39 @@ var UserController = /** @class */ (function () {
      */
     UserController.createUser = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user;
+            var user, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         user = new User_1.default();
-                        user.attributes.email = req.body.email;
-                        user.attributes.first_name = req.body.first_name;
-                        user.attributes.last_name = req.body.last_name;
-                        user.attributes.password = req.body.password;
-                        user.attributes.is_verified = req.body.is_verified;
-                        return [4 /*yield*/, user.create()];
+                        return [4 /*yield*/, joi_1.default.validate(req.body, user.accessible, function (e) {
+                                if (e) {
+                                    return res.json({
+                                        code: res.statusCode,
+                                        error: e.message
+                                    });
+                                }
+                            })];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/, res.json("Create user" + req.body.email)];
+                        user.accessible = lodash_1.default.merge(user.accessible, req.body);
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, user.create()];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        e_1 = _a.sent();
+                        return [2 /*return*/, res.json({
+                                code: res.statusCode,
+                                error: e_1.sqlMessage ? e_1.sqlMessage : 'Something went wrong'
+                            })];
+                    case 5: return [2 /*return*/, res.json({
+                            code: res.statusCode,
+                            data: lodash_1.default.merge(user.accessible, user.visible)
+                        })];
                 }
             });
         });

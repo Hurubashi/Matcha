@@ -1,5 +1,7 @@
 import {Request, Response, NextFunction} from "express"
 import User from "../models/User"
+import lodash from 'lodash'
+import Joi from "joi"
 
 export default class UserController {
 	/**
@@ -32,17 +34,30 @@ export default class UserController {
 
 	public static async createUser(req: Request, res: Response, next: NextFunction) {
 		let user = new User()
-
-		user.attributes.email = req.body.email
-		user.attributes.username = req.body.username
-		user.attributes.first_name = req.body.first_name
-		user.attributes.last_name = req.body.last_name
-		user.attributes.password = req.body.password
-		user.attributes.is_verified = req.body.is_verified
-
-		for(var k in user.attributes) user.attributes =firstObject[k];
-		await user.create()
-		return res.json("Create user" + req.body.email)
+		await Joi.validate(req.body, user.accessible, (e: Joi.ValidationError) => {
+			if (e) {
+				return res.json(
+					{
+						code: res.statusCode,
+						error: e.message
+					})
+			}
+		})
+		user.accessible = lodash.merge(user.accessible, req.body);
+		try {
+			await user.create()
+		} catch (e) {
+			return res.json(
+				{
+					code: res.statusCode,
+					error: e.sqlMessage ? e.sqlMessage : 'Something went wrong'
+				})
+		}
+		return res.json(
+			{
+				code: res.statusCode,
+				data: lodash.merge(user.accessible, user.visible)
+			})
 	}
 
 	/**
