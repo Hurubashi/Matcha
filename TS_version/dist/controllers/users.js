@@ -70,9 +70,9 @@ var UserController = /** @class */ (function () {
      */
     UserController.createUser = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var user, e_1, _i, _a, _b, key, value;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         user = new User_1.default();
                         return [4 /*yield*/, joi_1.default.validate(req.body, user.accessible, function (e) {
@@ -84,21 +84,27 @@ var UserController = /** @class */ (function () {
                                 }
                             })];
                     case 1:
-                        _a.sent();
+                        _c.sent();
                         user.accessible = lodash_1.default.merge(user.accessible, req.body);
-                        _a.label = 2;
+                        _c.label = 2;
                     case 2:
-                        _a.trys.push([2, 4, , 5]);
+                        _c.trys.push([2, 4, , 5]);
                         return [4 /*yield*/, user.create()];
                     case 3:
-                        _a.sent();
+                        _c.sent();
                         return [3 /*break*/, 5];
                     case 4:
-                        e_1 = _a.sent();
-                        return [2 /*return*/, res.json({
-                                code: res.statusCode,
-                                error: e_1.sqlMessage ? e_1.sqlMessage : 'Something went wrong'
-                            })];
+                        e_1 = _c.sent();
+                        for (_i = 0, _a = Object.entries(User_1.default.errorList); _i < _a.length; _i++) {
+                            _b = _a[_i], key = _b[0], value = _b[1];
+                            if (e_1.sqlMessage && e_1.sqlMessage.includes(key)) {
+                                return [2 /*return*/, res.json({
+                                        code: res.statusCode,
+                                        error: value ? value : e_1.sqlMessage
+                                    })];
+                            }
+                        }
+                        return [3 /*break*/, 5];
                     case 5: return [2 /*return*/, res.json({
                             code: res.statusCode,
                             data: lodash_1.default.merge(user.accessible, user.visible)

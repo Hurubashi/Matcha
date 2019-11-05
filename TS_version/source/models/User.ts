@@ -59,8 +59,8 @@ export default class User {
 
 	static get errorList() {
 		return {
-			'users_email_unique': 'This email is already taken',
-			'users_username_unique': 'This username is already taken'
+			'user_email_unique': 'This email is already taken',
+			'user_username_unique': 'This username is already taken'
 		}
 	}
 }

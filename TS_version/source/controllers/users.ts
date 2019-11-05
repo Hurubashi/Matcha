@@ -47,11 +47,15 @@ export default class UserController {
 		try {
 			await user.create()
 		} catch (e) {
-			return res.json(
-				{
-					code: res.statusCode,
-					error: e.sqlMessage ? e.sqlMessage : 'Something went wrong'
-				})
+			for (let [key, value] of Object.entries(User.errorList)) {
+				if (e.sqlMessage && e.sqlMessage.includes(key)) {
+					return res.json(
+						{
+							code: res.statusCode,
+							error: value ? value : e.sqlMessage
+						})
+				}
+			}
 		}
 		return res.json(
 			{
