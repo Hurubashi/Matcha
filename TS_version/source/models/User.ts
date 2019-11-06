@@ -53,7 +53,7 @@ export default class User {
 		return db(this.tableName).insert(this.accessible)
 	}
 
-	public async getUsers(){
+	public async getUsers() {
 		return db.select("*").from(this.tableName)
 	}
 

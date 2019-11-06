@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from "express"
 import User from "../models/User"
 import lodash from 'lodash'
 import Joi from "joi"
+import bcrypt from 'bcrypt'
 
 export default class UserController {
 	/**
@@ -11,8 +12,14 @@ export default class UserController {
 	 * @access  Public
 	 */
 
-	public static getUsers(req: Request, res: Response, next: NextFunction): Response {
-		return res.json("Get users" + `Current NODE_ENV is ${process.env.NODE_ENV}` + req.params['username'])
+	public static async getUsers(req: Request, res: Response, next: NextFunction) {
+		let user = new User()
+		let users = await user.getUsers()
+		return res.json(
+			{
+				code: res.statusCode,
+				data: users
+			})
 	}
 
 	/**
@@ -22,7 +29,7 @@ export default class UserController {
 	 * @access  Public
 	 */
 
-	public static getUser(req: Request, res: Response, next: NextFunction) {
+	public static async getUser(req: Request, res: Response, next: NextFunction) {
 		return res.json("Get user by id")
 	}
 
@@ -43,6 +50,7 @@ export default class UserController {
 					})
 			}
 		})
+		req.body.password = await bcrypt.hash(req.body.password, 10)
 		user.accessible = lodash.merge(user.accessible, req.body);
 		try {
 			await user.create()
@@ -70,7 +78,7 @@ export default class UserController {
 	 * @access  Private/Admin
 	 */
 
-	public static updateUser(req: Request, res: Response, next: NextFunction) {
+	public static async updateUser(req: Request, res: Response, next: NextFunction) {
 		return res.json("Update user")
 	}
 
@@ -80,7 +88,7 @@ export default class UserController {
 	 * @access  Private/Admin
 	 */
 
-	public static deleteUser(req: Request, res: Response, next: NextFunction) {
+	public static async deleteUser(req: Request, res: Response, next: NextFunction) {
 		return res.json("Delete user")
 	}
 

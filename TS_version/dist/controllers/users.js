@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var User_1 = __importDefault(require("../models/User"));
 var lodash_1 = __importDefault(require("lodash"));
 var joi_1 = __importDefault(require("joi"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var UserController = /** @class */ (function () {
     function UserController() {
     }
@@ -52,7 +53,23 @@ var UserController = /** @class */ (function () {
      * @access  Public
      */
     UserController.getUsers = function (req, res, next) {
-        return res.json("Get users" + ("Current NODE_ENV is " + process.env.NODE_ENV) + req.params['username']);
+        return __awaiter(this, void 0, void 0, function () {
+            var user, users;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = new User_1.default();
+                        return [4 /*yield*/, user.getUsers()];
+                    case 1:
+                        users = _a.sent();
+                        console.log(users);
+                        return [2 /*return*/, res.json({
+                                code: res.statusCode,
+                                data: users
+                            })];
+                }
+            });
+        });
     };
     /**
      * @desc    Get user
@@ -70,9 +87,9 @@ var UserController = /** @class */ (function () {
      */
     UserController.createUser = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, e_1, _i, _a, _b, key, value;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var user, _a, e_1, _i, _b, _c, key, value;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         user = new User_1.default();
                         return [4 /*yield*/, joi_1.default.validate(req.body, user.accessible, function (e) {
@@ -84,19 +101,23 @@ var UserController = /** @class */ (function () {
                                 }
                             })];
                     case 1:
-                        _c.sent();
-                        user.accessible = lodash_1.default.merge(user.accessible, req.body);
-                        _c.label = 2;
+                        _d.sent();
+                        _a = req.body;
+                        return [4 /*yield*/, bcrypt_1.default.hash(req.body.password, 10)];
                     case 2:
-                        _c.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, user.create()];
+                        _a.password = _d.sent();
+                        user.accessible = lodash_1.default.merge(user.accessible, req.body);
+                        _d.label = 3;
                     case 3:
-                        _c.sent();
-                        return [3 /*break*/, 5];
+                        _d.trys.push([3, 5, , 6]);
+                        return [4 /*yield*/, user.create()];
                     case 4:
-                        e_1 = _c.sent();
-                        for (_i = 0, _a = Object.entries(User_1.default.errorList); _i < _a.length; _i++) {
-                            _b = _a[_i], key = _b[0], value = _b[1];
+                        _d.sent();
+                        return [3 /*break*/, 6];
+                    case 5:
+                        e_1 = _d.sent();
+                        for (_i = 0, _b = Object.entries(User_1.default.errorList); _i < _b.length; _i++) {
+                            _c = _b[_i], key = _c[0], value = _c[1];
                             if (e_1.sqlMessage && e_1.sqlMessage.includes(key)) {
                                 return [2 /*return*/, res.json({
                                         code: res.statusCode,
@@ -104,8 +125,8 @@ var UserController = /** @class */ (function () {
                                     })];
                             }
                         }
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/, res.json({
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/, res.json({
                             code: res.statusCode,
                             data: lodash_1.default.merge(user.accessible, user.visible)
                         })];
