@@ -57,6 +57,10 @@ export default class User {
 		return db.select("*").from(this.tableName)
 	}
 
+	public async getUser(id: Number) {
+		return db(this.tableName).where('id', id)
+	}
+
 	static get errorList() {
 		return {
 			'user_email_unique': 'This email is already taken',

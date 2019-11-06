@@ -62,7 +62,6 @@ var UserController = /** @class */ (function () {
                         return [4 /*yield*/, user.getUsers()];
                     case 1:
                         users = _a.sent();
-                        console.log(users);
                         return [2 /*return*/, res.json({
                                 code: res.statusCode,
                                 data: users
@@ -78,7 +77,22 @@ var UserController = /** @class */ (function () {
      * @access  Public
      */
     UserController.getUser = function (req, res, next) {
-        return res.json("Get user by id");
+        return __awaiter(this, void 0, void 0, function () {
+            var user, userById;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = new User_1.default();
+                        return [4 /*yield*/, user.getUser(Number(req.params.id))];
+                    case 1:
+                        userById = _a.sent();
+                        return [2 /*return*/, res.json({
+                                code: res.statusCode,
+                                data: userById
+                            })];
+                }
+            });
+        });
     };
     /**
      * @desc    Create user
@@ -140,7 +154,11 @@ var UserController = /** @class */ (function () {
      * @access  Private/Admin
      */
     UserController.updateUser = function (req, res, next) {
-        return res.json("Update user");
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, res.json("Update user")];
+            });
+        });
     };
     /**
      * @desc    Delete user
@@ -148,7 +166,11 @@ var UserController = /** @class */ (function () {
      * @access  Private/Admin
      */
     UserController.deleteUser = function (req, res, next) {
-        return res.json("Delete user");
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, res.json("Delete user")];
+            });
+        });
     };
     return UserController;
 }());

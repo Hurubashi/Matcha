@@ -100,6 +100,13 @@ var User = /** @class */ (function () {
             });
         });
     };
+    User.prototype.getUser = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, db(this.tableName).where('id', id)];
+            });
+        });
+    };
     Object.defineProperty(User, "errorList", {
         get: function () {
             return {

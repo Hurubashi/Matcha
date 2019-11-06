@@ -30,7 +30,13 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction) {
-		return res.json("Get user by id")
+		let user = new User()
+		let userById = await user.getUser(Number(req.params.id))
+		return res.json(
+			{
+				code: res.statusCode,
+				data: userById
+			})
 	}
 
 	/**
