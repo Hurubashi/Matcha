@@ -6,7 +6,7 @@ let db = knex(knexConfig)
 
 export default class User {
 
-	private tableName: string = 'users'
+	static tableName: string = 'users'
 
 	public accessible = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
@@ -50,14 +50,14 @@ export default class User {
 	}
 
 	public async create() {
-		return db(this.tableName).insert(this.accessible)
+		return db(User.tableName).insert(this.accessible)
 	}
 
-	public async getUsers() {
+	public static async getUsers() {
 		return db.select("*").from(this.tableName)
 	}
 
-	public async getUser(id: Number) {
+	public static async getUser(id: Number) {
 		return db(this.tableName).where('id', id)
 	}
 

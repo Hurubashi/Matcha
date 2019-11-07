@@ -6,43 +6,39 @@ import bcrypt from 'bcrypt'
 
 export default class UserController {
 	/**
-	 * @desc    Get users
-	 * @method  GET
-	 * @route   GET /api/users
-	 * @access  Public
+	 * @desc        Get users
+	 * @route       GET /api/users
+	 * @access      Public
 	 */
 
 	public static async getUsers(req: Request, res: Response, next: NextFunction) {
-		let user = new User()
-		let users = await user.getUsers()
+		let user = await User.getUsers()
 		return res.json(
 			{
 				code: res.statusCode,
-				data: users
+				data: user
 			})
 	}
 
 	/**
-	 * @desc    Get user
-	 * @method  GET
-	 * @route   GET /api/users/:id
-	 * @access  Public
+	 * @desc        Get user
+	 * @route       GET /api/users/:id
+	 * @access      Public
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction) {
-		let user = new User()
-		let userById = await user.getUser(Number(req.params.id))
+		let user = await User.getUser(Number(req.params.id))
 		return res.json(
 			{
 				code: res.statusCode,
-				data: userById
+				data: user
 			})
 	}
 
 	/**
-	 * @desc    Create user
-	 * @route   POST /api/users/
-	 * @access  Public
+	 * @desc        Create user
+	 * @route       POST /api/users/
+	 * @access      Public
 	 */
 
 	public static async createUser(req: Request, res: Response, next: NextFunction) {
@@ -79,9 +75,9 @@ export default class UserController {
 	}
 
 	/**
-	 * @desc    Update user
-	 * @route   PUT /api/users/:id
-	 * @access  Private/Admin
+	 * @desc        Update user
+	 * @route       PUT /api/users/:id
+	 * @access      Private/Admin
 	 */
 
 	public static async updateUser(req: Request, res: Response, next: NextFunction) {
@@ -89,9 +85,9 @@ export default class UserController {
 	}
 
 	/**
-	 * @desc    Delete user
-	 * @route   DELETE /api/users/:id
-	 * @access  Private/Admin
+	 * @desc        Delete user
+	 * @route       DELETE /api/users/:id
+	 * @access      Private/Admin
 	 */
 
 	public static async deleteUser(req: Request, res: Response, next: NextFunction) {

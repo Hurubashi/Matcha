@@ -3,6 +3,7 @@ import "./config/env"
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import users from './routes/users'
+import auth from './routes/auth'
 
 const app: Application = express()
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 })
 
 app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 app.listen(5000, () => {
     console.log('Server is running')
