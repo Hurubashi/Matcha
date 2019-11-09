@@ -1,19 +1,28 @@
 import knex from 'knex'
 import {knexConfig} from "../config"
-import Joi, {Err} from 'joi'
-import bcrypt from "bcrypt"
-import lodash from "../controllers/UserController"
+import Joi from 'joi'
 
 let db = knex(knexConfig)
-type Answer<Boolean, String> = {
-	result: Boolean
-	message: String
+
+
+interface UserAccessible {
+	email: string
+	username: string
+	first_name: string
+	last_name: string
+	password: string
 }
+
+interface UserVisible {
+	id: number
+	is_verified: boolean
+}
+
 export default class User {
 
 	static tableName: string = 'users'
 
-	public accessible = {
+	public accessibleScheme = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
 			return this.manageJoiErrors(errors, 'Email')
 		}),
@@ -31,8 +40,17 @@ export default class User {
 		}),
 	}
 
-	public visible = {
-		is_verified: 0
+	public accessible: UserAccessible = {
+		email: "",
+		username: "",
+		first_name: "",
+		last_name: "",
+		password: ""
+	}
+
+	public visible: UserVisible = {
+		id: 0,
+		is_verified: false
 	}
 
 	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: String){
@@ -56,7 +74,9 @@ export default class User {
 
 	public async create(): Promise<undefined | Error> {
 		try {
-			await db(User.tableName).insert(this.accessible)
+			let id: number[] = await db(User.tableName).insert(this.accessible)
+			this.visible.id = id[0]
+			return
 		} catch (e) {
 			for (let [key, value] of Object.entries(User.errorList)) {
 				if (e.sqlMessage && e.sqlMessage.includes(key)) {
@@ -64,7 +84,6 @@ export default class User {
 				}
 			}
 		}
-
 		return db(User.tableName).insert(this.accessible)
 	}
 
@@ -72,7 +91,7 @@ export default class User {
 		return db.select("*").from(this.tableName)
 	}
 
-	public static async getUser(id: Number) {
+	public static async getUser(id: number) {
 		return db(this.tableName).where('id', id)
 	}
 

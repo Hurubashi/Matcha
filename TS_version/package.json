@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@hapi/joi": "^16.1.7",
     "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.17.1",
     "@types/dotenv": "^8.2.0",
@@ -21,12 +22,14 @@
     "@types/lodash": "^4.14.144",
     "@types/morgan": "^1.7.37",
     "@types/node": "^12.11.7",
+    "@types/nodemailer": "^6.2.2",
+    "@types/pug": "^2.0.4",
+    "@types/uuid": "^3.4.6",
     "nodemon": "^1.19.4",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   },
   "dependencies": {
-    "@hapi/joi": "^16.1.7",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
@@ -34,6 +37,9 @@
     "knex": "^0.20.0",
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
-    "sqlite3": "^4.1.0"
+    "nodemailer": "^6.3.1",
+    "pug": "^2.0.4",
+    "sqlite3": "^4.1.0",
+    "uuid": "^3.3.3"
   }
 }
