@@ -20,6 +20,6 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-app.listen(5000, () => {
+app.listen(5500, () => {
     console.log('Server is running')
 })

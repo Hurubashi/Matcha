@@ -8,115 +8,91 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var knex_1 = __importDefault(require("knex"));
-var config_1 = require("../config");
-var joi_1 = __importDefault(require("joi"));
-var db = knex_1.default(config_1.knexConfig);
-var User = /** @class */ (function () {
-    function User() {
-        var _this = this;
-        this.tableName = 'users';
+const knex_1 = __importDefault(require("knex"));
+const config_1 = require("../config");
+const joi_1 = __importDefault(require("joi"));
+let db = knex_1.default(config_1.knexConfig);
+class User {
+    constructor() {
         this.accessible = {
-            email: joi_1.default.string().email().min(3).required().error(function (errors) {
-                return _this.manageJoiErrors(errors, 'Email');
+            email: joi_1.default.string().email().min(3).required().error((errors) => {
+                return this.manageJoiErrors(errors, 'Email');
             }),
-            username: joi_1.default.string().min(3).required().error(function (errors) {
-                return _this.manageJoiErrors(errors, 'User name');
+            username: joi_1.default.string().min(3).required().error((errors) => {
+                return this.manageJoiErrors(errors, 'User name');
             }),
-            first_name: joi_1.default.string().required().error(function (errors) {
-                return _this.manageJoiErrors(errors, 'First name');
+            first_name: joi_1.default.string().required().error((errors) => {
+                return this.manageJoiErrors(errors, 'First name');
             }),
-            last_name: joi_1.default.string().required().error(function (errors) {
-                return _this.manageJoiErrors(errors, 'Last name');
+            last_name: joi_1.default.string().required().error((errors) => {
+                return this.manageJoiErrors(errors, 'Last name');
             }),
-            password: joi_1.default.string().min(6).required().error(function (errors) {
-                return _this.manageJoiErrors(errors, 'Password');
+            password: joi_1.default.string().min(6).required().error((errors) => {
+                return this.manageJoiErrors(errors, 'Password');
             }),
         };
         this.visible = {
             is_verified: 0
         };
     }
-    User.prototype.manageJoiErrors = function (errors, field) {
-        errors.forEach(function (err) {
+    manageJoiErrors(errors, field) {
+        errors.forEach((err) => {
             switch (err.type) {
                 case "string.email":
-                    err.message = field + " should be valid!";
+                    err.message = `${field} should be valid!`;
                     break;
                 case "any.empty":
-                    err.message = field + " should not be empty!";
+                    err.message = `${field} should not be empty!`;
                     break;
                 case "string.min":
-                    err.message = field + " should have at least " + (err.context ? err.context.limit : "") + " characters!";
+                    err.message = `${field} should have at least ${err.context ? err.context.limit : ""} characters!`;
                     break;
                 default:
                     break;
             }
         });
         return errors;
-    };
-    User.prototype.create = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, db(this.tableName).insert(this.accessible)];
-            });
+    }
+    create() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // const result: Answer<Boolean, String> = {}
+            // return result;
+            try {
+                yield db(User.tableName).insert(this.accessible);
+                return true;
+            }
+            catch (e) {
+                console.log('Error catch');
+                for (let [key, value] of Object.entries(User.errorList)) {
+                    if (e.sqlMessage && e.sqlMessage.includes(key)) {
+                        console.log(value);
+                        throw new Error(value ? value : e.sqlMessage);
+                    }
+                }
+            }
+            return db(User.tableName).insert(this.accessible);
         });
-    };
-    User.prototype.getUsers = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, db.select("*").from(this.tableName)];
-            });
+    }
+    static getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return db.select("*").from(this.tableName);
         });
-    };
-    User.prototype.getUser = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, db(this.tableName).where('id', id)];
-            });
+    }
+    static getUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return db(this.tableName).where('id', id);
         });
-    };
-    Object.defineProperty(User, "errorList", {
-        get: function () {
-            return {
-                'user_email_unique': 'This email is already taken',
-                'user_username_unique': 'This username is already taken'
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return User;
-}());
+    }
+    static get errorList() {
+        return {
+            'user_email_unique': 'This email is already taken',
+            'user_username_unique': 'This username is already taken'
+        };
+    }
+}
 exports.default = User;
+User.tableName = 'users';

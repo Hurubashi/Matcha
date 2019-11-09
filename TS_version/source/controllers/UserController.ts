@@ -4,6 +4,14 @@ import lodash from 'lodash'
 import Joi from "joi"
 import bcrypt from 'bcrypt'
 
+function responseTemplate(success: Boolean, data: Object, message: String): Object {
+	return {
+		success:    success,
+		message:    message,
+		data:       data,
+	}
+}
+
 export default class UserController {
 	/**
 	 * @desc        Get users
@@ -41,37 +49,27 @@ export default class UserController {
 	 * @access      Public
 	 */
 
-	public static async createUser(req: Request, res: Response, next: NextFunction) {
+	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let user = new User()
-		await Joi.validate(req.body, user.accessible, (e: Joi.ValidationError) => {
-			if (e) {
-				return res.json(
-					{
-						code: res.statusCode,
-						error: e.message
-					})
-			}
+		// Validate
+		Joi.validate(req.body, user.accessible, (e: Joi.ValidationError) => {
+			if (e) return res.json(
+				responseTemplate(false, {}, e.message))
 		})
+		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, 10)
 		user.accessible = lodash.merge(user.accessible, req.body);
-		try {
+		// Insert to db
+		try  {
 			await user.create()
-		} catch (e) {
-			for (let [key, value] of Object.entries(User.errorList)) {
-				if (e.sqlMessage && e.sqlMessage.includes(key)) {
-					return res.json(
-						{
-							code: res.statusCode,
-							error: value ? value : e.sqlMessage
-						})
-				}
-			}
+			return res.json(
+				responseTemplate(true, lodash.merge(user.accessible, user.visible), 'Uspeh?')
+			)
 		}
-		return res.json(
-			{
-				code: res.statusCode,
-				data: lodash.merge(user.accessible, user.visible)
-			})
+		catch (e) {
+			res.statusCode = 201
+			return res.json(responseTemplate(false, {}, e.message))
+		}
 	}
 
 	/**

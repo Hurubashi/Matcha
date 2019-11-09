@@ -1,9 +1,14 @@
 import knex from 'knex'
 import {knexConfig} from "../config"
-import Joi from 'joi'
+import Joi, {Err} from 'joi'
+import bcrypt from "bcrypt"
+import lodash from "../controllers/UserController"
 
 let db = knex(knexConfig)
-
+type Answer<Boolean, String> = {
+	result: Boolean
+	message: String
+}
 export default class User {
 
 	static tableName: string = 'users'
@@ -49,7 +54,17 @@ export default class User {
 		return errors
 	}
 
-	public async create() {
+	public async create(): Promise<undefined | Error> {
+		try {
+			await db(User.tableName).insert(this.accessible)
+		} catch (e) {
+			for (let [key, value] of Object.entries(User.errorList)) {
+				if (e.sqlMessage && e.sqlMessage.includes(key)) {
+					throw new Error(value ? value : e.sqlMessage)
+				}
+			}
+		}
+
 		return db(User.tableName).insert(this.accessible)
 	}
 
