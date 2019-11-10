@@ -2,77 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="977aa037-52e4-45bd-8d01-77f74088a95b" name="Default Changelist" comment="model and service separation">
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/config/env.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/config/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/controllers/AuthController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/controllers/UserController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/controllers/users.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/env.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/models/User.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/public/images/dating.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/public/letters/AccountCreated" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/public/letters/AccountCreated.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/routes/auth.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/routes/users.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/dist/util/MailService.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/app.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/config/env.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/config/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/controllers/AuthController.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/controllers/Controller.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/controllers/UserController.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/models/User.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/models/UserActivationUUID.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/public/images/dating.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/public/letters/AccountCreated" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/public/letters/AccountCreated.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/routes/auth.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/routes/users.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/source/util/MailService.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TS_version/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/BaseAction.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/auth/EmailConfirmationAction.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/auth/LoginAction.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/auth/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/users/CreateAction.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/users/ListAction.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/users/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/email.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/errorCodes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/folders.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/knex.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/roles.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/AuthController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/UsersController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/BaseConfig.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/BaseController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/BaseModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/init.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/globals.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/knexfile.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/20190803103256_users_table.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/20190805212332_uuid_to_user_operation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/UUIDToOperationModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/UsersModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/dating.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/letters/AccountCreated" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/letters/AccountCreated.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/MailService.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/logger.js" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -145,14 +75,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/models/User.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="173">
-              <caret line="65" column="46" lean-forward="true" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
+              <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="24">
+              <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -161,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/source/models/UserActivationUUID.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
-              <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+              <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -185,7 +124,7 @@
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="347">
-              <caret line="29" column="4" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
+              <caret line="29" column="4" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -194,7 +133,7 @@
         <entry file="file://$PROJECT_DIR$/source/controllers/UserController.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="389">
-              <caret line="66" column="14" lean-forward="true" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
+              <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -206,7 +145,7 @@
         <entry file="file://$PROJECT_DIR$/source/controllers/Controller.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
-              <caret line="6" column="9" lean-forward="true" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+              <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -280,6 +219,7 @@
         <option value="$PROJECT_DIR$/source/controllers/UserController.ts" />
         <option value="$PROJECT_DIR$/source/controllers/Controller.ts" />
         <option value="$PROJECT_DIR$/source/models/User.ts" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -315,17 +255,6 @@
             <path>
               <item name="matcha" type="b2602c69:ProjectViewProjectNode" />
               <item name="matcha" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="matcha" type="b2602c69:ProjectViewProjectNode" />
-              <item name="matcha" type="462c0819:PsiDirectoryNode" />
-              <item name="source" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="matcha" type="b2602c69:ProjectViewProjectNode" />
-              <item name="matcha" type="462c0819:PsiDirectoryNode" />
-              <item name="source" type="462c0819:PsiDirectoryNode" />
-              <item name="controllers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -401,7 +330,7 @@
       <workItem from="1573198841389" duration="397000" />
       <workItem from="1573226525017" duration="42203000" />
       <workItem from="1573418246975" duration="440000" />
-      <workItem from="1573418734124" duration="3333000" />
+      <workItem from="1573418734124" duration="3409000" />
     </task>
     <task id="LOCAL-00001" summary="added pub, uui, mailer">
       <created>1573333139524</created>
@@ -428,13 +357,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99365000" />
+    <option name="totallyTimeSpent" value="99441000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25107297" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25107297" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="DB Browser" order="3" show_stripe_button="false" weight="0.3297568" />
@@ -498,13 +427,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="model and service separation" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/TS_version/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/knex/types/result.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -841,14 +763,14 @@
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
-          <caret line="29" column="4" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
+          <caret line="29" column="4" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/source/models/UserActivationUUID.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
-          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -868,14 +790,14 @@
     <entry file="file://$PROJECT_DIR$/source/controllers/Controller.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
-          <caret line="6" column="9" lean-forward="true" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/source/controllers/UserController.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
-          <caret line="66" column="14" lean-forward="true" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
+          <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
@@ -885,10 +807,17 @@
     <entry file="file://$PROJECT_DIR$/source/models/User.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
-          <caret line="65" column="46" lean-forward="true" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
+          <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
         </state>
       </provider>
     </entry>
