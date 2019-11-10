@@ -1,7 +1,8 @@
 import {Request, Response, NextFunction} from "express"
+import Controller from './Controller'
 import {UserService, User} from "../models/User"
 
-export default class AuthController {
+export default class AuthController extends Controller{
 
 	/**
 	 * @desc        Login user

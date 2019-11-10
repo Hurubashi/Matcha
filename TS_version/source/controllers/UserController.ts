@@ -1,21 +1,15 @@
 import {Request, Response, NextFunction} from "express"
-import {UserService, User} from "../models/User"
-import lodash from 'lodash'
+import User from "../models/User"
+import UserService from "../services/UserService"
+import Controller from './Controller'
 import Joi from "joi"
 import bcrypt from 'bcrypt'
 import pug from 'pug'
 import MailService from '../util/MailService'
 import uuidv1 from 'uuid/v1'
 
-function responseTemplate(success: Boolean, data: Object, message: String): Object {
-	return {
-		success:    success,
-		message:    message,
-		data:       data,
-	}
-}
+export default class UserController extends Controller {
 
-export default class UserController {
 	/**
 	 * @desc        Get users
 	 * @route       GET /api/users
@@ -23,7 +17,7 @@ export default class UserController {
 	 */
 
 	public static async getUsers(req: Request, res: Response, next: NextFunction) {
-		let user = await UserService.getUsers()
+		let user: User[] = await UserService.getUsers()
 		return res.json(
 			{
 				code: res.statusCode,
@@ -58,7 +52,7 @@ export default class UserController {
 		Joi.validate(req.body, userService.accessibleScheme, (e: Joi.ValidationError) => {
 			if (e) {
 				res.statusCode = 406
-				return res.json(responseTemplate(false, {}, e.message))
+				return res.json(this.responseTemplate(false, {}, e.message))
 			}
 		})
 		// Hash password
@@ -75,12 +69,12 @@ export default class UserController {
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
 			res.statusCode = 201
 			return res.json(
-				responseTemplate(true, user,
+				UserController.responseTemplate(true, user,
 					'User successfully created')
 			)
 		} else {
 			res.statusCode = 406
-			return res.json(responseTemplate(false, {}, user.message))
+			return res.json(this.responseTemplate(false, {}, user.message))
 		}
 
 	}
