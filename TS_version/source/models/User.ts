@@ -4,8 +4,9 @@ import Joi from 'joi'
 
 let db = knex(knexConfig)
 
-
-interface UserAccessible {
+export interface User {
+	id: number
+	is_verified: boolean
 	email: string
 	username: string
 	first_name: string
@@ -13,12 +14,7 @@ interface UserAccessible {
 	password: string
 }
 
-interface UserVisible {
-	id: number
-	is_verified: boolean
-}
-
-export default class User {
+export class UserService {
 
 	static tableName: string = 'users'
 
@@ -40,19 +36,6 @@ export default class User {
 		}),
 	}
 
-	public accessible: UserAccessible = {
-		email: "",
-		username: "",
-		first_name: "",
-		last_name: "",
-		password: ""
-	}
-
-	public visible: UserVisible = {
-		id: 0,
-		is_verified: false
-	}
-
 	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: String){
 		errors.forEach((err: Joi.ValidationErrorItem) => {
 			switch (err.type) {
@@ -72,27 +55,8 @@ export default class User {
 		return errors
 	}
 
-	public async create(): Promise<undefined | Error> {
-		try {
-			let id: number[] = await db(User.tableName).insert(this.accessible)
-			this.visible.id = id[0]
-			return
-		} catch (e) {
-			for (let [key, value] of Object.entries(User.errorList)) {
-				if (e.sqlMessage && e.sqlMessage.includes(key)) {
-					throw new Error(value ? value : e.sqlMessage)
-				}
-			}
-		}
-		return db(User.tableName).insert(this.accessible)
-	}
-
-	public static async getUsers() {
-		return db.select("*").from(this.tableName)
-	}
-
-	public static async getUser(id: number) {
-		return db(this.tableName).where('id', id)
+	static instanceOfUser(object: any): object is User {
+		return 'id' in object;
 	}
 
 	static get errorList() {
@@ -101,4 +65,32 @@ export default class User {
 			'user_username_unique': 'This username is already taken'
 		}
 	}
+
+	static async create(body: Object): Promise<User | Error> {
+		try {
+			let id: number[] = await db(UserService.tableName).insert(body)
+			let user: User | undefined = await db<User>(UserService.tableName).where('id', id[0]).first()
+			if (UserService.instanceOfUser(user)) {
+				return user
+			} else {
+				return Error('Something went wrong')
+			}
+		} catch (e) {
+			for (let [key, value] of Object.entries(UserService.errorList)) {
+				if (e.sqlMessage && e.sqlMessage.includes(key)) {
+					return new Error(value ? value : e.sqlMessage)
+				}
+			}
+			return new Error(e)
+		}
+	}
+
+	public static async getUsers(): Promise<User[]> {
+		return await db<User[]>(this.tableName).select("*").from(this.tableName)
+	}
+
+	public static async getUser(id: number): Promise<User | undefined> {
+		return await db<User>(this.tableName).where('id', id).first()
+	}
+
 }

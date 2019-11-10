@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express"
-import User from "../models/User"
+import {UserService, User} from "../models/User"
 import lodash from 'lodash'
 import Joi from "joi"
 import bcrypt from 'bcrypt'
@@ -23,7 +23,7 @@ export default class UserController {
 	 */
 
 	public static async getUsers(req: Request, res: Response, next: NextFunction) {
-		let user = await User.getUsers()
+		let user = await UserService.getUsers()
 		return res.json(
 			{
 				code: res.statusCode,
@@ -38,7 +38,7 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction) {
-		let user = await User.getUser(Number(req.params.id))
+		let user = await UserService.getUser(Number(req.params.id))
 		return res.json(
 			{
 				code: res.statusCode,
@@ -53,9 +53,9 @@ export default class UserController {
 	 */
 
 	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let user = new User()
+		let userService = new UserService()
 		// Validate
-		Joi.validate(req.body, user.accessibleScheme, (e: Joi.ValidationError) => {
+		Joi.validate(req.body, userService.accessibleScheme, (e: Joi.ValidationError) => {
 			if (e) {
 				res.statusCode = 406
 				return res.json(responseTemplate(false, {}, e.message))
@@ -63,27 +63,26 @@ export default class UserController {
 		})
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, 10)
-		user.accessible = lodash.merge(user.accessible, req.body);
 		// Insert to db
-		try  {
-			await user.create()
+		let user: User | Error = await UserService.create(req.body)
+		if (UserService.instanceOfUser(user)) {
 			const uuid = uuidv1()
 			const letter = pug.renderFile('../public/letters/AccountCreated.pug', {
-				name: req.body.first_name + req.body.last_name,
-				link: process.env.APP_SERVER + '/auth/emailConfirmation/' + uuid,
-				imgSrc: process.env.APP_SERVER + "/images/dating.jpg"
+				name: user.first_name + user.last_name,
+				link: process.env.APP_SERVER + '/auth/emailConfirmation/' + user.id + uuid,
+				imgSrc: process.env.APPSERVER + "/images/dating.jpg"
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
 			res.statusCode = 201
 			return res.json(
-				responseTemplate(true, lodash.merge(user.accessible, user.visible),
+				responseTemplate(true, user,
 					'User successfully created')
 			)
-		}
-		catch (e) {
+		} else {
 			res.statusCode = 406
-			return res.json(responseTemplate(false, {}, e.message))
+			return res.json(responseTemplate(false, {}, user.message))
 		}
+
 	}
 
 	/**

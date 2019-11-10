@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express"
-import User from "../models/User"
+import {UserService, User} from "../models/User"
 
 export default class AuthController {
 
