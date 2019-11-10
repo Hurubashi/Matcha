@@ -16,9 +16,9 @@ const knex_1 = __importDefault(require("knex"));
 const config_1 = require("../config");
 const joi_1 = __importDefault(require("joi"));
 let db = knex_1.default(config_1.knexConfig);
-class User {
+class UserService {
     constructor() {
-        this.accessible = {
+        this.accessibleScheme = {
             email: joi_1.default.string().email().min(3).required().error((errors) => {
                 return this.manageJoiErrors(errors, 'Email');
             }),
@@ -34,9 +34,6 @@ class User {
             password: joi_1.default.string().min(6).required().error((errors) => {
                 return this.manageJoiErrors(errors, 'Password');
             }),
-        };
-        this.visible = {
-            is_verified: 0
         };
     }
     manageJoiErrors(errors, field) {
@@ -57,35 +54,8 @@ class User {
         });
         return errors;
     }
-    create() {
-        return __awaiter(this, void 0, void 0, function* () {
-            // const result: Answer<Boolean, String> = {}
-            // return result;
-            try {
-                yield db(User.tableName).insert(this.accessible);
-                return true;
-            }
-            catch (e) {
-                console.log('Error catch');
-                for (let [key, value] of Object.entries(User.errorList)) {
-                    if (e.sqlMessage && e.sqlMessage.includes(key)) {
-                        console.log(value);
-                        throw new Error(value ? value : e.sqlMessage);
-                    }
-                }
-            }
-            return db(User.tableName).insert(this.accessible);
-        });
-    }
-    static getUsers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return db.select("*").from(this.tableName);
-        });
-    }
-    static getUser(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return db(this.tableName).where('id', id);
-        });
+    static instanceOfUser(object) {
+        return 'id' in object;
     }
     static get errorList() {
         return {
@@ -93,6 +63,38 @@ class User {
             'user_username_unique': 'This username is already taken'
         };
     }
+    static create(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let id = yield db(UserService.tableName).insert(body);
+                let user = yield db(UserService.tableName).where('id', id[0]).first();
+                if (UserService.instanceOfUser(user)) {
+                    return user;
+                }
+                else {
+                    return Error('Something went wrong');
+                }
+            }
+            catch (e) {
+                for (let [key, value] of Object.entries(UserService.errorList)) {
+                    if (e.sqlMessage && e.sqlMessage.includes(key)) {
+                        return new Error(value ? value : e.sqlMessage);
+                    }
+                }
+                return new Error(e);
+            }
+        });
+    }
+    static getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield db(this.tableName).select("*").from(this.tableName);
+        });
+    }
+    static getUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield db(this.tableName).where('id', id).first();
+        });
+    }
 }
-exports.default = User;
-User.tableName = 'users';
+exports.UserService = UserService;
+UserService.tableName = 'users';

@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = __importDefault(require("../models/User"));
-const lodash_1 = __importDefault(require("lodash"));
+const User_1 = require("../models/User");
 const joi_1 = __importDefault(require("joi"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 function responseTemplate(success, data, message) {
@@ -31,7 +30,7 @@ class UserController {
      */
     static getUsers(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield User_1.default.getUsers();
+            let user = yield User_1.UserService.getUsers();
             return res.json({
                 code: res.statusCode,
                 data: user
@@ -45,7 +44,7 @@ class UserController {
      */
     static getUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield User_1.default.getUser(Number(req.params.id));
+            let user = yield User_1.UserService.getUser(Number(req.params.id));
             return res.json({
                 code: res.statusCode,
                 data: user
@@ -59,23 +58,33 @@ class UserController {
      */
     static createUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = new User_1.default();
+            let userService = new User_1.UserService();
             // Validate
-            joi_1.default.validate(req.body, user.accessible, (e) => {
-                if (e)
+            joi_1.default.validate(req.body, userService.accessibleScheme, (e) => {
+                if (e) {
+                    res.statusCode = 406;
                     return res.json(responseTemplate(false, {}, e.message));
+                }
             });
             // Hash password
             req.body.password = yield bcrypt_1.default.hash(req.body.password, 10);
-            user.accessible = lodash_1.default.merge(user.accessible, req.body);
             // Insert to db
-            try {
-                yield user.create();
-                return res.json(responseTemplate(true, lodash_1.default.merge(user.accessible, user.visible), 'Uspeh?'));
+            let user = yield User_1.UserService.create(req.body);
+            if (User_1.UserService.instanceOfUser(user)) {
+                console.log(user);
+                // const uuid = uuidv1()
+                // const letter = pug.renderFile('../public/letters/AccountCreated.pug', {
+                // 	name: req.body.first_name + req.body.last_name,
+                // 	link: process.env.APP_SERVER + '/auth/emailConfirmation/' + user.id + uuid,
+                // 	imgSrc: process.env.APPSERVER + "/images/dating.jpg"
+                // })
+                // await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
+                // res.statusCode = 201
+                return res.json(responseTemplate(true, user, 'User successfully created'));
             }
-            catch (e) {
-                res.statusCode = 201;
-                return res.json(responseTemplate(false, {}, e.message));
+            else {
+                res.statusCode = 406;
+                return res.json(responseTemplate(false, {}, user.message));
             }
         });
     }

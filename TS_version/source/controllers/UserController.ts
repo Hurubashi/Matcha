@@ -1,6 +1,5 @@
 import {Request, Response, NextFunction} from "express"
-import User from "../models/User"
-import UserService from "../services/UserService"
+import {User, UserManager} from "../models/User"
 import Controller from './Controller'
 import Joi from "joi"
 import bcrypt from 'bcrypt'
@@ -17,7 +16,7 @@ export default class UserController extends Controller {
 	 */
 
 	public static async getUsers(req: Request, res: Response, next: NextFunction) {
-		let user: User[] = await UserService.getUsers()
+		let user: User[] = await UserManager.getUsers()
 		return res.json(
 			{
 				code: res.statusCode,
@@ -32,7 +31,7 @@ export default class UserController extends Controller {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction) {
-		let user = await UserService.getUser(Number(req.params.id))
+		let user = await UserManager.getUser(Number(req.params.id))
 		return res.json(
 			{
 				code: res.statusCode,
@@ -47,7 +46,7 @@ export default class UserController extends Controller {
 	 */
 
 	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let userService = new UserService()
+		let userService = new UserManager()
 		// Validate
 		Joi.validate(req.body, userService.accessibleScheme, (e: Joi.ValidationError) => {
 			if (e) {
@@ -58,8 +57,8 @@ export default class UserController extends Controller {
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, 10)
 		// Insert to db
-		let user: User | Error = await UserService.create(req.body)
-		if (UserService.instanceOfUser(user)) {
+		let user: User | Error = await UserManager.create(req.body)
+		if (UserManager.instanceOfUser(user)) {
 			const uuid = uuidv1()
 			const letter = pug.renderFile('../public/letters/AccountCreated.pug', {
 				name: user.first_name + user.last_name,
