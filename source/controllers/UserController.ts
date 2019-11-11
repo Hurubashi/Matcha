@@ -7,6 +7,7 @@ import MailService from '../util/MailService'
 import {User, UserManager} from "../models/User"
 import {UserActivationUUID, UserActivationUUIDManager} from '../models/UserActivationUUID'
 import Controller from './Controller'
+import path from 'path';
 
 export default class UserController extends Controller {
 
@@ -64,9 +65,9 @@ export default class UserController extends Controller {
 			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
 			await UserActivationUUIDManager.create(userActivationUUID)
 
-			const letter = pug.renderFile( '/public/letters/AccountCreated.pug', {
+			const letter = pug.renderFile( path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.first_name + user.last_name,
-				link: req.protocol + '://' + req.get('host') + '/auth/verify/' + user.id + '/' + uuid,
+				link: req.protocol + '://' + req.get('host') + 'api//auth/verify/' + user.id + '/' + uuid,
 				imgSrc: req.protocol + '://' + req.get('host') + "public/images/dating.jpg"
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)

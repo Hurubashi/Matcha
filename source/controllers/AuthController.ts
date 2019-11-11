@@ -109,11 +109,11 @@ export default class AuthController extends Controller{
 		if (UserActivationUUIDManager.instanceOfUserActivationUUID(userActivationUUID)){
 			if(userActivationUUID.user_id == userId && userActivationUUID.uuid == req.params.uuid) {
 				res.statusCode = 200
-				this.responseTemplate(true, {}, 'Email confirmed. Account activated.')
+				Controller.responseTemplate(true, {}, 'Email confirmed. Account activated.')
 			}
 		}
 		res.statusCode = 410 // 410 - Gone
-		this.responseTemplate(true, {}, 'Page no more available')
+		Controller.responseTemplate(true, {}, 'Page no more available')
 	}
 
 
