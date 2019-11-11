@@ -18,7 +18,7 @@ export class UserManager {
 
 	static tableName: string = 'users'
 
-	public accessibleScheme = {
+	public scheme = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
 			return this.manageJoiErrors(errors, 'Email')
 		}),

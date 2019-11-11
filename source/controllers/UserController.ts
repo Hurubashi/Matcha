@@ -1,11 +1,12 @@
 import {Request, Response, NextFunction} from "express"
-import {User, UserManager} from "../models/User"
-import Controller from './Controller'
-import Joi from "joi"
 import bcrypt from 'bcrypt'
+import uuidv1 from 'uuid/v1'
+import Joi from "joi"
 import pug from 'pug'
 import MailService from '../util/MailService'
-import uuidv1 from 'uuid/v1'
+import {User, UserManager} from "../models/User"
+import {UserActivationUUID, UserActivationUUIDManager} from '../models/UserActivationUUID'
+import Controller from './Controller'
 
 export default class UserController extends Controller {
 
@@ -48,7 +49,7 @@ export default class UserController extends Controller {
 	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let userService = new UserManager()
 		// Validate
-		Joi.validate(req.body, userService.accessibleScheme, (e: Joi.ValidationError) => {
+		Joi.validate(req.body, userService.scheme, (e: Joi.ValidationError) => {
 			if (e) {
 				res.statusCode = 406
 				return res.json(Controller.responseTemplate(false, {}, e.message))
@@ -60,6 +61,8 @@ export default class UserController extends Controller {
 		let user: User | Error = await UserManager.create(req.body)
 		if (UserManager.instanceOfUser(user)) {
 			const uuid = uuidv1()
+			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
+			await UserActivationUUIDManager.create(userActivationUUID)
 			const letter = pug.renderFile('../public/letters/AccountCreated.pug', {
 				name: user.first_name + user.last_name,
 				link: process.env.APP_SERVER + '/auth/emailConfirmation/' + user.id + uuid,
