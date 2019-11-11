@@ -14,6 +14,7 @@ router.post('/register', AuthController.register)
 router.post('/login', AuthController.login)
 router.post('/logout', AuthController.logout)
 router.post('/me', AuthController.getMe)
+router.get('/verify/:id/:uuid', AuthController.verify)
 
 
 export default router

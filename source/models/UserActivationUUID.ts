@@ -1,5 +1,7 @@
 import knex from 'knex'
 import {knexConfig} from "../config"
+import {User} from "./User"
+import {Err} from "joi"
 let db = knex(knexConfig)
 
 export interface UserActivationUUID {
@@ -27,6 +29,10 @@ export class UserActivationUUIDManager {
 		} catch (e) {
 			return new Error(e)
 		}
+	}
+
+	static async findByUserId(id: number): Promise<UserActivationUUID | undefined> {
+		return db<UserActivationUUID>(this.tableName).where('user_id', id).first()
 	}
 
 }

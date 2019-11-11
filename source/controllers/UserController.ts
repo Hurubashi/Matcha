@@ -63,10 +63,11 @@ export default class UserController extends Controller {
 			const uuid = uuidv1()
 			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
 			await UserActivationUUIDManager.create(userActivationUUID)
-			const letter = pug.renderFile('../public/letters/AccountCreated.pug', {
+
+			const letter = pug.renderFile( '/public/letters/AccountCreated.pug', {
 				name: user.first_name + user.last_name,
-				link: process.env.APP_SERVER + '/auth/emailConfirmation/' + user.id + uuid,
-				imgSrc: process.env.APPSERVER + "/images/dating.jpg"
+				link: req.protocol + '://' + req.get('host') + '/auth/verify/' + user.id + '/' + uuid,
+				imgSrc: req.protocol + '://' + req.get('host') + "public/images/dating.jpg"
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
 			res.statusCode = 201

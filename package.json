@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/app.js",
+    "transfer": "cp -R source/public/ dist/public/",
     "dev": "nodemon source/app.js",
     "build": "tsc -p ."
   },

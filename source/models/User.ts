@@ -87,11 +87,11 @@ export class UserManager {
 	}
 
 	public static async getUsers(): Promise<User[]> {
-		return await db<User[]>(this.tableName).select("*").from(this.tableName)
+		return db<User[]>(this.tableName).select("*").from(this.tableName)
 	}
 
 	public static async getUser(id: number): Promise<User | undefined> {
-		return await db<User>(this.tableName).where('id', id).first()
+		return db<User>(this.tableName).where('id', id).first()
 	}
 
 }

@@ -11,12 +11,14 @@ const app: Application = express()
 // if(process.env.NODE_ENV == 'development'){
     app.use(morgan('dev'))
 // }
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello world")
 })
 
+app.use('/public', express.static(__dirname + '/public'));
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
