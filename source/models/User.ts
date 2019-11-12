@@ -87,11 +87,21 @@ export class UserManager {
 	}
 
 	public static async getUsers(): Promise<User[]> {
-		return db<User[]>(this.tableName).select("*").from(this.tableName)
+		return db<User[]>(this.tableName)
+			.select("*")
+			.from(this.tableName)
 	}
 
 	public static async getUser(id: number): Promise<User | undefined> {
-		return db<User>(this.tableName).where('id', id).first()
+		return db<User>(this.tableName)
+			.where('id', id)
+			.first()
+	}
+
+	public static async updateUser(user: User, data: Object){
+		return db(this.tableName)
+			.where({ id: user.id })
+			.update(data)
 	}
 
 }

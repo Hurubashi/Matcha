@@ -106,14 +106,17 @@ export default class AuthController extends Controller{
 	public static async verify(req: Request, res: Response, next: NextFunction) {
 		const userId = Number(req.params.id)
 		const userActivationUUID = await UserActivationUUIDManager.findByUserId(userId)
-		if (UserActivationUUIDManager.instanceOfUserActivationUUID(userActivationUUID)){
+		const user = await UserManager.getUser(userId)
+		console.log(userId, user)
+		if (UserActivationUUIDManager.instanceOfUserActivationUUID(userActivationUUID) && UserManager.instanceOfUser(user)){
 			if(userActivationUUID.user_id == userId && userActivationUUID.uuid == req.params.uuid) {
+				await UserManager.updateUser(user, {is_verified : true})
 				res.statusCode = 200
-				Controller.responseTemplate(true, {}, 'Email confirmed. Account activated.')
+				return res.json(Controller.responseTemplate(true, {}, 'Email confirmed. Account activated.'))
 			}
 		}
 		res.statusCode = 410 // 410 - Gone
-		Controller.responseTemplate(true, {}, 'Page no more available')
+		return res.json(Controller.responseTemplate(true, {}, 'Page no more available'))
 	}
 
 
