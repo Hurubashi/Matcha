@@ -98,6 +98,12 @@ export class UserManager {
 			.first()
 	}
 
+	public static async getUserBy(params: Object): Promise<User | undefined> {
+		return db<User>(this.tableName)
+			.where(params)
+			.first()
+	}
+
 	public static async updateUser(user: User, data: Object){
 		return db(this.tableName)
 			.where({ id: user.id })

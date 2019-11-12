@@ -58,7 +58,14 @@ export default class AuthController extends Controller{
 	 */
 
 	public static async login(req: Request, res: Response, next: NextFunction) {
-		return res.json("User login")
+		const user = UserManager.getUserBy({username: req.body.username})
+		if(UserManager.instanceOfUser(user)){
+			const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
+			if(user.password == password){
+				return res.json("Log in successful")
+			}
+		}
+		return res.json("Something went wrong")
 	}
 
 	/**
