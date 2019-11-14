@@ -50,14 +50,14 @@ export default class UserController extends Controller {
 	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let userService = new UserManager()
 		// Validate
-		Joi.validate(req.body, userService.scheme, (e: Joi.ValidationError) => {
+		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
 			if (e) {
 				res.statusCode = 406
 				return res.json(Controller.responseTemplate(false, {}, e.message))
 			}
 		})
 		// Hash password
-		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
+		req.body.password = await bcrypt.hash(req.body.password, 10)
 		// Insert to db
 		let user: User | Error = await UserManager.create(req.body)
 		if (UserManager.instanceOfUser(user)) {

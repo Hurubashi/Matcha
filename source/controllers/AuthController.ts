@@ -19,7 +19,7 @@ export default class AuthController extends Controller{
 	public static async register(req: Request, res: Response, next: NextFunction) {
 		let userService = new UserManager()
 		// Validate
-		Joi.validate(req.body, userService.scheme, (e: Joi.ValidationError) => {
+		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
 			if (e) {
 				res.statusCode = 406
 				return res.json(Controller.responseTemplate(false, {}, e.message))

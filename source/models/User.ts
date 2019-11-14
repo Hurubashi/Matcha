@@ -18,7 +18,7 @@ export class UserManager {
 
 	static tableName: string = 'users'
 
-	public scheme = {
+	public schema = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
 			return this.manageJoiErrors(errors, 'Email')
 		}),
@@ -33,6 +33,9 @@ export class UserManager {
 		}),
 		password: Joi.string().min(6).required().error( (errors: Joi.ValidationErrorItem[]) => {
 			return this.manageJoiErrors(errors, 'Password')
+		}),
+		cPassword: Joi.equal(Joi.ref('password')).error( (errors: Joi.ValidationErrorItem[]) => {
+			return this.manageJoiErrors(errors, 'Password confirmation')
 		}),
 	}
 
