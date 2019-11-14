@@ -26,7 +26,7 @@ export default class AuthController extends Controller{
 			}
 		})
 		// Hash password
-		req.body.password = await bcrypt.hash(req.body.password, 10)
+		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		// Insert to db
 		let user: User | Error = await UserManager.create(req.body)
 		if (UserManager.instanceOfUser(user)) {
