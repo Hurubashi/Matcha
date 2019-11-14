@@ -13,6 +13,7 @@ const app: Application = express()
 // }
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello world")
 })
