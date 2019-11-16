@@ -20,9 +20,7 @@ export default class MailService {
 			html: letter
 		}
 
-		const info = await transporter.sendMail(message)
-
-		console.log('Message sent: %s', info.messageId)
+		await transporter.sendMail(message)
 
 	}
 

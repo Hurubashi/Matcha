@@ -16,7 +16,7 @@ export interface User {
 
 export class UserManager {
 
-	static tableName: string = 'users'
+	static tableName: string = 'user'
 
 	public schema = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {

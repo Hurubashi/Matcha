@@ -21,7 +21,7 @@ export default class AuthController extends Controller{
 		// Validate
 		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
 			if (e) {
-				res.statusCode = 406
+				res.statusCode = 400
 				return res.json(Controller.responseTemplate(false, {}, e.message))
 			}
 		})
@@ -45,7 +45,7 @@ export default class AuthController extends Controller{
 					'User successfully created')
 			)
 		} else {
-			res.statusCode = 406
+			res.statusCode = 400
 			return res.json(Controller.responseTemplate(false, {}, user.message))
 		}
 

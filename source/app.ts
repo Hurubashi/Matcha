@@ -5,7 +5,12 @@ import morgan from 'morgan'
 import users from './routes/users'
 import auth from './routes/auth'
 
+import cookieParser from 'cookie-parser'
+
 const app: Application = express()
+
+app.use(cookieParser("secretSign#143_!223"));
+
 
 // Middleware
 // if(process.env.NODE_ENV == 'development'){
@@ -14,12 +19,8 @@ const app: Application = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Hello world")
-})
-
 // app.use('/public', express.static(__dirname + '/public'));
-app.use('/api/users', users);
+app.use('/api/user', users);
 app.use('/api/auth', auth);
 
 app.listen(5000, () => {

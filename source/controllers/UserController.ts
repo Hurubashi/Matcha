@@ -8,12 +8,13 @@ import {User, UserManager} from "../models/User"
 import {UserActivationUUID, UserActivationUUIDManager} from '../models/UserActivationUUID'
 import Controller from './Controller'
 import path from 'path';
+import jwt from 'jsonwebtoken'
 
 export default class UserController extends Controller {
 
 	/**
-	 * @desc        Get users
-	 * @route       GET /api/users
+	 * @desc        Get user
+	 * @route       GET /api/user
 	 * @access      Public
 	 */
 
@@ -28,7 +29,7 @@ export default class UserController extends Controller {
 
 	/**
 	 * @desc        Get user
-	 * @route       GET /api/users/:id
+	 * @route       GET /api/user/:id
 	 * @access      Public
 	 */
 
@@ -43,7 +44,7 @@ export default class UserController extends Controller {
 
 	/**
 	 * @desc        Create user
-	 * @route       POST /api/users/
+	 * @route       POST /api/user/
 	 * @access      Public
 	 */
 
@@ -52,7 +53,7 @@ export default class UserController extends Controller {
 		// Validate
 		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
 			if (e) {
-				res.statusCode = 422
+				res.statusCode = 400
 				return res.json(Controller.responseTemplate(false, {}, e.message))
 			}
 		})
@@ -71,13 +72,22 @@ export default class UserController extends Controller {
 				imgSrc: req.protocol + '://' + req.get('host') + "public/images/dating.jpg"
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
-			res.statusCode = 201
-			return res.json(
-				Controller.responseTemplate(true, user,
+			const options = {
+				expires: new Date(
+					Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
+				),
+				httpOnly: true
+			}
+
+			const token = jwt.sign({ id: user.id }, uuid, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
+			return res
+				.status(201)
+				.cookie('token', token, options)
+				.json(Controller.responseTemplate(true, user,
 					'User successfully created')
 			)
 		} else {
-			res.statusCode = 422
+			res.statusCode = 400
 			return res.json(Controller.responseTemplate(false, {}, user.message))
 		}
 
@@ -85,7 +95,7 @@ export default class UserController extends Controller {
 
 	/**
 	 * @desc        Update user
-	 * @route       PUT /api/users/:id
+	 * @route       PUT /api/user/:id
 	 * @access      Private/Admin
 	 */
 
@@ -95,7 +105,7 @@ export default class UserController extends Controller {
 
 	/**
 	 * @desc        Delete user
-	 * @route       DELETE /api/users/:id
+	 * @route       DELETE /api/user/:id
 	 * @access      Private/Admin
 	 */
 
