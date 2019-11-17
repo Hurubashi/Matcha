@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 
-app.use(cookieParser("secretSign#143_!223"));
+app.use(cookieParser());
 
 
 // Middleware

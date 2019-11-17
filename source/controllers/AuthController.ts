@@ -5,8 +5,11 @@ import Joi, {number} from "joi"
 import bcrypt from "bcrypt"
 import uuidv1 from "uuid/v1"
 import {UserActivationUUID, UserActivationUUIDManager} from "../models/UserActivationUUID"
+import {UserSession, UserSessionManager} from "../models/UserSession"
 import pug from "pug"
 import MailService from "../util/MailService"
+import path from "path"
+import jwt from "jsonwebtoken"
 
 export default class AuthController extends Controller{
 
@@ -33,22 +36,31 @@ export default class AuthController extends Controller{
 			const uuid = uuidv1()
 			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
 			await UserActivationUUIDManager.create(userActivationUUID)
-			const letter = pug.renderFile( '../public/letters/AccountCreated.pug', {
+
+			const letter = pug.renderFile( path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.first_name + user.last_name,
-				link: process.env.APP_SERVER + '/auth/emailConfirmation/' + user.id + uuid,
-				imgSrc: process.env.APPSERVER + "public/images/dating.jpg"
+				link: req.protocol + '://' + req.get('host') + 'api//auth/verify/' + user.id + '/' + uuid,
+				imgSrc: req.protocol + '://' + req.get('host') + "public/images/dating.jpg"
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
-			res.statusCode = 201
-			return res.json(
-				Controller.responseTemplate(true, user,
+			const options = {
+				expires: new Date(
+					Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
+				),
+				httpOnly: true
+			}
+
+			const token = jwt.sign({ id: user.id }, uuid, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
+			return res
+				.status(201)
+				.cookie('token', token, options)
+				.json(Controller.responseTemplate(true, user,
 					'User successfully created')
-			)
+				)
 		} else {
 			res.statusCode = 400
 			return res.json(Controller.responseTemplate(false, {}, user.message))
 		}
-
 	}
 
 	/**
@@ -61,8 +73,22 @@ export default class AuthController extends Controller{
 		const user = UserManager.getUserBy({username: req.body.username})
 		if(UserManager.instanceOfUser(user)){
 			const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
-			if(user.password == password){
-				return res.json("Log in successful")
+			if(user.is_verified && user.password == password){
+
+				const options = {
+					expires: new Date(
+						Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
+					),
+					httpOnly: true
+				}
+
+				const token = jwt.sign({ id: user.id }, user, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
+				return res
+					.status(201)
+					.cookie('token', token, options)
+					.json(Controller.responseTemplate(true, user,
+						'User successfully created')
+					)
 			}
 		}
 		return res.json("Something went wrong")

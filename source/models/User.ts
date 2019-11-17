@@ -4,6 +4,8 @@ import Joi from 'joi'
 
 let db = knex(knexConfig)
 
+import {ModelManager} from "./ModelManager"
+
 export interface User {
 	id: number
 	email: string
@@ -14,9 +16,10 @@ export interface User {
 	is_verified: boolean
 }
 
-export class UserManager {
+export class UserManager extends ModelManager {
 
-	static tableName: string = 'user'
+    tableName: string = 'user'
+    indexRow: string = 'id'
 
 	public schema = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
@@ -70,47 +73,6 @@ export class UserManager {
 		}
 	}
 
-	static async create(body: Object): Promise<User | Error> {
-		try {
-			let id: number[] = await db(this.tableName).insert(body)
-			let user: User | undefined = await db<User>(this.tableName).where('id', id[0]).first()
-			if (this.instanceOfUser(user)) {
-				return user
-			} else {
-				return Error('Something went wrong')
-			}
-		} catch (e) {
-			for (let [key, value] of Object.entries(this.errorList)) {
-				if (e.sqlMessage && e.sqlMessage.includes(key)) {
-					return new Error(value ? value : e.sqlMessage)
-				}
-			}
-			return new Error(e)
-		}
-	}
 
-	public static async getUsers(): Promise<User[]> {
-		return db<User[]>(this.tableName)
-			.select("*")
-			.from(this.tableName)
-	}
-
-	public static async getUser(id: number): Promise<User | undefined> {
-		return db<User>(this.tableName)
-			.where('id', id)
-			.first()
-	}
-
-	public static async getUserBy(params: Object): Promise<User | undefined> {
-		return db<User>(this.tableName)
-			.where(params)
-			.first()
-	}
-
-	public static async updateUser(user: User, data: Object){
-		return db(this.tableName)
-			.where({ id: user.id })
-			.update(data)
-	}
 
 }

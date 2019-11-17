@@ -52,43 +52,21 @@ export default class UserController extends Controller {
 		let userService = new UserManager()
 		// Validate
 		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
-			if (e) {
-				res.statusCode = 400
-				return res.json(Controller.responseTemplate(false, {}, e.message))
-			}
+			if (e)
+				return res.status(400).json(Controller.responseTemplate(false, {}, e.message))
 		})
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		// Insert to db
 		let user: User | Error = await UserManager.create(req.body)
 		if (UserManager.instanceOfUser(user)) {
-			const uuid = uuidv1()
-			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
-			await UserActivationUUIDManager.create(userActivationUUID)
-
-			const letter = pug.renderFile( path.resolve('public/letters/AccountCreated.pug'), {
-				name: user.first_name + user.last_name,
-				link: req.protocol + '://' + req.get('host') + 'api//auth/verify/' + user.id + '/' + uuid,
-				imgSrc: req.protocol + '://' + req.get('host') + "public/images/dating.jpg"
-			})
-			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
-			const options = {
-				expires: new Date(
-					Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
-				),
-				httpOnly: true
-			}
-
-			const token = jwt.sign({ id: user.id }, uuid, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
 			return res
 				.status(201)
-				.cookie('token', token, options)
 				.json(Controller.responseTemplate(true, user,
 					'User successfully created')
 			)
 		} else {
-			res.statusCode = 400
-			return res.json(Controller.responseTemplate(false, {}, user.message))
+			return res.status(400).json(Controller.responseTemplate(false, {}, user.message))
 		}
 
 	}
