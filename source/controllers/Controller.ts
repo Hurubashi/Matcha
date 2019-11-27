@@ -1,9 +1,18 @@
+import {Response} from "express"
+
 export default class Controller {
-	  protected static responseTemplate(success: Boolean, data: Object, message: String): Object {
+
+	protected static success(data: Object): Object {
 		return {
-			success:    success,
-			message:    message,
+			success:    true,
 			data:       data,
+		}
+	}
+
+	protected static error(message: String): Object {
+		return {
+			success:    false,
+			errorMsg:   message,
 		}
 	}
 }

@@ -1,17 +1,19 @@
 import {Request, Response, NextFunction} from "express"
 import Controller from './Controller'
-import {User, UserManager} from "../models/User"
-import Joi, {number} from "joi"
+import {User, UserModel} from "../models/User"
+import Joi from "joi"
 import bcrypt from "bcrypt"
 import uuidv1 from "uuid/v1"
-import {UserActivationUUID, UserActivationUUIDManager} from "../models/UserActivationUUID"
-import {UserSession, UserSessionManager} from "../models/UserSession"
+import {UserActivationUUID, UserActivationUUIDModel} from "../models/UserActivationUUID"
+import {UserSession, UserSessionModel} from "../models/UserSession"
 import pug from "pug"
 import MailService from "../util/MailService"
 import path from "path"
 import jwt from "jsonwebtoken"
 
-export default class AuthController extends Controller{
+export default class AuthController extends Controller {
+
+	static userModel = new UserModel()
 
 	/**
 	 * @desc        Login user
@@ -20,22 +22,19 @@ export default class AuthController extends Controller{
 	 */
 
 	public static async register(req: Request, res: Response, next: NextFunction) {
-		let userService = new UserManager()
 		// Validate
-		Joi.validate(req.body, userService.schema, (e: Joi.ValidationError) => {
-			if (e) {
-				res.statusCode = 400
-				return res.json(Controller.responseTemplate(false, {}, e.message))
-			}
-		})
+		let err = this.userModel.validate(req.body)
+		if (err)
+			return res.status(400).json(this.error(err.message))
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		// Insert to db
-		let user: User | Error = await UserManager.create(req.body)
-		if (UserManager.instanceOfUser(user)) {
+		let user = await this.userModel.create(req.body)
+		if (this.userModel.isInstance(user)) {
 			const uuid = uuidv1()
 			const userActivationUUID: UserActivationUUID = {user_id: user.id, uuid: uuid}
-			await UserActivationUUIDManager.create(userActivationUUID)
+			const userActivationUUIDModel = new UserActivationUUIDModel()
+			await userActivationUUIDModel.create(userActivationUUID)
 
 			const letter = pug.renderFile( path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.first_name + user.last_name,
@@ -54,12 +53,9 @@ export default class AuthController extends Controller{
 			return res
 				.status(201)
 				.cookie('token', token, options)
-				.json(Controller.responseTemplate(true, user,
-					'User successfully created')
-				)
+				.json(this.success(user))
 		} else {
-			res.statusCode = 400
-			return res.json(Controller.responseTemplate(false, {}, user.message))
+			return res.status(400).json(this.error(user.message))
 		}
 	}
 
@@ -70,11 +66,22 @@ export default class AuthController extends Controller{
 	 */
 
 	public static async login(req: Request, res: Response, next: NextFunction) {
-		const user = UserManager.getUserBy({username: req.body.username})
-		if(UserManager.instanceOfUser(user)){
-			const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
-			if(user.is_verified && user.password == password){
+		const user = await this.userModel.getOneWith({username: req.body.username})
+		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
+		if(this.userModel.isInstance(user)){
+
+			if (user.password != password)
+				return res.status(404).json(this.error('Wrong username or password'))
+
+			if (!user.is_verified)
+				return res
+					.status(403)
+					.json(this.error('User is not verified. Check your email for verification link.'))
+
+			let userSessionModel = new UserSessionModel()
+			let session = await userSessionModel.getOne(user.id)
+			if (userSessionModel.isInstance(session)) {
 				const options = {
 					expires: new Date(
 						Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
@@ -82,16 +89,13 @@ export default class AuthController extends Controller{
 					httpOnly: true
 				}
 
-				const token = jwt.sign({ id: user.id }, user, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
-				return res
-					.status(201)
+				const token = jwt.sign({ id: user.id }, session.uuid, {expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60})
+				return res.status(200)
 					.cookie('token', token, options)
-					.json(Controller.responseTemplate(true, user,
-						'User successfully created')
-					)
+					.json(this.success(user))
 			}
-		}
-		return res.json("Something went wrong")
+		} else
+			return res.status(404).json(this.error(user.message))
 	}
 
 	/**
@@ -137,19 +141,25 @@ export default class AuthController extends Controller{
 	 */
 
 	public static async verify(req: Request, res: Response, next: NextFunction) {
+		let userActivationUUIDModel = new UserActivationUUIDModel()
 		const userId = Number(req.params.id)
-		const userActivationUUID = await UserActivationUUIDManager.findByUserId(userId)
-		const user = await UserManager.getUser(userId)
+		const user = await this.userModel.getOne(userId)
+
+		const userActivationUUID = await userActivationUUIDModel.getOne(userId)
+
 		console.log(userId, user)
-		if (UserActivationUUIDManager.instanceOfUserActivationUUID(userActivationUUID) && UserManager.instanceOfUser(user)){
+		if (userActivationUUIDModel.isInstance(userActivationUUID) && this.userModel.isInstance(user)){
 			if(userActivationUUID.user_id == userId && userActivationUUID.uuid == req.params.uuid) {
-				await UserManager.updateUser(user, {is_verified : true})
+				await this.userModel.updateWhere({'id': userId}, {is_verified : true})
 				res.statusCode = 200
-				return res.json(Controller.responseTemplate(true, {}, 'Email confirmed. Account activated.'))
+				return res.json(this.success({}))
 			}
 		}
-		res.statusCode = 410 // 410 - Gone
-		return res.json(Controller.responseTemplate(true, {}, 'Page no more available'))
+		return res.status(410).json(this.error('Page no more available'))
+	}
+
+	private generateCookie(userId: number) {
+
 	}
 
 

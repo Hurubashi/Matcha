@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express"
-import {User, UserManager} from "../models/User"
+import {User, UserModel} from "../models/User"
 
 
 export default function protect(req: Request, res: Response, next: NextFunction) {

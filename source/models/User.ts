@@ -1,10 +1,5 @@
-import knex from 'knex'
-import {knexConfig} from "../config"
 import Joi from 'joi'
-
-let db = knex(knexConfig)
-
-import {ModelManager} from "./ModelManager"
+import Model from "./Model"
 
 export interface User {
 	id: number
@@ -16,10 +11,24 @@ export interface User {
 	is_verified: boolean
 }
 
-export class UserManager extends ModelManager {
+export class UserModel extends Model<User> {
 
     tableName: string = 'user'
     indexRow: string = 'id'
+	customSqlErrors: Object = {
+		'user_email_uindex': 'This email is already taken',
+		'user_username_uindex': 'This username is already taken',
+		'Unknown column': 'Unknown column'
+	}
+
+	validate(obj: Object): Error | null{
+		Joi.validate(obj, this.schema, (e: Joi.ValidationError) => {
+			if (e) {
+				return Error
+			}
+		})
+		return null
+	}
 
 	public schema = {
 		email: Joi.string().email().min(3).required().error( (errors: Joi.ValidationErrorItem[]) => {
@@ -37,9 +46,9 @@ export class UserManager extends ModelManager {
 		password: Joi.string().min(6).required().error( (errors: Joi.ValidationErrorItem[]) => {
 			return this.manageJoiErrors(errors, 'Password')
 		}),
-		cPassword: Joi.equal(Joi.ref('password')).error( (errors: Joi.ValidationErrorItem[]) => {
-			return this.manageJoiErrors(errors, 'Password confirmation')
-		}),
+		// cPassword: Joi.equal(Joi.ref('password')).error( (errors: Joi.ValidationErrorItem[]) => {
+		// 	return this.manageJoiErrors(errors, 'Password confirmation')
+		// }),
 	}
 
 	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: String){
@@ -60,19 +69,6 @@ export class UserManager extends ModelManager {
 		})
 		return errors
 	}
-
-	static instanceOfUser(object: any): object is User {
-		return 'id' in object;
-	}
-
-	static get errorList() {
-		return {
-			'user_email_unique': 'This email is already taken',
-			'user_username_unique': 'This username is already taken',
-			'Unknown column': 'Unknown column'
-		}
-	}
-
 
 
 }
