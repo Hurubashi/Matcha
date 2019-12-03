@@ -17,11 +17,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import Filter1OutlinedIcon from '@material-ui/icons/Filter1Outlined'
 import Filter2OutlinedIcon from '@material-ui/icons/Filter2Outlined'
-import theme from '../../theme'
 import styles from '../../styles'
 import TextFieldWithIcon from '../inputs/TextFieldWithIcon'
 
-const useStyles = makeStyles(theme => createStyles(styles))
+const useStyles = makeStyles(createStyles(styles))
 
 interface FormValues {
   email: string
