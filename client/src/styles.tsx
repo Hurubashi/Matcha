@@ -1,15 +1,14 @@
 import { createStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
+import { fontSize } from '@material-ui/system'
 
 const styles = createStyles({
-  textField: {
-    width: '250px'
+  h1: {
+    fontWeight: 400,
+    fontSize: '3.5em'
   },
-  marginSmall: {
-    margin: '50px'
-  },
-  right: {
-    marginRight: 0
+  light: {
+    color: 'white'
   }
 })
 
