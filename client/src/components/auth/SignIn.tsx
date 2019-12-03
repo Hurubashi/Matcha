@@ -107,6 +107,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 }
 
 const SignIn = withFormik<{}, FormValues>({
+  mapPropsToValues: props => {
+    return {
+      username: '',
+      password: '',
+      remember: true
+    }
+  },
   validationSchema: Yup.object().shape({
     username: Yup.string().required('Required'),
     password: Yup.string()
@@ -116,10 +123,19 @@ const SignIn = withFormik<{}, FormValues>({
 
   handleSubmit: values => {
     console.log(values)
-    axios.post('http://localhost:8080//api/auth/login', {
-      username: values.username,
-      password: values.password
-    })
+    axios
+      .post('http://localhost:5000/api/auth/login', {
+        username: values.username,
+        password: values.password
+      })
+      .then(function(response) {
+        console.log('Response received')
+        console.log(response)
+      })
+      .catch(function(error) {
+        console.log('Error catched')
+        console.log(error)
+      })
   }
 })(InnerForm)
 

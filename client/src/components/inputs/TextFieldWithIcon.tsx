@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const TextFieldWithIcon: React.FC<Props> = props => {
-  const [values, setValues] = React.useState<Props>(props)
+  const [values] = React.useState<Props>(props)
 
   return (
     <Grid container alignItems='flex-end'>
