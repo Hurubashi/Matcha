@@ -82,24 +82,31 @@ export default class AuthController {
           .sendStatus(403)
           .json(ResTemplate.error('User is not verified. Check your email for verification link.'))
 
-      let userSessionModel = new UserSessionModel()
-      let session = await userSessionModel.getOne(user.id)
+      const userSessionModel = new UserSessionModel()
+      await userSessionModel.delete({ userId: user.id })
+      const uuid = uuidv1()
+      const expire = new Date(
+        Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
+      )
+
+      await userSessionModel.create({ userId: user.id, uuid: uuid, expire: expire })
+      const session = await userSessionModel.getOne(user.id)
+      console.log(session)
+
       if (userSessionModel.isInstance(session)) {
+        console.log('uspeh')
         const options = {
-          expires: new Date(
-            Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
-          ),
+          expires: expire,
           httpOnly: true
         }
 
         const token = jwt.sign({ id: user.id }, session.uuid, {
           expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60
         })
-        return res
-          .sendStatus(200)
-          .cookie('token', token, options)
-          .json(ResTemplate.success(user))
+        return res.send(token)
+        // .json(ResTemplate.success(user))
       }
+      console.log('Polomano')
     } else return res.sendStatus(422).json(ResTemplate.error(user.message))
   }
 

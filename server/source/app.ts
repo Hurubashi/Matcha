@@ -20,7 +20,7 @@ app.use(function(req: Request, res: Response, next: NextFunction) {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization')
     res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE')
-    if (req.method === 'OPTIONS') return res.send(200)
+    if (req.method === 'OPTIONS') return res.sendStatus(200)
   }
   next()
 })

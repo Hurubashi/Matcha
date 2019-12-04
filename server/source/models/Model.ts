@@ -32,7 +32,7 @@ export default abstract class Model<T> {
 
   async getOne(index: number): Promise<T | Error> {
     try {
-      let result = db<T>(this.tableName)
+      let result = await db<T>(this.tableName)
         .where(this.indexRow, index)
         .first()
       if (this.isInstance(result))
@@ -47,7 +47,7 @@ export default abstract class Model<T> {
   async getOneWith(params: Object): Promise<T | Error> {
     try {
       let result = await db<T>(this.tableName)
-        .where({ username: 'hurubashi' })
+        .where(params)
         .first()
       if (this.isInstance(result))
         // @ts-ignore
@@ -62,6 +62,12 @@ export default abstract class Model<T> {
     return db(this.tableName)
       .where(where)
       .update(update)
+  }
+
+  async delete(where: Object) {
+    return db(this.tableName)
+      .where(where)
+      .delete()
   }
 
   private errorMsg(msg: string): Error {

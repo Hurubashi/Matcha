@@ -124,13 +124,14 @@ const SignIn = withFormik<{}, FormValues>({
   handleSubmit: values => {
     console.log(values)
     axios
-      .post('http://localhost:5000/api/auth/login', {
+      .post('/api/auth/login', {
         username: values.username,
         password: values.password
       })
-      .then(function(response) {
+      .then(function(res) {
         console.log('Response received')
-        console.log(response)
+        console.log(res)
+        localStorage.setItem('jwt', res.data)
       })
       .catch(function(error) {
         console.log('Error catched')
