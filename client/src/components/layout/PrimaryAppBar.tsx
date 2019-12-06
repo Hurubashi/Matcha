@@ -1,5 +1,4 @@
 import React from 'react'
-import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,70 +13,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
+import axios from 'axios'
+import styles from './primaryAppBarStyles'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    grow: {
-      flexGrow: 1
-    },
-    menuButton: {
-      marginRight: theme.spacing(2)
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block'
-      }
-    },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25)
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto'
-      }
-    },
-    searchIcon: {
-      width: theme.spacing(7),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    inputRoot: {
-      color: 'inherit'
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 7),
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: 200
-      }
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex'
-      }
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none'
-      }
-    }
-  })
-)
+const useStyles = styles
 
 export default function PrimaryAppBar() {
   const classes = useStyles()
@@ -116,6 +55,7 @@ export default function PrimaryAppBar() {
       onClose={handleMenuClose}>
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogOut}>LogOut</MenuItem>
     </Menu>
   )
 
@@ -223,4 +163,25 @@ export default function PrimaryAppBar() {
       {renderMenu}
     </div>
   )
+}
+
+function handleLogOut() {
+  axios
+    .post('/api/auth/logout')
+    .then(function(res) {
+      console.log('Response received')
+      console.log(res)
+      // if (res['data']['success'] == true) {
+      //   // localStorage.setItem('jwt', res.data.jwt)
+      //   props.setStatus(true)
+      // } else {
+      //   props.setErrors({ username: res['data']['errorMsg'] })
+      //   props.setSubmitting(false)
+      // }
+    })
+    .catch(function(error) {
+      console.log('Error catched')
+      console.log(error)
+      // props.setErrors({ username: error })
+    })
 }

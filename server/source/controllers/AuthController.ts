@@ -120,10 +120,12 @@ export default class AuthController {
    */
 
   public static async logout(req: Request, res: Response, next: NextFunction) {
-    res.cookie('token', 'none', {
-      expires: new Date(Date.now() + 10 * 1000),
-      httpOnly: true
+    res.cookie('jwt', 'none', {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+      sameSite: true
     })
+    res.clearCookie('jwt')
     return res.json(ResTemplate.success({}))
   }
 

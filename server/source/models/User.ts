@@ -8,6 +8,9 @@ export interface User {
   firstName: string
   lastName: string
   password: string
+  sex: 'male' | 'female' | undefined
+  preferences: 'male' | 'female' | 'male and female' | undefined
+  biography: string
   isVerified: boolean
 }
 
@@ -59,9 +62,6 @@ export class UserModel extends Model<User> {
       .error((errors: Joi.ValidationErrorItem[]) => {
         return this.manageJoiErrors(errors, 'Password')
       })
-    // cPassword: Joi.equal(Joi.ref('password')).error( (errors: Joi.ValidationErrorItem[]) => {
-    // 	return this.manageJoiErrors(errors, 'Password confirmation')
-    // }),
   }
 
   private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: String) {

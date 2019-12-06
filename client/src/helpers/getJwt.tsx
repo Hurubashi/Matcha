@@ -1,8 +1,12 @@
-// import React, { Component, useState } from 'react'
-// import axios from 'axios'
+import Cookie from 'js-cookie'
 
 export const getJwt = () => {
-  return localStorage.getItem('jwt')
+  return Cookie.get('jwt')
+  // if (jwt != 'none') {
+  //   return jwt
+  // } else {
+  //   return false
+  // }
 }
 
 // const Auth: React.FC<Props> = (props: Props) => {

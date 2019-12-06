@@ -16,5 +16,4 @@ router.post('/logout', AuthController.logout)
 router.post('/me', AuthController.getMe)
 router.get('/verify/:id/:uuid', AuthController.verify)
 
-
 export default router

@@ -133,7 +133,7 @@ const SignIn = withFormik<{}, FormValues>({
       .then(function(res) {
         console.log('Response received')
         console.log(res)
-        if (res['data']['success'] == true) {
+        if (res['data']['success'] === true) {
           // localStorage.setItem('jwt', res.data.jwt)
           props.setStatus(true)
         } else {
