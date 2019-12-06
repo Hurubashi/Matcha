@@ -13,7 +13,7 @@ export const getJwt = () => {
 //       return () => {
 //           cleanup
 //       };
-//   }, [input])
+//   }, [input])s
 
 //     componentDidMount() {
 //       const jwt = getJwt()

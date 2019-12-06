@@ -74,8 +74,10 @@ export default class AuthController {
     const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
     if (userModel.isInstance(user)) {
-      if (user.password != password)
-        return res.sendStatus(422).json(ResTemplate.error('Wrong username or password'))
+      if (user.password != password) {
+        // res.statusCode = 422
+        return res.json(ResTemplate.error('Wrong username or password'))
+      }
 
       if (!user.isVerified)
         return res
@@ -97,16 +99,17 @@ export default class AuthController {
         console.log('uspeh')
         const options = {
           expires: expire,
-          httpOnly: true
+          httpOnly: true,
+          sameSite: true
         }
 
         const token = jwt.sign({ id: user.id }, session.uuid, {
           expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60
         })
-        return res.send(token)
-        // .json(ResTemplate.success(user))
+        return res.cookie('jwt', token, options).json(ResTemplate.success(user))
       }
       console.log('Polomano')
+      return res.sendStatus(500).json(ResTemplate.error('Something went totally wrong'))
     } else return res.sendStatus(422).json(ResTemplate.error(user.message))
   }
 
@@ -117,16 +120,11 @@ export default class AuthController {
    */
 
   public static async logout(req: Request, res: Response, next: NextFunction) {
-    // res.cookie('token', 'none', {
-    // 	expires: new Date(Date.now() + 10 * 1000),
-    // 	httpOnly: true
-    // })
-    //
-    // res.status(200).json({
-    // 	success: true,
-    // 	data: {}
-    // })
-    return res.json('User logout')
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true
+    })
+    return res.json(ResTemplate.success({}))
   }
 
   /**

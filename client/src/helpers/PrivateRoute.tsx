@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react'
+import React, { useState } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { getJwt } from './getJwt'
 
@@ -7,7 +7,7 @@ interface Props {
   component: React.FC
 }
 const PrivateRoute: React.FC<Props> = (props: Props) => {
-  const [component, setComponent] = useState(props)
+  const [component] = useState(props)
   const token = getJwt()
 
   return token ? (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link as ReactLink } from 'react-router-dom'
+import { Link as ReactLink, Redirect } from 'react-router-dom'
 import * as Yup from 'yup'
 import { withFormik, FormikProps, Form } from 'formik'
 import axios from 'axios'
@@ -18,7 +18,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import styles from '../../styles'
-import TextFieldWithIcon from '../inputs/TextFieldWithIcon'
+import TextFieldWithIcon from '../reUsableComponents/TextFieldWithIcon'
 
 const useStyles = makeStyles(createStyles(styles))
 
@@ -32,6 +32,9 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   const { touched, errors, isSubmitting } = props
   const classes = useStyles()
 
+  if (props.status) {
+    return <Redirect to='/profile' />
+  }
   return (
     <React.Fragment>
       <Container maxWidth='sm'>
@@ -121,8 +124,7 @@ const SignIn = withFormik<{}, FormValues>({
       .min(6, 'Must be 6 characters or less')
   }),
 
-  handleSubmit: values => {
-    console.log(values)
+  handleSubmit: (values: FormValues, props) => {
     axios
       .post('/api/auth/login', {
         username: values.username,
@@ -131,11 +133,20 @@ const SignIn = withFormik<{}, FormValues>({
       .then(function(res) {
         console.log('Response received')
         console.log(res)
-        localStorage.setItem('jwt', res.data)
+        if (res['data']['success'] == true) {
+          // localStorage.setItem('jwt', res.data.jwt)
+          props.setStatus(true)
+        } else {
+          props.setErrors({ username: res['data']['errorMsg'] })
+          props.setSubmitting(false)
+        }
       })
       .catch(function(error) {
         console.log('Error catched')
         console.log(error)
+        // props.setErrors({ username: error })
+        props.setSubmitting(false)
+        // return <Redirect to='/target' />
       })
   }
 })(InnerForm)
