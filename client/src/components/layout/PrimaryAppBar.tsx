@@ -14,12 +14,14 @@ import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import axios from 'axios'
+import { Link as ReactLink, Redirect } from 'react-router-dom'
 import styles from './primaryAppBarStyles'
 
 const useStyles = styles
 
 export default function PrimaryAppBar() {
   const classes = useStyles()
+  const [redirect, setRedirect] = React.useState<boolean>(false)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -42,6 +44,30 @@ export default function PrimaryAppBar() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
+  if (redirect) return <Redirect to='/login' />
+
+  const handleLogOut = () => {
+    axios
+      .post('/api/auth/logout')
+      .then(function(res) {
+        console.log('Response received')
+        console.log(res)
+        setRedirect(true)
+        // if (res['data']['success'] == true) {
+        //   // localStorage.setItem('jwt', res.data.jwt)
+        //   props.setStatus(true)
+        // } else {
+        //   props.setErrors({ username: res['data']['errorMsg'] })
+        //   props.setSubmitting(false)
+        // }
+        // return <Redirect to='/login' />
+      })
+      .catch(function(error) {
+        console.log('Error catched')
+        console.log(error)
+        // props.setErrors({ username: error })
+      })
+  }
 
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
@@ -53,7 +79,9 @@ export default function PrimaryAppBar() {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <ReactLink to='/profile'>
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      </ReactLink>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleLogOut}>LogOut</MenuItem>
     </Menu>
@@ -163,25 +191,4 @@ export default function PrimaryAppBar() {
       {renderMenu}
     </div>
   )
-}
-
-function handleLogOut() {
-  axios
-    .post('/api/auth/logout')
-    .then(function(res) {
-      console.log('Response received')
-      console.log(res)
-      // if (res['data']['success'] == true) {
-      //   // localStorage.setItem('jwt', res.data.jwt)
-      //   props.setStatus(true)
-      // } else {
-      //   props.setErrors({ username: res['data']['errorMsg'] })
-      //   props.setSubmitting(false)
-      // }
-    })
-    .catch(function(error) {
-      console.log('Error catched')
-      console.log(error)
-      // props.setErrors({ username: error })
-    })
 }
