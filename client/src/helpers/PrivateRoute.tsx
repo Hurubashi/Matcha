@@ -10,11 +10,7 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 	const [component] = useState(props)
 	const token = getJwt()
 
-	return token ? (
-		<Route path={component.path} component={component.component} />
-	) : (
-		<Redirect to='/login' />
-	)
+	return token ? <props.component /> : <Redirect to='/login' />
 }
 
 export default PrivateRoute
