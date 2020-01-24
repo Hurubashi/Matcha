@@ -19,8 +19,15 @@ export default function App() {
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<PrivateRoute path='/profile' component={ProfileComponent} />
+					<Route path='*'>
+						<NoMatch />
+					</Route>
 				</Switch>
 			</Router>
 		</React.Fragment>
 	)
+}
+
+function NoMatch() {
+	return <div>ERROR 404</div>
 }
