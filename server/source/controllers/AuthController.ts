@@ -23,7 +23,7 @@ export default class AuthController {
 	public static async register(req: Request, res: Response, next: NextFunction) {
 		// Validate
 		let err = userModel.validate(req.body)
-		if (err) return res.sendStatus(400).json(ResTemplate.error(err.message))
+		if (err) return res.status(400).json(ResTemplate.error(err.message))
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		// Insert to db
@@ -39,7 +39,7 @@ export default class AuthController {
 
 			const letter = pug.renderFile(path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.firstName + user.lastName,
-				link: req.protocol + '://' + req.get('host') + 'api//auth/verify/' + user.id + '/' + uuid,
+				link: req.protocol + '://' + req.get('host') + 'api/auth/verify/' + user.id + '/' + uuid,
 				imgSrc: req.protocol + '://' + req.get('host') + 'public/images/dating.jpg',
 			})
 			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
@@ -50,11 +50,11 @@ export default class AuthController {
 
 			const token = jwt.sign({ id: user.id }, uuid)
 			return res
-				.sendStatus(201)
 				.cookie('token', token, options)
+				.status(201)
 				.json(ResTemplate.success(user))
 		} else {
-			return res.sendStatus(400).json(ResTemplate.error(user.message))
+			return res.status(422).json(ResTemplate.error(user.message))
 		}
 	}
 
@@ -66,20 +66,17 @@ export default class AuthController {
 
 	public static async login(req: Request, res: Response, next: NextFunction) {
 		console.log(req.body)
-		const user = await userModel.getOneWith({
-			username: req.body.username,
-		})
+		const user = await userModel.getOneWith('username', req.body.username)
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
 		if (userModel.isInstance(user)) {
 			if (user.password != password) {
-				// res.statusCode = 422
-				return res.json(ResTemplate.error('Wrong username or password'))
+				return res.status(422).json(ResTemplate.error('Wrong username or password'))
 			}
 
 			if (!user.isVerified)
 				return res
-					.sendStatus(403)
+					.status(403)
 					.json(ResTemplate.error('User is not verified. Check your email for verification link.'))
 
 			const userSessionModel = new UserSessionModel()
@@ -107,8 +104,8 @@ export default class AuthController {
 				return res.cookie('jwt', token, options).json(ResTemplate.success(user))
 			}
 			console.log('Polomano')
-			return res.sendStatus(500).json(ResTemplate.error('Something went totally wrong'))
-		} else return res.sendStatus(422).json(ResTemplate.error(user.message))
+			return res.status(500).json(ResTemplate.error('Something went totally wrong'))
+		} else return res.status(422).json(ResTemplate.error('Incorrect username or password'))
 	}
 
 	/**
@@ -166,7 +163,7 @@ export default class AuthController {
 		if (userActivationUUIDModel.isInstance(userActivationUUID) && userModel.isInstance(user)) {
 			if (userActivationUUID.user_id == userId && userActivationUUID.uuid == req.params.uuid) {
 				await userModel.updateWhere({ id: userId }, { isVerified: true })
-				return res.sendStatus(200).json(ResTemplate.success({}))
+				return res.status(200).json(ResTemplate.success({}))
 			}
 		}
 		return res.status(410).json(ResTemplate.error('Page no more available'))

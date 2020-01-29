@@ -5,9 +5,9 @@ import React, { useState } from 'react'
 // }
 
 const Profile: React.FC = () => {
-  //   const [user, setUser] = useState(props)
+	//   const [user, setUser] = useState(props)
 
-  return <div>Profile Route</div>
+	return <div>Profile Route</div>
 }
 
 export default Profile

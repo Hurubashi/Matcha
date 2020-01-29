@@ -10,7 +10,7 @@ import protect from '../middleware/auth'
 
 const router = express.Router()
 
-router.post('/register', protect, AuthController.register)
+router.post('/register', AuthController.register)
 router.post('/login', AuthController.login)
 router.post('/logout', AuthController.logout)
 router.post('/me', AuthController.getMe)

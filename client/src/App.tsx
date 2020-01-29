@@ -1,7 +1,7 @@
 import React from 'react'
 import SingIn from './components/auth/SignIn'
 import SingUp from './components/auth/SignUp'
-import ProfileComponent from './components/Profile'
+import ProfileComponent from './components/profile/Profile'
 import PrivateRoute from './helpers/PrivateRoute'
 import GuestRoute from './helpers/GuestRoute'
 
