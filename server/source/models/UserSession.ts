@@ -1,8 +1,9 @@
 import Model from './Model'
 
 export interface UserSession {
-	user_id: number
+	userId: number
 	uuid: string
+	// datetime: Date
 }
 
 export class UserSessionModel extends Model<UserSession> {

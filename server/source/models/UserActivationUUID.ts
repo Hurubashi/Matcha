@@ -1,7 +1,7 @@
 import Model from './Model'
 
 export interface UserActivationUUID {
-	user_id: number
+	userId: number
 	uuid: string
 }
 

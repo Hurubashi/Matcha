@@ -31,7 +31,7 @@ export default class AuthController {
 		if (userModel.isInstance(user)) {
 			const uuid = uuidv1()
 			const userActivationUUID: UserActivationUUID = {
-				user_id: user.id,
+				userId: user.id,
 				uuid: uuid,
 			}
 			const userActivationUUIDModel = new UserActivationUUIDModel()
@@ -42,7 +42,7 @@ export default class AuthController {
 				link: req.protocol + '://' + req.get('host') + 'api/auth/verify/' + user.id + '/' + uuid,
 				imgSrc: req.protocol + '://' + req.get('host') + 'public/images/dating.jpg',
 			})
-			await MailService.sendMail('hurubashi@gmail.com', 'registration', letter)
+			await MailService.sendMail(user.email, 'registration', letter)
 			const options = {
 				expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000),
 				httpOnly: true,
@@ -65,7 +65,6 @@ export default class AuthController {
 	 */
 
 	public static async login(req: Request, res: Response, next: NextFunction) {
-		console.log(req.body)
 		const user = await userModel.getOneWith('username', req.body.username)
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
@@ -86,12 +85,11 @@ export default class AuthController {
 				Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000,
 			)
 
-			await userSessionModel.create({ userId: user.id, uuid: uuid, expire: expire })
+			await userSessionModel.create({ userId: user.id, uuid: uuid })
+
 			const session = await userSessionModel.getOne(user.id)
-			console.log(session)
 
 			if (userSessionModel.isInstance(session)) {
-				console.log('uspeh')
 				const options = {
 					expires: expire,
 					// httpOnly: true,
@@ -103,8 +101,7 @@ export default class AuthController {
 				})
 				return res.cookie('jwt', token, options).json(ResTemplate.success(user))
 			}
-			console.log('Polomano')
-			return res.status(500).json(ResTemplate.error('Something went totally wrong'))
+			return res.status(500).json(ResTemplate.error('Something went wrong'))
 		} else return res.status(422).json(ResTemplate.error('Incorrect username or password'))
 	}
 
@@ -161,7 +158,7 @@ export default class AuthController {
 
 		console.log(userId, user)
 		if (userActivationUUIDModel.isInstance(userActivationUUID) && userModel.isInstance(user)) {
-			if (userActivationUUID.user_id == userId && userActivationUUID.uuid == req.params.uuid) {
+			if (userActivationUUID.userId == userId && userActivationUUID.uuid == req.params.uuid) {
 				await userModel.updateWhere({ id: userId }, { isVerified: true })
 				return res.status(200).json(ResTemplate.success({}))
 			}

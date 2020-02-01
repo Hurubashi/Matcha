@@ -142,10 +142,7 @@ const SignUp = withFormik<{}, FormValues>({
 				password: values.password,
 			})
 			.then(function(res) {
-				console.log('Response received')
-				console.log(res)
 				if (res['data']['success'] === true) {
-					// localStorage.setItem('jwt', res.data.jwt)
 					props.setStatus(true)
 				} else {
 					props.setErrors({ username: res['data']['errorMsg'] })
@@ -153,18 +150,17 @@ const SignUp = withFormik<{}, FormValues>({
 				}
 			})
 			.catch(function(error) {
+				if (!error.response) {
+					console.log('No Connection')
+					props.setSubmitting(false)
+					return
+				}
 				if (error.response['data']['success'] === true) {
-					// localStorage.setItem('jwt', res.data.jwt)
 					props.setStatus(true)
 				} else {
 					props.setErrors({ username: error.response['data']['errorMsg'] })
 					props.setSubmitting(false)
 				}
-				console.log('Error catched')
-				if (error) console.log(error)
-				// props.setErrors({ username: error })
-				// props.setSubmitting(false)
-				return <Redirect to='/profile' />
 			})
 	},
 })(InnerForm)
