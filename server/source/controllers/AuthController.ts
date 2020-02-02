@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import ResTemplate from './ResTemplate'
 import { User, UserModel } from '../models/User'
-import Joi from 'joi'
+import Joi, { Err } from 'joi'
 import bcrypt from 'bcrypt'
 import uuidv1 from 'uuid/v1'
 import { UserActivationUUID, UserActivationUUIDModel } from '../models/UserActivationUUID'
@@ -20,7 +20,7 @@ export default class AuthController {
 	 * @access      Public
 	 */
 
-	public static async register(req: Request, res: Response, next: NextFunction) {
+	public async register(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		// Validate
 		let err = userModel.validate(req.body)
 		if (err) return res.status(400).json(ResTemplate.error(err.message))
@@ -64,54 +64,65 @@ export default class AuthController {
 	 * @access      Public
 	 */
 
-	public static async login(req: Request, res: Response, next: NextFunction) {
+	public async login(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const user = await userModel.getOneWith('username', req.body.username)
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
-		if (userModel.isInstance(user)) {
-			if (user.password != password) {
-				return res.status(422).json(ResTemplate.error('Wrong username or password'))
-			}
+		if (!userModel.isInstance(user) || user.password != password)
+			return res.status(422).json(ResTemplate.error('Incorrect username or password'))
 
-			if (!user.isVerified)
-				return res
-					.status(403)
-					.json(ResTemplate.error('User is not verified. Check your email for verification link.'))
+		if (!user.isVerified)
+			return res
+				.status(403)
+				.json(ResTemplate.error('User is not verified. Check your email for verification link.'))
 
-			const userSessionModel = new UserSessionModel()
-			await userSessionModel.delete({ userId: user.id })
-			const uuid = uuidv1()
-			const expire = new Date(
-				Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000,
-			)
-
-			await userSessionModel.create({ userId: user.id, uuid: uuid })
-
-			const session = await userSessionModel.getOne(user.id)
-
-			if (userSessionModel.isInstance(session)) {
-				const options = {
-					expires: expire,
-					// httpOnly: true,
-					// sameSite: true
-				}
-
-				const token = jwt.sign({ id: user.id, session: session.uuid }, session.uuid, {
-					expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
-				})
-				return res.cookie('jwt', token, options).json(ResTemplate.success(user))
-			}
+		let session = null
+		try {
+			session = await AuthController.createNewSession(user)
+		} catch {
 			return res.status(500).json(ResTemplate.error('Something went wrong'))
-		} else return res.status(422).json(ResTemplate.error('Incorrect username or password'))
+		}
+		
+		if (session) {
+			const options = {
+				expires: session.expire,
+				httpOnly: true,
+				sameSite: true
+			}
+			const token = jwt.sign({ id: user.id, session: session.uuid }, session.uuid, {
+				expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
+			})
+			return res.cookie('jwt', token, options).json(ResTemplate.success(user))
+		} else {
+			return res.status(500).json(ResTemplate.error('Cannot set session cookies'))
+		}
+
 	}
 
+	private static async createNewSession(user: User): Promise<UserSession | null> {
+		console.log('create session func')
+		const userSessionModel = new UserSessionModel()
+		await userSessionModel.delete({ userId: user.id })
+		const uuid = uuidv1()
+		const expire = new Date(
+			Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000,
+		)
+		await userSessionModel.create({ userId: user.id, uuid: uuid, expire: expire })
+		
+		const session = await userSessionModel.getOneWith('userId', `${user.id}`)
+		console.log('session: ' + session)
+		if (userSessionModel.isInstance(session))
+			return session
+		else
+			return null
+	}
 	/**
 	 * @desc        Log user out / clear cookie
 	 * @route       POST /api/auth/logout
 	 * @access      Private
 	 */
 
-	public static async logout(req: Request, res: Response, next: NextFunction) {
+	public async logout(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let token = req.cookies['jwt']
 
 		console.log(token)
@@ -133,7 +144,7 @@ export default class AuthController {
 	 * @access      Private
 	 */
 
-	public static async getMe(req: Request, res: Response, next: NextFunction) {
+	public async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		// const user = await User.getUser(Number(req.params.id))
 		//
 		// res.status(200).json({
@@ -149,7 +160,7 @@ export default class AuthController {
 	 * @access      Public
 	 */
 
-	public static async verify(req: Request, res: Response, next: NextFunction) {
+	public async verify(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let userActivationUUIDModel = new UserActivationUUIDModel()
 		const userId = Number(req.params.id)
 		const user = await userModel.getOne(userId)
@@ -166,5 +177,5 @@ export default class AuthController {
 		return res.status(410).json(ResTemplate.error('Page no more available'))
 	}
 
-	private generateCookie(userId: number) {}
+
 }

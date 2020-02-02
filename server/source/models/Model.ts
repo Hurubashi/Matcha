@@ -46,11 +46,14 @@ export default abstract class Model<T> {
 
 	async getOneWith(field: string, value: string): Promise<T | Error> {
 		try {
-			console.log('one with')
+			// console.log(`get one ${field} with value of ${value}`)
 			let result = await db<T>(this.tableName)
 				.where(field, value)
 				.first()
-			if (this.isInstance(result))
+				// console.log(db<T>(this.tableName)
+				// .where(field, value)
+				// .first().toString())
+			if (result && this.isInstance(result))
 				// @ts-ignore
 				return result
 			else return new Error(`Cannot find ${field} with ${value}`)

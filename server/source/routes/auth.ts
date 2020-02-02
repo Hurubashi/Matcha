@@ -9,11 +9,12 @@ import protect from '../middleware/auth'
 // router.put('/resetpassword/:resettoken', resetPassword);
 
 const router = express.Router()
+const auth = new AuthController()
 
-router.post('/register', AuthController.register)
-router.post('/login', AuthController.login)
-router.post('/logout', AuthController.logout)
-router.post('/me', AuthController.getMe)
-router.get('/verify/:id/:uuid', AuthController.verify)
+router.post('/register', auth.register)
+router.post('/login', auth.login)
+router.post('/logout', auth.logout)
+router.post('/me', auth.getMe)
+router.get('/verify/:id/:uuid', auth.verify)
 
 export default router
