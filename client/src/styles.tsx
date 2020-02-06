@@ -1,19 +1,28 @@
-import { createStyles } from '@material-ui/core'
+import { createStyles } from "@material-ui/core"
 
 const styles = createStyles({
   h1: {
-    marginTop: '0.5em',
+    marginTop: "0.5em",
     fontWeight: 400,
-    fontSize: '3.5em'
+    fontSize: "3.5em"
   },
   light: {
-    color: 'white'
+    color: "white"
   },
 
   text: {
     width: 400
-  }
+  },
 
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
+  },
+  gridList: {
+    width: 600,
+    height: 400
+  }
 })
 
 export default styles
