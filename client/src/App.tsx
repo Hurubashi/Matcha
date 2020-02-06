@@ -21,8 +21,8 @@ export default function App() {
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify' component={SingUp} />
-					<PrivateRoute path='/profile' component={Profile} />
-					{/* <Route path="/profile" component={Profile} /> */}
+					{/* <PrivateRoute path='/profile' component={Profile} /> */}
+					<Route path='/profile' component={Profile} />
 					<Route path='/start' component={Start} />
 					<Route path='/search' component={Search} />
 				</Switch>

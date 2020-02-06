@@ -30,23 +30,23 @@ const useStyles = makeStyles(createStyles(styles))
 
 const tileData = [
 	{
-		img: '%PUBLIC_URL%/images/1.jpg',
+		img: '/images/1.jpg',
 		author: 'author',
 		featured: true,
 	},
 	{
-		img: '%PUBLIC_URL%/images/2.jpg',
+		img: '/images/2.jpg',
 
 		author: 'author',
 		featured: true,
 	},
 	{
-		img: '%PUBLIC_URL%/images/3.jpg',
+		img: '/images/3.jpg',
 		author: 'author',
 		featured: true,
 	},
 	{
-		img: '%PUBLIC_URL%/images/4.jpg',
+		img: '/images/4.jpg',
 		author: 'author',
 		featured: true,
 	},

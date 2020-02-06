@@ -39,8 +39,8 @@ export default class AuthController {
 
 			const letter = pug.renderFile(path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.firstName + user.lastName,
-				link: req.protocol + '://' + req.get('host') + 'api/auth/verify/' + user.id + '/' + uuid,
-				imgSrc: req.protocol + '://' + req.get('host') + 'public/images/dating.jpg',
+				link: req.protocol + '://' + req.get('host') + '/api/auth/verify/' + user.id + '/' + uuid,
+				imgSrc: req.protocol + '://' + req.get('host') + '/public/images/dating.jpg',
 			})
 			await MailService.sendMail(user.email, 'registration', letter)
 			const options = {
@@ -82,12 +82,12 @@ export default class AuthController {
 		} catch {
 			return res.status(500).json(ResTemplate.error('Something went wrong'))
 		}
-		
+
 		if (session) {
 			const options = {
 				expires: session.expire,
 				httpOnly: true,
-				sameSite: true
+				sameSite: true,
 			}
 			const token = jwt.sign({ id: user.id, session: session.uuid }, session.uuid, {
 				expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
@@ -96,7 +96,6 @@ export default class AuthController {
 		} else {
 			return res.status(500).json(ResTemplate.error('Cannot set session cookies'))
 		}
-
 	}
 
 	private static async createNewSession(user: User): Promise<UserSession | null> {
@@ -108,13 +107,11 @@ export default class AuthController {
 			Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000,
 		)
 		await userSessionModel.create({ userId: user.id, uuid: uuid, expire: expire })
-		
+
 		const session = await userSessionModel.getOneWith('userId', `${user.id}`)
 		console.log('session: ' + session)
-		if (userSessionModel.isInstance(session))
-			return session
-		else
-			return null
+		if (userSessionModel.isInstance(session)) return session
+		else return null
 	}
 	/**
 	 * @desc        Log user out / clear cookie
@@ -176,6 +173,4 @@ export default class AuthController {
 		}
 		return res.status(410).json(ResTemplate.error('Page no more available'))
 	}
-
-
 }
