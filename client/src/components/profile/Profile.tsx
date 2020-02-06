@@ -16,6 +16,9 @@ import { Box, Container } from "@material-ui/core"
 
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
+import GridListTileBar from "@material-ui/core/GridListTileBar"
+import IconButton from "@material-ui/core/IconButton"
+import StarBorderIcon from "@material-ui/icons/StarBorder"
 // import tileData from './tileData';
 
 import styles from "../../styles"
@@ -23,6 +26,7 @@ import styles from "../../styles"
 import image from "./1.jpg"
 import image1 from "./2.jpg"
 import image2 from "./3.jpg"
+import image3 from "./4.jpg"
 
 // interface Props {
 //   user: string
@@ -32,21 +36,24 @@ const useStyles = makeStyles(createStyles(styles))
 const tileData = [
   {
     img: image,
-    title: "Image",
     author: "author",
-    cols: 3
+    featured: true
   },
   {
     img: image1,
-    title: "Image1",
+
     author: "author",
-    cols: 3
+    featured: true
   },
   {
     img: image2,
-    title: "Image2",
     author: "author",
-    cols: 3
+    featured: true
+  },
+  {
+    img: image3,
+    author: "author",
+    featured: true
   }
 ]
 
@@ -59,15 +66,26 @@ const Profile: React.FC = () => {
   }
 
   return (
-    //почему одна картинка ок, а когда их больше - херовит? (все кроме последней)
     <Container>
-      <Box marginTop="2em" className={classes.root}>
-        <GridList cellHeight={300} className={classes.gridList} cols={3}>
+      <Box className={classes.root}>
+        <GridList cellHeight={200} spacing={5} className={classes.gridList}>
           {tileData.map(tile => (
-            <GridListTile cols={tile.cols || 1}>
-              <img src={tile.img} alt={tile.title} />
-              <img src={tile.img} alt={tile.title} />
-              <img src={tile.img} alt={tile.title} />
+            <GridListTile
+              key={tile.img}
+              cols={tile.featured ? 2 : 1}
+              rows={tile.featured ? 2 : 1}
+            >
+              <img src={tile.img} />
+              <GridListTileBar
+                titlePosition="top"
+                actionIcon={
+                  <IconButton aria-label={`star`} className={classes.icon}>
+                    <StarBorderIcon />
+                  </IconButton>
+                }
+                actionPosition="left"
+                className={classes.titleBar}
+              />
             </GridListTile>
           ))}
         </GridList>
@@ -150,8 +168,5 @@ const Profile: React.FC = () => {
     </Container>
   )
 }
-//   const [user, setUser] = useState(props)
-
-// return <div>Profile Route</div>
 
 export default Profile
