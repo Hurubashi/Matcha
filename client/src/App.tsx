@@ -1,7 +1,7 @@
 import React from 'react'
 import SingIn from './components/auth/SignIn'
 import SingUp from './components/auth/SignUp'
-import PrivateRoute from './helpers/PrivateRoute'
+import VerifyEmail from './components/auth/VerifyEmail'
 import GuestRoute from './helpers/GuestRoute'
 import Profile from './components/profile/Profile'
 import Search from './components/start/Search'
@@ -20,7 +20,7 @@ export default function App() {
 					{/* <Route path='/' exact component={} /> */}
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
-					<GuestRoute path='/verify' component={SingUp} />
+					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />
 					{/* <PrivateRoute path='/profile' component={Profile} /> */}
 					<Route path='/profile' component={Profile} />
 					<Route path='/start' component={Start} />
