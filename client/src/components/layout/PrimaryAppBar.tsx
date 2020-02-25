@@ -51,14 +51,6 @@ export default function PrimaryAppBar() {
 			.post('/api/auth/logout')
 			.then(function(res) {
 				setRedirect(true)
-				// if (res['data']['success'] == true) {
-				//   // localStorage.setItem('jwt', res.data.jwt)
-				//   props.setStatus(true)
-				// } else {
-				//   props.setErrors({ username: res['data']['errorMsg'] })
-				//   props.setSubmitting(false)
-				// }
-				// return <Redirect to='/login' />
 			})
 			.catch(function(error) {
 				// props.setErrors({ username: error })

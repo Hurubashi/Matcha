@@ -1,15 +1,16 @@
 export default class ResTemplate {
-	static success(data: Object): Object {
+	static success(data: Object, message: String = ''): Object {
 		return {
 			success: true,
 			data: data,
+			msg: message,
 		}
 	}
 
 	static error(message: String): Object {
 		return {
 			success: false,
-			errorMsg: message,
+			msg: message,
 		}
 	}
 }

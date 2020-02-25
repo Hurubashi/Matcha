@@ -39,10 +39,11 @@ export default class AuthController {
 
 			const letter = pug.renderFile(path.resolve('public/letters/AccountCreated.pug'), {
 				name: user.firstName + user.lastName,
-				link: req.protocol + '://' + req.get('host') + '/api/auth/verify/' + user.id + '/' + uuid,
-				imgSrc: req.protocol + '://' + req.get('host') + '/public/images/dating.jpg',
+				link: process.env.APP_SERVER + '/verify/' + user.id + '/' + uuid,
+				imgSrc: process.env.APP_SERVER + '/images/dating.jpg',
 			})
-			await MailService.sendMail(user.email, 'registration', letter)
+			let mail = await MailService.sendMail(user.email, 'registration', letter)
+			console.log(mail)
 			const options = {
 				expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000),
 				httpOnly: true,

@@ -134,7 +134,7 @@ const SignIn = withFormik<{}, FormValues>({
 				if (res['data']['success'] === true) {
 					props.setStatus(true)
 				} else {
-					props.setErrors({ username: res['data']['errorMsg'] })
+					props.setErrors({ username: res['data']['msg'] })
 					props.setSubmitting(false)
 				}
 			})
@@ -142,7 +142,7 @@ const SignIn = withFormik<{}, FormValues>({
 				if (error.response['data']['success'] === true) {
 					props.setStatus(true)
 				} else {
-					props.setErrors({ username: error.response['data']['errorMsg'] })
+					props.setErrors({ username: error.response['data']['msg'] })
 					props.setSubmitting(false)
 				}
 				// props.setErrors({ username: error })
