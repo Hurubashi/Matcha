@@ -66,7 +66,6 @@ const Profile: React.FC = () => {
 				<GridList cellHeight={200} spacing={5} className={classes.gridList}>
 					{tileData.map(tile => (
 						<GridListTile key={tile.img} cols={tile.featured ? 2 : 1} rows={tile.featured ? 2 : 1}>
-							<img src={tile.img} />
 							<GridListTileBar
 								titlePosition='top'
 								actionIcon={

@@ -169,6 +169,7 @@ export default class AuthController {
 		if (userActivationUUIDModel.isInstance(userActivationUUID) && userModel.isInstance(user)) {
 			if (userActivationUUID.userId == userId && userActivationUUID.uuid == req.params.uuid) {
 				await userModel.updateWhere({ id: userId }, { isVerified: true })
+				await userActivationUUIDModel.delete({ userId: userActivationUUID.userId })
 				return res.status(200).json(ResTemplate.success({}))
 			}
 		}

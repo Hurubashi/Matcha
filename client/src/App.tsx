@@ -31,6 +31,6 @@ export default function App() {
 	)
 }
 
-function NoMatch() {
-	return <div>ERROR 404</div>
-}
+// function NoMatch() {
+// 	return <div>ERROR 404</div>
+// }
