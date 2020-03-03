@@ -26,7 +26,7 @@ interface RouteParams {
 
 interface Props {
 	success: boolean | undefined
-	errorText: string | undefined
+	msg: string | undefined
 	responded: boolean
 }
 
@@ -36,7 +36,7 @@ const VerifyEmail: React.FC = () => {
 	const params = useParams<RouteParams>()
 	const [props, setProps] = useState<Props>({
 		success: undefined,
-		errorText: undefined,
+		msg: undefined,
 		responded: false,
 	})
 
@@ -46,12 +46,12 @@ const VerifyEmail: React.FC = () => {
 			.then(function(res) {
 				console.log(params.userid)
 				if (res['data']['success'] === true) {
-					setProps({ success: true, errorText: undefined, responded: true })
+					setProps({ success: true, msg: 'You email successufully verified.', responded: true })
 				}
 			})
 			.catch(function(error) {
 				if (error.response['data'] && error.response['data']['success'] === false) {
-					setProps({ success: false, errorText: error.response['data']['msg'], responded: true })
+					setProps({ success: false, msg: error.response['data']['msg'], responded: true })
 				}
 			})
 	}
@@ -61,13 +61,13 @@ const VerifyEmail: React.FC = () => {
 			<Box justifyContent='center' marginTop='2.5em' display='flex'>
 				{props.success === true && (
 					<Alert severity='success' className={classes.fullWidth}>
-						You email successufully verified.
+						{props.msg}
 					</Alert>
 				)}
 				{props.success === undefined && <CircularProgress className={classes.root} />}
 				{props.success === false && (
 					<Alert severity='error' className={classes.fullWidth}>
-						{props.errorText}
+						{props.msg}
 					</Alert>
 				)}
 			</Box>

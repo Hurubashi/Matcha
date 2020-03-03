@@ -5,10 +5,10 @@ import VerifyEmail from './components/auth/VerifyEmail'
 import GuestRoute from './helpers/GuestRoute'
 import Profile from './components/profile/Profile'
 import Search from './components/start/Search'
-import Start from './components/start/Start'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import PrimaryAppBar from './components/layout/PrimaryAppBar'
+import PrivateRoute from './helpers/PrivateRoute'
 
 export default function App() {
 	return (
@@ -22,9 +22,8 @@ export default function App() {
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />
 					{/* <PrivateRoute path='/profile' component={Profile} /> */}
-					<Route path='/profile' component={Profile} />
-					<Route path='/start' component={Start} />
-					<Route path='/search' component={Search} />
+					<GuestRoute path='/profile' component={Profile} />
+					<GuestRoute path='/search' component={Search} />
 				</Switch>
 			</Router>
 		</React.Fragment>

@@ -145,9 +145,6 @@ const SignIn = withFormik<{}, FormValues>({
 					props.setErrors({ username: error.response['data']['msg'] })
 					props.setSubmitting(false)
 				}
-				// props.setErrors({ username: error })
-				// props.setSubmitting(false)
-				// return <Redirect to='/profile' />
 			})
 	},
 })(InnerForm)
