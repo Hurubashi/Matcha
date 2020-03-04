@@ -66,6 +66,11 @@ const styles = makeStyles((theme: Theme) =>
 			width: '250px',
 			backgroundColor: theme.palette.primary.main,
 		},
+		chatButton: {
+			position: 'fixed',
+			right: '40px',
+			bottom: '40px',
+		},
 	}),
 )
 

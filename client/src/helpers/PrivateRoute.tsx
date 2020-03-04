@@ -1,15 +1,21 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { getJwt } from './getJwt'
+import { isUser } from './getJwt'
+import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 
 interface Props {
 	path: string
 	component: React.FC
 }
 const PrivateRoute: React.FC<Props> = (props: Props) => {
-	const token = getJwt()
-
-	return token ? <Route path={props.path} component={props.component} /> : <Redirect to='/login' />
+	return isUser() ? (
+		<div>
+			<PrimaryAppBar />
+			<Route path={props.path} component={props.component} />
+		</div>
+	) : (
+		<Redirect to='/login' />
+	)
 }
 
 export default PrivateRoute

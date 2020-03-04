@@ -6,7 +6,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { Alert, AlertTitle } from '@material-ui/lab'
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

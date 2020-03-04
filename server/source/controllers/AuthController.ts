@@ -93,6 +93,7 @@ export default class AuthController {
 			const token = jwt.sign({ id: user.id, session: session.uuid }, session.uuid, {
 				expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
 			})
+			res.cookie('user', true, { expires: session.expire, sameSite: true })
 			return res.cookie('jwt', token, options).json(ResTemplate.success(user))
 		} else {
 			return res.status(500).json(ResTemplate.error('Cannot set session cookies'))
@@ -132,6 +133,7 @@ export default class AuthController {
 		//   // httpOnly: true,
 		//   // sameSite: true
 		// })
+		res.clearCookie('user')
 		res.clearCookie('jwt')
 		return res.json(ResTemplate.success({}))
 	}
