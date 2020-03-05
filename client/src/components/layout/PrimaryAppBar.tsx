@@ -11,7 +11,7 @@ import {
 	Menu,
 	List,
 	ListItem,
-	ListItemIcon,
+	// ListItemIcon,
 	ListItemText,
 	Fab,
 } from '@material-ui/core/'
@@ -21,8 +21,8 @@ import {
 	Search as SearchIcon,
 	AccountCircle,
 	Mail as MailIcon,
-	Notifications as NotificationsIcon,
-	MoreVert as MoreIcon,
+	// Notifications as NotificationsIcon,
+	// MoreVert as MoreIcon,
 } from '@material-ui/icons/'
 
 import axios from 'axios'
@@ -39,17 +39,14 @@ export default function PrimaryAppBar() {
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
 
 	const isMenuOpen = Boolean(anchorEl)
-	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+	// const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 	const showUserMenus = isUser()
 
 	const [state, setState] = React.useState({
-		top: false,
 		left: false,
-		bottom: false,
-		right: false,
 	})
 
-	type DrawerSide = 'top' | 'left' | 'bottom' | 'right'
+	type DrawerSide = 'left'
 	const toggleDrawer = (side: DrawerSide, open: boolean) => (
 		event: React.KeyboardEvent | React.MouseEvent,
 	) => {
@@ -78,9 +75,9 @@ export default function PrimaryAppBar() {
 		handleMobileMenuClose()
 	}
 
-	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setMobileMoreAnchorEl(event.currentTarget)
-	}
+	// const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+	// 	setMobileMoreAnchorEl(event.currentTarget)
+	// }
 
 	if (redirect) return <Redirect to='/login' />
 
@@ -113,15 +110,13 @@ export default function PrimaryAppBar() {
 		</Menu>
 	)
 
-	const mobileMenuId = 'primary-search-account-menu-mobile'
-
 	return (
 		<div className={classes.grow}>
 			<AppBar position='static'>
 				<Toolbar>
 					<IconButton
 						edge='start'
-						className={classes.menuButton}
+						className={`${classes.menuButton} ${classes.sectionMobile}`}
 						color='inherit'
 						onClick={toggleDrawer('left', true)}>
 						<MenuIcon />
@@ -156,12 +151,7 @@ export default function PrimaryAppBar() {
 						</div>
 					)}
 					<div className={classes.grow} />
-					<div className={classes.sectionDesktop}>
-						{/* <IconButton aria-label='show 4 new mails' color='inherit'>
-							<Badge badgeContent={4} color='secondary'>
-								<MailIcon />
-							</Badge>
-						</IconButton> */}
+					{showUserMenus && <div className={classes.sectionDesktop}>
 						<IconButton
 							edge='end'
 							aria-label='account of current user'
@@ -171,24 +161,14 @@ export default function PrimaryAppBar() {
 							color='inherit'>
 							<AccountCircle />
 						</IconButton>
-					</div>
-					<div className={classes.sectionMobile}>
-						<IconButton
-							aria-label='show more'
-							aria-controls={mobileMenuId}
-							aria-haspopup='true'
-							onClick={handleMobileMenuOpen}
-							color='inherit'>
-							<MoreIcon />
-						</IconButton>
-					</div>
+					</div>}
 				</Toolbar>
 			</AppBar>
-			<Fab color='primary' aria-label='add' className={classes.chatButton}>
+			{showUserMenus && <Fab color='primary' aria-label='add' className={classes.chatButton}>
 				<Badge badgeContent={4} color='secondary'>
 					<MailIcon />
 				</Badge>
-			</Fab>
+			</Fab>}
 			{renderMenu}
 		</div>
 	)

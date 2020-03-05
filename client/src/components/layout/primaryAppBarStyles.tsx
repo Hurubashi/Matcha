@@ -62,8 +62,10 @@ const styles = makeStyles((theme: Theme) =>
 				display: 'none',
 			},
 		},
-		list: {
-			width: '250px',
+		list: {			
+			width: '80vw',
+			minWidth: '200px',
+			maxWidth: '400px',
 			backgroundColor: theme.palette.primary.main,
 		},
 		chatButton: {

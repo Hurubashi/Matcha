@@ -18,7 +18,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import styles from '../../styles'
-import TextFieldWithIcon from '../reUsableComponents/TextFieldWithIcon'
+import TextFieldWithIcon from '../reusableComponents/TextFieldWithIcon'
 
 const useStyles = makeStyles(createStyles(styles))
 
