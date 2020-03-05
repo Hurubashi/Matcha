@@ -45,13 +45,12 @@ const useStyles = makeStyles((theme: Theme) =>
 		root: {
 			display: 'flex',
 			flexWrap: 'wrap',
-			minWidth: 300,
 			width: '100%',
 		},
 		image: {
 			position: 'relative',
 			height: 200,
-			border: '4px double black',
+			border: '4px double #946556',
 			[theme.breakpoints.down('xs')]: {
 				width: '100% !important', // Overrides inline-style
 				height: 100,

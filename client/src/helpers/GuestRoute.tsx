@@ -11,10 +11,11 @@ const GuestRoute: React.FC<Props> = (props: Props) => {
 	return isUser() ? (
 		<Redirect to='/profile' />
 	) : (
-		<div>
+		<React.Fragment>
 			<PrimaryAppBar />
 			<Route path={props.path} component={props.component} />
-		</div>
+		</React.Fragment>
+
 	)
 }
 

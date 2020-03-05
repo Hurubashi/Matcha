@@ -9,10 +9,10 @@ interface Props {
 }
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	return isUser() ? (
-		<div>
+		<React.Fragment>
 			<PrimaryAppBar />
 			<Route path={props.path} component={props.component} />
-		</div>
+		</React.Fragment>
 	) : (
 		<Redirect to='/login' />
 	)

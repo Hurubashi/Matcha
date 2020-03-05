@@ -28,6 +28,7 @@ import {
 import axios from 'axios'
 import { Link as ReactLink, Redirect } from 'react-router-dom'
 import styles from './primaryAppBarStyles'
+import ChatBox from './ChatBox'
 import { isUser } from '../../helpers/getJwt'
 
 const useStyles = styles
@@ -169,6 +170,7 @@ export default function PrimaryAppBar() {
 					<MailIcon />
 				</Badge>
 			</Fab>}
+			<ChatBox />
 			{renderMenu}
 		</div>
 	)

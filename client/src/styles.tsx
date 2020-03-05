@@ -9,11 +9,9 @@ const styles = createStyles({
   light: {
     color: "white"
   },
-
   text: {
     width: 400
   },
-
   root: {
     display: "flex",
     flexWrap: "wrap",
