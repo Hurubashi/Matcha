@@ -1,6 +1,7 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 const chatBoxWidth = '55vw'
+const messageInputHeight = '15vh'
 
  const styles = makeStyles((theme: Theme) =>
  createStyles({
@@ -10,15 +11,20 @@ const chatBoxWidth = '55vw'
          bottom: '5px',
          width: chatBoxWidth,
          height: '50vh',
-         minWidth: 275,
-         minHeight: 275,
+         minWidth: 320,
+         minHeight: 320,
          zIndex: 2,
-         paddingTop: '20px'
+         display: 'grid'
+       },
+       messageBox: {
+         overflowY: 'scroll',
+         paddingLeft: 20,
+         paddingRight: 20,
        },
        close: {
-           position: 'absolute',
-           top: '2px',
-           right: '2px'
+         padding: 5,
+         display: 'flex',
+         justifyContent: 'flex-end'
        },
        message: {
          position: 'relative',
@@ -43,14 +49,13 @@ const chatBoxWidth = '55vw'
          margin: '0',
      },
      messageInput: {
-       position: 'absolute',
-       bottom: '2vh',
+       position: 'relative',
+       padding: 10,
        minWidth: `calc(${chatBoxWidth} - 3vw)`,
        font: "400 .9em 'Open Sans', sans-serif",
      },
      sendButton: {
-       position: 'absolute',
-       bottom: '0px'
+       padding: 0
      }
  }),
 )

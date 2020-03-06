@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import users from './routes/users'
 import auth from './routes/auth'
 
+
 import cookieParser from 'cookie-parser'
 
 const app: Application = express()
@@ -15,23 +16,59 @@ app.use(cookieParser())
 // if(process.env.NODE_ENV == 'development'){
 app.use(morgan('dev'))
 // }
-app.use(function(req: Request, res: Response, next: NextFunction) {
-  if (req.headers.origin) {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization')
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE')
-    if (req.method === 'OPTIONS') return res.sendStatus(200)
-  }
-  next()
-})
+// app.use(function(req: Request, res: Response, next: NextFunction) {
+//   if (req.headers.origin) {
+//     res.header('Access-Control-Allow-Origin', '*')
+//     res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization')
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE')
+//     if (req.method === 'OPTIONS') return res.sendStatus(200)
+//   }
+//   next()
+// })
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+
 // app.use('/public', express.static(__dirname + '/public'));
+
+import { ChatServer } from './util/ChatServer';
+
+let chat = new ChatServer().getApp();
+
+// io.on("connection", function(socket: any) {
+//   console.log("a user connected");
+//   // whenever we receive a 'message' we log it out
+//   socket.on("message", function(message: any) {
+//     console.log(message);
+
+//     var ID = (socket.id).toString().substr(0, 5);
+//     var time = (new Date).toLocaleTimeString();
+//     // Посылаем клиенту сообщение о том, что он успешно подключился и его имя
+//     socket.json.send({'event': 'connected', 'name': ID, 'time': time});
+//     // Посылаем всем остальным пользователям, что подключился новый клиент и его имя
+//     socket.broadcast.json.send({'event': 'userJoined', 'name': ID, 'time': time});
+//     // Навешиваем обработчик на входящее сообщение
+//     socket.on('message', function (message: any) {
+//       var time = (new Date).toLocaleTimeString();
+//       // Уведомляем клиента, что его сообщение успешно дошло до сервера
+//       socket.json.send({'event': 'messageSent', 'name': ID, 'text': message, 'time': time});
+//       // Отсылаем сообщение остальным участникам чата
+//       socket.broadcast.json.send({'event': 'messageReceived', 'name': ID, 'text': message, 'time': time})
+//     });
+//     // При отключении клиента - уведомляем остальных
+//     socket.on('disconnect', function() {
+//       var time = (new Date).toLocaleTimeString();
+//       io.sockets.json.send({'event': 'userSplit', 'name': ID, 'time': time});
+//     });
+//   });
+
+// });
+
 app.use('/api/user', users)
 app.use('/api/auth', auth)
 
-app.listen(5000, () => {
+app.listen(process.env.APP_PORT, () => {
   console.log('Server is running')
 })
+

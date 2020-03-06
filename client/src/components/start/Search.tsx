@@ -60,9 +60,9 @@ const useStyles = makeStyles((theme: Theme) =>
 				'& $imageBackdrop': {
 					opacity: 0.15,
 				},
-				'& $imageMarked': {
-					opacity: 0,
-				},
+				// '& $imageMarked': {
+				// 	opacity: 0,
+				// },
 			},
 		},
 		focusVisible: {},
