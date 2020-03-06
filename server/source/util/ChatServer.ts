@@ -3,6 +3,9 @@ import * as http from "http"
 // import cors from "cors"
 import { Message } from "../models/Message"
 import { User } from "../models/User"
+import jwt from 'jsonwebtoken'
+import cookie from 'cookie'
+import { string } from "joi";
 
 export class ChatServer {
   public static readonly PORT:number = 8080
@@ -32,11 +35,22 @@ export class ChatServer {
         this.io.emit("message", m);
       })
 
+      var cookies = cookie.parse(socket.handshake.headers.cookie)
+      console.log(cookies)
+      var decoded = jwt.decode(cookies['jwt'])
+      // @ts-ignore
+      console.log(decoded.id)
+      
+      
+
+// var cookies = cookie.parse(socket.handshake.headers.cookie);
+
       socket.on("disconnect", () => {
         console.log("Client disconnected");
       })
       
       socket.on('message', function (message: any) {
+        
       var time = (new Date).toLocaleTimeString();
       // Уведомляем клиента, что его сообщение успешно дошло до сервера
       socket.json.send({'event': 'messageSent', 'text': message, 'time': time});
