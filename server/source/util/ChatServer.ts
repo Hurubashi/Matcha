@@ -25,43 +25,33 @@ export class ChatServer {
 
   private listen(): void {
     this.server.listen(this.port, () => {
-      console.log("Running server on port %s", this.port);
+      console.log("Running ChatServer on port %s", this.port)
     })
 
     this.io.on("connect", (socket: any) => {
-      console.log("Connected client on port %s.", this.port);
-      socket.on("message", (m: Message) => {
-        console.log("[server](message): %s", JSON.stringify(m));
-        this.io.emit("message", m);
-      })
+      console.log("Connected client on port %s.", this.port)
 
-      var cookies = cookie.parse(socket.handshake.headers.cookie)
-      console.log(cookies)
-      var decoded = jwt.decode(cookies['jwt'])
-      // @ts-ignore
-      console.log(decoded.id)
-      
-      
-
-// var cookies = cookie.parse(socket.handshake.headers.cookie);
+      if(socket.handshake.headers.cookie){
+        var cookies = cookie.parse(socket.handshake.headers.cookie)
+        var decoded = jwt.decode(cookies['jwt'])
+        if(decoded){
+          // @ts-ignore
+          console.log(decoded.id)
+        }
+      }
 
       socket.on("disconnect", () => {
         console.log("Client disconnected");
       })
       
       socket.on('message', function (message: any) {
-        
-      var time = (new Date).toLocaleTimeString();
-      // Уведомляем клиента, что его сообщение успешно дошло до сервера
-      socket.json.send({'event': 'messageSent', 'text': message, 'time': time});
-      // Отсылаем сообщение остальным участникам чата
-      socket.broadcast.json.send({'event': 'messageReceived', 'text': message, 'time': time})
+        console.log("[server](message): %s", JSON.stringify(message));
+        var time = (new Date).toLocaleTimeString();
+        // Уведомляем клиента, что его сообщение успешно дошло до сервера
+        socket.json.send({'event': 'messageSent', 'text': message, 'time': time})
     })
 
     })
   }
 
-  public getApp(): express.Application {
-    return this.app;
-  }
 }

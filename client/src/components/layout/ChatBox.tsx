@@ -19,6 +19,10 @@ socket.on('connect', function () {
   console.log('successfuly connected!')
 })
 
+socket.on('message', function (data: any) {
+  console.log(data)
+})
+
 const useStyles = styles
 
 const ChatBox: React.FC = () => {
@@ -27,7 +31,6 @@ const ChatBox: React.FC = () => {
 		text: '',
 	})
   const sendMessage = () => {
-    console.log(message.text)
     socket.emit('message', message.text)
   }
   

@@ -44,14 +44,8 @@ export default class AuthController {
 			})
 			let mail = await MailService.sendMail(user.email, 'registration', letter)
 			console.log(mail)
-			const options = {
-				expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000),
-				httpOnly: true,
-			}
 
-			const token = jwt.sign({ id: user.id }, uuid)
 			return res
-				.cookie('token', token, options)
 				.status(201)
 				.json(ResTemplate.success(user))
 		} else {
@@ -122,19 +116,14 @@ export default class AuthController {
 	 */
 
 	public async logout(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let token = req.cookies['jwt']
+		// let token = req.cookies['jwt']
+		// console.log(token)
+		// var decoded = jwt.decode(token)
+		// console.log(decoded)
 
-		console.log(token)
-		var decoded = jwt.decode(token)
-		console.log(decoded)
-
-		// res.cookie('jwt', 'none', {
-		//   expires: new Date(Date.now())
-		//   // httpOnly: true,
-		//   // sameSite: true
-		// })
 		res.clearCookie('user')
 		res.clearCookie('jwt')
+		res.clearCookie('io')
 		return res.json(ResTemplate.success({}))
 	}
 

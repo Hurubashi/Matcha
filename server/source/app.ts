@@ -32,9 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // app.use('/public', express.static(__dirname + '/public'));
 
-import { ChatServer } from './util/ChatServer';
+import { ChatServer } from './util/ChatServer'
 
-let chat = new ChatServer().getApp();
+new ChatServer()
 
 // io.on("connection", function(socket: any) {
 //   console.log("a user connected");
