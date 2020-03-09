@@ -25,7 +25,12 @@ socket.on('message', function (data: any) {
 
 const useStyles = styles
 
-const ChatBox: React.FC = () => {
+
+interface Props {
+  closeChat: () => void
+}
+
+const ChatBox: React.FC<Props> = (props: Props) => {
   const classes = useStyles()
   const [message, setMessage] = React.useState({
 		text: '',
@@ -36,7 +41,7 @@ const ChatBox: React.FC = () => {
   
     return (
       <Card className={classes.root} variant="outlined">
-        <Box className={classes.close} >
+        <Box className={classes.close} onClick={props.closeChat}>
           <IconButton aria-label="settings" size="small">
             <Close />
           </IconButton>

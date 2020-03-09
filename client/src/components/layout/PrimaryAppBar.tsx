@@ -33,11 +33,15 @@ import { isUser } from '../../helpers/getJwt'
 
 const useStyles = styles
 
+
 export default function PrimaryAppBar() {
 	const classes = useStyles()
 	const [redirect, setRedirect] = React.useState<boolean>(false)
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
+
+	const [chat, setChat] = React.useState<boolean>(false)
+	const [chatButton, setChatButton] = React.useState<boolean>(true)
 
 	const isMenuOpen = Boolean(anchorEl)
 	// const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -74,6 +78,16 @@ export default function PrimaryAppBar() {
 	const handleMenuClose = () => {
 		setAnchorEl(null)
 		handleMobileMenuClose()
+	}
+
+	const openChat = () => {
+		setChat(true)
+		setChatButton(false)
+	}
+
+	const closeChat = () => {
+		setChat(false)
+		setChatButton(true)
 	}
 
 	// const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -165,12 +179,17 @@ export default function PrimaryAppBar() {
 					</div>}
 				</Toolbar>
 			</AppBar>
-			{showUserMenus && <Fab color='primary' aria-label='add' className={classes.chatButton}>
+			{showUserMenus && chatButton &&
+			<Fab color='primary' aria-label='add' className={classes.chatButton} onClick={openChat}>
 				<Badge badgeContent={4} color='secondary'>
 					<MailIcon />
 				</Badge>
-			</Fab>}
-			<ChatBox />
+			</Fab>
+			}
+			{ showUserMenus && chat &&
+			<ChatBox closeChat={closeChat}/>
+			}
+			
 			{renderMenu}
 		</div>
 	)
