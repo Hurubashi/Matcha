@@ -69,6 +69,6 @@ app.use('/api/user', users)
 app.use('/api/auth', auth)
 
 app.listen(process.env.APP_PORT, () => {
-  console.log('Server is running')
+  console.log(`Server is running on port ${process.env.APP_PORT}`)
 })
 

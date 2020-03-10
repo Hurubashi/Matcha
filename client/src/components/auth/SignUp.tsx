@@ -20,7 +20,7 @@ import Filter2OutlinedIcon from '@material-ui/icons/Filter2Outlined'
 import styles from '../../styles'
 import TextFieldWithIcon from '../reusableComponents/TextFieldWithIcon'
 
-const useStyles = makeStyles(createStyles(styles))
+const useStyles = styles
 
 interface FormValues {
 	email: string

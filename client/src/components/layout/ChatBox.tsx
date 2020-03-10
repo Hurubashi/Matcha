@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import { Close } from '@material-ui/icons'
 import SendIcon from '@material-ui/icons/Send'
 import styles from './chatBoxStyles'
@@ -41,62 +42,24 @@ const ChatBox: React.FC<Props> = (props: Props) => {
   
     return (
       <Card className={classes.root} variant="outlined">
-        <Box className={classes.close} onClick={props.closeChat}>
-          <IconButton aria-label="settings" size="small">
-            <Close />
+        <Box className={classes.close}>
+          <IconButton aria-label="settings" size='small' onClick={props.closeChat}>
+            <Close fontSize='small'/>
           </IconButton>
         </Box>
-            <Box color="text.primary" className={classes.messageBox}>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.leftMessage}`}>
-          <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
-          <div className={`${classes.message} ${classes.rightMessage}`}>
-            <p className={classes.messageContent}>I agree that your message is awesome!</p>
-          </div>
 
+          <Box color="text.primary" className={classes.messageBox}>
+
+          <div className={`${classes.message} ${classes.leftMessage}`}>
+          <Typography className={classes.messageContent}>I agree that your message is awesome!</Typography>
+          </div>
+          <div className={`${classes.message} ${classes.rightMessage}`}>
+            <Typography className={classes.messageContent}>I agree that your message is awesome!</Typography>
+          </div>
+          
+          
           </Box>
+
           <TextField placeholder='Enter your message' className={classes.messageInput} multiline={true} variant='outlined'
           rowsMax="4"
           value={message.text}
