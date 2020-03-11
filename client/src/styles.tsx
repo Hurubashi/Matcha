@@ -20,10 +20,6 @@ const styles = makeStyles((theme: Theme) =>
     profileAvatar: {
       minWidth: theme.spacing(40),
       minHeight: theme.spacing(40),
-      [theme.breakpoints.down('sm')]: {
-        minWidth: theme.spacing(20),
-        minHeight: theme.spacing(20)
-      },
       [theme.breakpoints.down('md')]: {
         minWidth: theme.spacing(30),
         minHeight: theme.spacing(30)
@@ -35,6 +31,19 @@ const styles = makeStyles((theme: Theme) =>
     },
     rightButton: {
       width: 150
+    },
+    basicInputFieldsContainer: {
+      paddingTop: 20,
+      alignSelf: 'flex-start'
+    },
+    marginBottom10: {
+      marginBottom: 10
+    },
+    padding10: {
+      padding: 10
+    },
+    chip: {
+      margin: theme.spacing(0.5)
     }
   })
 )

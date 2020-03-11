@@ -129,7 +129,7 @@ export default function PrimaryAppBar() {
   )
 
   return (
-    <Box className={classes.grow} m={1}>
+    <Box className={classes.grow}>
       <AppBar position='static'>
         <Toolbar>
           <IconButton
