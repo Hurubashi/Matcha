@@ -29,9 +29,6 @@ const styles = makeStyles((theme: Theme) =>
     profileCard: {
       padding: 20
     },
-    rightButton: {
-      width: 150
-    },
     basicInputFieldsContainer: {
       paddingTop: 20,
       alignSelf: 'flex-start'

@@ -13,104 +13,80 @@ import {
   Button,
   Typography,
   Grid,
-  Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  InputAdornment,
-  DialogActions
+  Chip
 } from '@material-ui/core'
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import styles from '../../styles'
+import Interests from './Interests'
+import { ProfileData, Preferences, Gender } from './ProfileInterface'
 
-const useStyles = styles
-
-const fields = [
-  {
-    name: 'Username',
-    value: 'Huru'
-  },
-  {
-    name: 'Email',
-    value: 'hurubashi@gmail.com'
-  },
-  {
-    name: 'First Name',
-    value: 'John'
-  },
-  {
-    name: 'Second Name',
-    value: 'Doe'
-  }
-]
-
-type Gender = 'Male' | 'Female' | 'Not specified'
-type Preferences = 'Male' | 'Female' | 'Male & Female' | 'Not specified'
-
-interface ProfileData {
-  username: string
-  email: string
-  firstName: string
-  secondName: string
-  gender: Gender
-  preferences: Preferences
-  interests: string[]
-  biography: string
+interface BasicField {
+  name: string
+  key: 'username' | 'email' | 'firstName' | 'lastName'
 }
 
 const Profile: React.FC = () => {
-  const classes = useStyles()
+  const classes = styles()
 
-  const profile: ProfileData = {
+  let fields: BasicField[] = [
+    {
+      name: 'Username',
+      key: 'username'
+    },
+    {
+      name: 'Email',
+      key: 'email'
+    },
+    {
+      name: 'First Name',
+      key: 'firstName'
+    },
+    {
+      name: 'Last Name',
+      key: 'lastName'
+    }
+  ]
+
+  let [profile, setProfile] = React.useState<ProfileData>({
     username: 'string',
-    email: 'string',
+    email: 'test',
     firstName: 'string',
-    secondName: 'string',
+    lastName: 'string',
     gender: 'Male',
     preferences: 'Female',
-    interests: ['ss', 'sss'],
+    interests: ['Angular', 'jQuery', 'Polymer', 'React'],
     biography: 'string'
+  })
+
+  const changeProfileData = (prop: keyof ProfileData) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setProfile({ ...profile, [prop]: event.target.value })
   }
   const [editable, setEditable] = React.useState<boolean>(false)
-  const [interestsDialog, setInterestsDialog] = React.useState<boolean>(false)
-  const [gender, setGender] = React.useState<Gender>('Male')
-  const [preferences, setPreferences] = React.useState<Preferences>(
-    'Not specified'
-  )
-  const [chipData, setChipData] = React.useState<string[]>([
-    'Angular',
-    'jQuery',
-    'Polymer',
-    'React'
-  ])
 
-  const interestsDialogOpen = () => {
-    setInterestsDialog(true)
-  }
-  const interestsDialogClose = () => {
-    setInterestsDialog(false)
+  const removeInterest = (interest: string) => () => {
+    setProfile({
+      ...profile,
+      interests: profile.interests.filter(chip => chip !== interest)
+    })
   }
 
   const changeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = (event.target as HTMLInputElement).value
     if (val === 'Male' || val === 'Female') {
-      setGender(val)
+      setProfile({ ...profile, gender: val })
     }
   }
 
   const changePreferences = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = (event.target as HTMLInputElement).value
     if (val === 'Male' || val === 'Female' || val === 'Male & Female') {
-      setPreferences(val)
+      setProfile({ ...profile, preferences: val })
     }
   }
 
   const changeEditable = () => {
     setEditable(!editable)
-  }
-
-  const handleDelete = (chipToDelete: string) => () => {
-    setChipData(chips => chips.filter(chip => chip !== chipToDelete))
   }
 
   return (
@@ -136,8 +112,9 @@ const Profile: React.FC = () => {
                   return (
                     <TextField
                       label={elem.name}
-                      value={elem.value}
-                      key={elem.name}
+                      onChange={changeProfileData(elem.key)}
+                      value={profile[elem.key]}
+                      key={elem.key}
                       fullWidth={true}
                       margin='dense'
                     />
@@ -148,9 +125,9 @@ const Profile: React.FC = () => {
                     <Typography
                       align='left'
                       className={classes.marginBottom10}
-                      key={elem.name}
+                      key={elem.key}
                     >
-                      {elem.name}: {elem.value}
+                      {elem.name}: {profile[elem.key]}
                     </Typography>
                   )
                 })}
@@ -163,7 +140,7 @@ const Profile: React.FC = () => {
                     <RadioGroup
                       aria-label='position'
                       name='position'
-                      value={gender}
+                      value={profile.gender}
                       onChange={changeGender}
                       row
                     >
@@ -191,7 +168,7 @@ const Profile: React.FC = () => {
                     <RadioGroup
                       aria-label='position'
                       row
-                      value={preferences}
+                      value={profile.preferences}
                       onChange={changePreferences}
                     >
                       <FormControlLabel
@@ -207,7 +184,7 @@ const Profile: React.FC = () => {
                         labelPlacement='start'
                       />
                       <FormControlLabel
-                        value='Male and Female'
+                        value='Male & Female'
                         control={<Radio color='primary' />}
                         label='Male and Female'
                         labelPlacement='start'
@@ -219,104 +196,52 @@ const Profile: React.FC = () => {
             ) : (
               <Box textAlign='left'>
                 <Typography className={classes.marginBottom10}>
-                  {'Gender'}: {gender}
+                  {'Gender'}: {profile.gender}
                 </Typography>
                 <Typography className={classes.marginBottom10}>
-                  {'Sexual preferences'}: {preferences}
+                  {'Sexual preferences'}: {profile.preferences}
                 </Typography>
               </Box>
             )}
           </Grid>
         </Grid>
 
-        <Box p={1}>
-          {editable ? (
-            <Box>
-              <Typography>{'Interests'}:</Typography>
-              {chipData.map(data => {
-                return (
-                  <Chip
-                    key={data}
-                    label={data}
-                    className={classes.chip}
-                    onDelete={handleDelete(data)}
-                  />
-                )
-              })}
-              <Chip
-                icon={<AddCircleOutlineIcon />}
-                label={'New'}
-                clickable={true}
-                onClick={interestsDialogOpen}
-              />
-              <TextField
-                fullWidth={true}
-                id='outlined-multiline-static'
-                label='Biography'
-                multiline
-                rows='8'
-                variant='outlined'
-              />
-            </Box>
-          ) : (
-            <Box textAlign='left' m={1}>
-              <Typography>{'Interests'}:</Typography>
-              {chipData.map(data => {
-                return (
-                  <Chip
-                    key={data}
-                    label={data}
-                    className={classes.chip}
-                    variant='outlined'
-                  />
-                )
-              })}
-              <Typography>{'Biography'}:</Typography>
-              <Typography>
-                {
-                  '"John Doe" (for males) and "Jane Doe" (for females) are multiple-use names that are used when the true name of a person is unknown or is being intentionally concealed. In the context of law enforcement in the United States, such names are often used to refer to a corpse whose identity is unknown or unconfirmed. Secondly, such names are also often used to refer to a hypothetical "everyman" in other contexts, in a manner similar to "John Q. Public" or "Joe Public". There are many variants to the above names, including "John Roe", "Richard Roe", "Jane Roe" and "Baby Doe", "Janie Doe" or "Johnny Doe" (for children).'
-                }
-              </Typography>
-            </Box>
-          )}
-        </Box>
+        <Interests
+          setProfile={setProfile}
+          profile={profile}
+          editable={editable}
+        />
 
-        <Box textAlign='center'>
-          <Button
-            className={classes.rightButton}
-            onClick={changeEditable}
-            variant='outlined'
-          >
-            {editable ? 'Save' : 'Edit'}
-          </Button>
-        </Box>
-
-        <Dialog
-          onClose={interestsDialogClose}
-          aria-labelledby='customized-dialog-title'
-          open={interestsDialog}
-        >
-          <DialogContent dividers>
+        {editable ? (
+          <Box textAlign='center'>
             <TextField
-              id='outlined-search'
-              label='Search field'
-              type='search'
-              variant='outlined'
               fullWidth={true}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>#</InputAdornment>
-                )
-              }}
+              id='outlined-multiline-static'
+              label='Biography'
+              multiline
+              rows='8'
+              variant='outlined'
             />
-          </DialogContent>
-
-          <Box textAlign='center' m={1}>
-            <Button autoFocus variant='outlined'>
-              Add
+            <Button onClick={changeEditable} variant='outlined'>
+              {'Close'}
+            </Button>
+            <Button onClick={changeEditable} variant='outlined'>
+              {'Save'}
             </Button>
           </Box>
-        </Dialog>
+        ) : (
+          <Box textAlign='center'>
+            <Typography>{'Biography'}:</Typography>
+            <Typography>
+              {
+                '"John Doe" (for males) and "Jane Doe" (for females) are multiple-use names that are used when the true name of a person is unknown or is being intentionally concealed. In the context of law enforcement in the United States, such names are often used to refer to a corpse whose identity is unknown or unconfirmed. Secondly, such names are also often used to refer to a hypothetical "everyman" in other contexts, in a manner similar to "John Q. Public" or "Joe Public". There are many variants to the above names, including "John Roe", "Richard Roe", "Jane Roe" and "Baby Doe", "Janie Doe" or "Johnny Doe" (for children).'
+              }
+            </Typography>
+            <Button onClick={changeEditable} variant='outlined'>
+              {'Edit'}
+            </Button>
+          </Box>
+        )}
       </Card>
     </Container>
   )
