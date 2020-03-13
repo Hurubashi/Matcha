@@ -4,13 +4,11 @@ import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
 import { Box, Container } from '@material-ui/core'
 
-import styles from '../../styles'
+// import styles from '../../styles'
 
 import image from './av1.jpg'
 import image1 from './av2.jpg'
 import image2 from './av3.jpg'
-
-// const useStyles = makeStyles(createStyles(styles))
 
 const images = [
 	{

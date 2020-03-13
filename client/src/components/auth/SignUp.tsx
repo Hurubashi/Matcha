@@ -2,15 +2,7 @@ import React from 'react'
 import { Link as ReactLink, Redirect } from 'react-router-dom'
 import * as Yup from 'yup'
 import { withFormik, FormikProps, Form } from 'formik'
-import {
-	Button,
-	Container,
-	Link,
-	Box,
-	Typography,
-	createStyles,
-	makeStyles,
-} from '@material-ui/core'
+import { Button, Container, Link, Box, Typography } from '@material-ui/core'
 import axios from 'axios'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -19,8 +11,6 @@ import Filter1OutlinedIcon from '@material-ui/icons/Filter1Outlined'
 import Filter2OutlinedIcon from '@material-ui/icons/Filter2Outlined'
 import styles from '../../styles'
 import TextFieldWithIcon from '../reusableComponents/TextFieldWithIcon'
-
-const useStyles = styles
 
 interface FormValues {
 	email: string
@@ -32,7 +22,7 @@ interface FormValues {
 
 const InnerForm = (props: FormikProps<FormValues>) => {
 	const { touched, errors, isSubmitting } = props
-	const classes = useStyles()
+	const classes = styles()
 
 	if (props.status) {
 		return <Redirect to='/profile' />
