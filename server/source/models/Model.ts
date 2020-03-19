@@ -30,6 +30,12 @@ export default abstract class Model<T> {
 			.from(this.tableName)
 	}
 
+	async getWhere(params: Object): Promise<T[]> {
+		return db<T>(this.tableName)
+			.select(params)
+			.from(this.tableName)
+	}
+
 	async getOne(index: number): Promise<T | Error> {
 		try {
 			let result = await db<T>(this.tableName)
@@ -44,22 +50,21 @@ export default abstract class Model<T> {
 		}
 	}
 
-	async getOneWith(field: string, value: string): Promise<T | Error> {
+	async getOneWith(field: string, value: string): Promise<T | null> {
 		try {
-			// console.log(`get one ${field} with value of ${value}`)
 			let result = await db<T>(this.tableName)
 				.where(field, value)
 				.first()
-				// console.log(db<T>(this.tableName)
-				// .where(field, value)
-				// .first().toString())
-			if (result && this.isInstance(result))
+			if (result && this.isInstance(result)) {
 				// @ts-ignore
 				return result
-			else return new Error(`Cannot find ${field} with ${value}`)
+			} else {
+				// return new Error(`Cannot find ${field} with ${value}`)
+			}
 		} catch (e) {
-			return this.errorMsg(e.message)
+			// return this.errorMsg(e.message)
 		}
+		return null
 	}
 
 	async updateWhere(where: Object, update: Object) {

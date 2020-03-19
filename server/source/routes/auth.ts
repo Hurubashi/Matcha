@@ -13,8 +13,8 @@ const auth = new AuthController()
 
 router.post('/register', auth.register)
 router.post('/login', auth.login)
-router.post('/logout', auth.logout)
-router.post('/me', auth.getMe)
+router.post('/logout', protect, auth.logout)
+router.post('/me', protect, auth.getMe)
 router.get('/verify/:id/:uuid', auth.verify)
 
 export default router

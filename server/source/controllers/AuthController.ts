@@ -10,6 +10,7 @@ import pug from 'pug'
 import MailService from '../util/MailService'
 import path from 'path'
 import jwt from 'jsonwebtoken'
+import AuthActions from '../actions/AuthActions'
 
 const userModel = new UserModel()
 
@@ -45,9 +46,7 @@ export default class AuthController {
 			let mail = await MailService.sendMail(user.email, 'registration', letter)
 			console.log(mail)
 
-			return res
-				.status(201)
-				.json(ResTemplate.success(user))
+			return res.status(201).json(ResTemplate.success(user))
 		} else {
 			return res.status(422).json(ResTemplate.error(user.message))
 		}
@@ -63,7 +62,7 @@ export default class AuthController {
 		const user = await userModel.getOneWith('username', req.body.username)
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 
-		if (!userModel.isInstance(user) || user.password != password)
+		if (!user || user.password != password)
 			return res.status(422).json(ResTemplate.error('Incorrect username or password'))
 
 		if (!user.isVerified)
@@ -84,7 +83,7 @@ export default class AuthController {
 				httpOnly: true,
 				sameSite: true,
 			}
-			const token = jwt.sign({ id: user.id, session: session.uuid }, session.uuid, {
+			const token = jwt.sign({ id: user.id }, session.uuid, {
 				expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
 			})
 			res.cookie('user', true, { expires: session.expire, sameSite: true })
@@ -106,8 +105,7 @@ export default class AuthController {
 
 		const session = await userSessionModel.getOneWith('userId', `${user.id}`)
 		console.log('session: ' + session)
-		if (userSessionModel.isInstance(session)) return session
-		else return null
+		return session
 	}
 	/**
 	 * @desc        Log user out / clear cookie
@@ -140,6 +138,9 @@ export default class AuthController {
 		// 	success: true,
 		// 	data: user
 		// })
+		console.log('get me route')
+		AuthActions.getUserId(req)
+
 		return res.json('Get me')
 	}
 

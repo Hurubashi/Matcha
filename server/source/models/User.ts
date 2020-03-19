@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import Model from './Model'
+import { Interest, InterestModel } from './Interest'
 
 export interface User {
 	id: number
@@ -83,5 +84,12 @@ export class UserModel extends Model<User> {
 			}
 		})
 		return errors
+	}
+
+	async getInterest(userId: number): Promise<Interest[]> {
+		const interestModel = new InterestModel()
+		const res = await interestModel.getWhere(userId)
+		console.log(res)
+		return res
 	}
 }
