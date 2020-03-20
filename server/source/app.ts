@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import users from './routes/user'
 import auth from './routes/auth'
+import ResTemplate from './controllers/ResTemplate'
 
 import cookieParser from 'cookie-parser'
 
@@ -27,6 +28,11 @@ app.use(morgan('dev'))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(function(error: Error, req: Request, res: Response, next: NextFunction) {
+	//Catch json error
+	res.json(ResTemplate.error('JSON parsing error'))
+})
 
 // app.use('/public', express.static(__dirname + '/public'));
 

@@ -89,13 +89,15 @@ export default class UserController {
 	public static async setUserInterests(req: Request, res: Response, next: NextFunction) {
 		let userModel = new UserModel()
 		let interestModel = new InterestModel()
-
-		await interestModel.delete({ userId: req.params.id })
-		await userModel.setInterests(Number(req.params.id), req.body.interests)
-
 		console.log('interests')
 		console.log(req.body.interests)
-		let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
-		return res.status(200).json(ResTemplate.success(interests))
+		try {
+			await interestModel.delete({ userId: req.params.id })
+			await userModel.setInterests(Number(req.params.id), req.body.interests)
+			let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
+			return res.status(200).json(ResTemplate.success(interests))
+		} catch {
+			return res.sendStatus(500)
+		}
 	}
 }
