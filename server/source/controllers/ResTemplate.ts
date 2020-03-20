@@ -1,16 +1,29 @@
 export default class ResTemplate {
-	static success(data: Object, message: String = ''): Object {
-		return {
-			success: true,
-			data: data,
-			msg: message,
-		}
+	static success(data: Object, message?: String | undefined): Object {
+		const res = message
+			? {
+					success: true,
+					data: data,
+					msg: message,
+			  }
+			: {
+					success: true,
+					data: data,
+			  }
+
+		return res
 	}
 
-	static error(message: String): Object {
-		return {
-			success: false,
-			msg: message,
-		}
+	static error(message?: String | undefined): Object {
+		const res = message
+			? {
+					success: false,
+					msg: message,
+			  }
+			: {
+					success: false,
+			  }
+
+		return res
 	}
 }

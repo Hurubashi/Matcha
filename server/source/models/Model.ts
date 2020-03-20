@@ -30,10 +30,13 @@ export default abstract class Model<T> {
 			.from(this.tableName)
 	}
 
-	async getWhere(params: Object): Promise<T[]> {
-		return db<T>(this.tableName)
-			.select(params)
+	async getWhere(params: Object, select?: [String] | undefined): Promise<T[]> {
+		const res = await db<T>(this.tableName)
+			.select(select ? select : '*')
+			.where(params)
 			.from(this.tableName)
+		console.log(res)
+		return res
 	}
 
 	async getOne(index: number): Promise<T | Error> {

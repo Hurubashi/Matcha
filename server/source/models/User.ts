@@ -86,10 +86,19 @@ export class UserModel extends Model<User> {
 		return errors
 	}
 
-	async getInterest(userId: number): Promise<Interest[]> {
+	async getInterests(userId: Number): Promise<Interest[]> {
 		const interestModel = new InterestModel()
-		const res = await interestModel.getWhere(userId)
-		console.log(res)
+		const res = await interestModel.getWhere({ userId: userId }, ['name'])
+		return res
+	}
+
+	async setInterests(userId: Number, interests: [String]) {
+		const interestModel = new InterestModel()
+
+		interests.forEach(async name => {
+			await interestModel.create({ userId: userId, name: name })
+		})
+		const res = await interestModel.getWhere({ userId: userId }, ['name'])
 		return res
 	}
 }

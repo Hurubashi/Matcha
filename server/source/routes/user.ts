@@ -9,6 +9,7 @@ router.get('/:id', protect, UserController.getUser)
 router.post('/', protect, UserController.createUser)
 
 router.get('/:id/interests/', protect, UserController.getInterests)
+router.post('/:id/interests/', protect, UserController.setUserInterests)
 // router.put('/:id', protect, UserController.updateUser)
 // router.delete('/:id', protect, UserController.deleteUser)
 
