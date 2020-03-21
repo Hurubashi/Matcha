@@ -89,8 +89,6 @@ export default class UserController {
 	public static async setUserInterests(req: Request, res: Response, next: NextFunction) {
 		let userModel = new UserModel()
 		let interestModel = new InterestModel()
-		console.log('interests')
-		console.log(req.body.interests)
 		try {
 			await interestModel.delete({ userId: req.params.id })
 			await userModel.setInterests(Number(req.params.id), req.body.interests)

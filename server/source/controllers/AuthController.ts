@@ -114,11 +114,6 @@ export default class AuthController {
 	 */
 
 	public async logout(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		// let token = req.cookies['jwt']
-		// console.log(token)
-		// var decoded = jwt.decode(token)
-		// console.log(decoded)
-
 		res.clearCookie('user')
 		res.clearCookie('jwt')
 		res.clearCookie('io')

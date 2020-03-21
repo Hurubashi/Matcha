@@ -11,29 +11,27 @@ export default async function protect(req: Request, res: Response, next: NextFun
 	// 	token = req.headers.authorization.split(' ')[1]
 	// 	// Set token from cookie
 	// } else
-	if (req.cookies.token) {
-		token = req.cookies.token
-	}
-
-	// Make sure token exists
-	if (!token) {
+	if (req.cookies['jwt']) {
+		token = req.cookies['jwt']
+	} else {
 		return next(res.status(401).json('Not authorized to access this route'))
 	}
 
 	try {
 		// Verify token
-		let token = req.cookies['jwt']
-		console.log(token)
-		let decoded = jwt.decode(token)
-		const userSessionModel = new UserSessionModel()
-		const session = await userSessionModel.getOneWith('userId', `${token.id}`)
+		let session
+		var decoded = jwt.decode(token)
 
-		if (session) {
-			const verified = jwt.verify(token, session.uuid as jwt.Secret)
-			console.log('verified: ' + verified)
-			console.log(decoded)
+		if (decoded && typeof decoded !== 'string') {
+			const userSessionModel = new UserSessionModel()
+			session = await userSessionModel.getOneWith('userId', `${decoded.id}`)
 		}
 
+		if (session) {
+			jwt.verify(token, session.uuid as jwt.Secret)
+			if (decoded && typeof decoded !== 'string') {
+			}
+		}
 		next()
 	} catch (err) {
 		return next(res.status(401).json('Not authorized to access this route'))

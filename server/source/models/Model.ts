@@ -35,7 +35,6 @@ export default abstract class Model<T> {
 			.select(select ? select : '*')
 			.where(params)
 			.from(this.tableName)
-		console.log(res)
 		return res
 	}
 
