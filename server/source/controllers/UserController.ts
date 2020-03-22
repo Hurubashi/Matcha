@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
-import ResTemplate from './ResTemplate'
+import ResManager from '../util/ResManager'
 import { Interest, InterestModel } from '../models/Interest'
 
 interface Params {
@@ -18,7 +18,7 @@ export default class UserController {
 	public static async getUsers(req: Request, res: Response, next: NextFunction) {
 		let userModel = new UserModel()
 		let user: User[] = await userModel.getAll()
-		return res.status(200).json(ResTemplate.success(user))
+		return res.status(200).json(ResManager.success(user))
 	}
 
 	/**
@@ -31,9 +31,9 @@ export default class UserController {
 		let userModel = new UserModel()
 		let user: User | Error = await userModel.getOne(Number(req.params.id))
 		if (userModel.isInstance(user)) {
-			return res.status(200).json(ResTemplate.success(user))
+			return res.status(200).json(ResManager.success(user))
 		} else {
-			return res.status(404).json(ResTemplate.error(user.message))
+			return res.status(404).json(ResManager.error(user.message))
 		}
 	}
 
@@ -77,7 +77,7 @@ export default class UserController {
 	public static async getInterests(req: Request, res: Response, next: NextFunction) {
 		let userModel = new UserModel()
 		let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
-		return res.status(200).json(ResTemplate.success(interests))
+		return res.status(200).json(ResManager.success(interests))
 	}
 
 	/**
@@ -93,9 +93,9 @@ export default class UserController {
 			await interestModel.delete({ userId: req.params.id })
 			await userModel.setInterests(Number(req.params.id), req.body.interests)
 			let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
-			return res.status(200).json(ResTemplate.success(interests))
+			return res.status(200).json(ResManager.success(interests))
 		} catch {
-			return res.sendStatus(500)
+			return ResManager.serverError()
 		}
 	}
 }

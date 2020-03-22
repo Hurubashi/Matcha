@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import ResTemplate, { ResInfo } from './ResTemplate'
+import ResManager, { ResInfo } from '../util/ResManager'
 import { User, UserModel } from '../models/User'
 import Joi, { Err } from 'joi'
 import bcrypt from 'bcrypt'
@@ -23,7 +23,7 @@ export default class AuthController {
 	public async register(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		// Validate
 		let err = userModel.validate(req.body)
-		if (err) return res.status(400).json(ResTemplate.error(err.message))
+		if (err) return res.status(400).json(ResManager.error(err.message))
 		// Hash password
 		req.body.password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		// Insert to db
@@ -44,9 +44,9 @@ export default class AuthController {
 			})
 			let mail = await MailService.sendMail(user.email, 'registration', letter)
 
-			return res.status(201).json(ResTemplate.success(user))
+			return res.status(201).json(ResManager.success(user))
 		} else {
-			return res.status(422).json(ResTemplate.error(user.message))
+			return res.status(422).json(ResManager.error(user.message))
 		}
 	}
 
@@ -59,19 +59,18 @@ export default class AuthController {
 	public async login(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
 		const user = await AuthActions.validateUserLoginData(req.body.username, password, res, next)
-		if (userModel.isInstance(user)) {
-			try {
-				await AuthActions.removeCurrentSession(user.id)
-				const session = await AuthActions.createNewSession(user.id)
-				if (!(session instanceof Error)) {
-					AuthActions.setSessionCookies(res, user.id, session)
-					return res.json(ResTemplate.success(user))
-				}
-			} catch (err) {
-				return res.status(500).json(ResTemplate.error(err.message))
-			}
+
+		if (user instanceof ResInfo) {
+			return res.status(user.code).json(user.resBody)
 		}
-		return res.status(500).json(ResTemplate.serverError())
+
+		await AuthActions.removeCurrentSession(user.id)
+		const session = await AuthActions.createNewSession(user.id)
+		if (session instanceof ResInfo) {
+			return res.status(session.code).json(session.resBody)
+		}
+		AuthActions.setSessionCookies(res, user.id, session)
+		return res.status(200).json(ResManager.success(user))
 	}
 
 	/**
@@ -82,7 +81,7 @@ export default class AuthController {
 
 	public async logout(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		AuthActions.clearSessionCookies(res)
-		return res.json(ResTemplate.success({}))
+		return res.json(ResManager.success({}))
 	}
 
 	/**
@@ -114,9 +113,9 @@ export default class AuthController {
 			if (userActivationUUID.userId == userId && userActivationUUID.uuid == req.params.uuid) {
 				await userModel.updateWhere({ id: userId }, { isVerified: true })
 				await userActivationUUIDModel.delete({ userId: userActivationUUID.userId })
-				return res.status(200).json(ResTemplate.success({}))
+				return res.status(200).json(ResManager.success({}))
 			}
 		}
-		return res.status(410).json(ResTemplate.error('Page no more available'))
+		return res.status(410).json(ResManager.error('Page no more available'))
 	}
 }

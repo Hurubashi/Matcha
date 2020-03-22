@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
 import { UserSession, UserSessionModel } from '../models/UserSession'
 import uuidv1 from 'uuid/v1'
-import ResTemplate, { ResInfo } from '../controllers/ResTemplate'
+import ResManager, { ResInfo } from '../util/ResManager'
 
 const userModel = new UserModel()
 const userSessionModel = new UserSessionModel()
@@ -36,22 +36,24 @@ export default class AuthActions {
 		res.cookie('jwt', token, options)
 	}
 
-	static async validateUserLoginData(username: string, password: string, res: Response, next: NextFunction) {
+	static async validateUserLoginData(
+		username: string,
+		password: string,
+		res: Response,
+		next: NextFunction,
+	): Promise<ResInfo | User> {
 		try {
 			const user = await userModel.getOneWith('username', username)
-
 			if (!user || user instanceof Error) {
-				return next(res.status(422).json(ResTemplate.error('No such user')))
+				return new ResInfo(422, ResManager.error('No such user'))
 			} else if (user.password != password) {
-				return next(res.status(422).json(ResTemplate.error('Incorrect username or password')))
+				return new ResInfo(422, ResManager.error('Incorrect username or password'))
 			} else if (!user.isVerified) {
-				return next(
-					res.status(403).json(ResTemplate.error('User is not verified. Check your email for verification link.')),
-				)
+				return new ResInfo(403, ResManager.error('User is not verified. Check your email for verification link.'))
 			}
 			return user
 		} catch (err) {
-			return next(res.status(500).json(ResTemplate.error(err.message)))
+			return ResManager.serverError()
 		}
 	}
 
@@ -59,15 +61,22 @@ export default class AuthActions {
 		await userSessionModel.delete({ userId: userId })
 	}
 
-	static async createNewSession(userId: number): Promise<UserSession | Error> {
+	static async createNewSession(userId: number): Promise<UserSession | ResInfo> {
+		let session
+
 		try {
 			const uuid = uuidv1()
 			const expire = new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000)
 			await userSessionModel.create({ userId: userId, uuid: uuid, expire: expire })
-			const session = await userSessionModel.getOneWith('userId', `${userId}`)
-			return session
+			session = await userSessionModel.getOneWith('userId', `${userId}`)
 		} catch (err) {
-			return err
+			return new ResInfo(500, ResManager.error(err.message))
+		}
+
+		if (userSessionModel.isInstance(session)) {
+			return session
+		} else {
+			return ResManager.serverError()
 		}
 	}
 }

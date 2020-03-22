@@ -14,7 +14,7 @@ export class ResInfo {
 	}
 }
 
-export default class ResTemplate {
+export default class ResManager {
 	static success(data: Object, message?: string | undefined): ResBody {
 		const res = message
 			? {
@@ -46,6 +46,6 @@ export default class ResTemplate {
 	static resWithCode(code: number, res: ResBody) {}
 
 	static serverError(): ResInfo {
-		return new ResInfo(500, ResTemplate.error('Something went wrong'))
+		return new ResInfo(500, ResManager.error('Something went wrong'))
 	}
 }
