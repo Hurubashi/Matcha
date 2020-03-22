@@ -58,7 +58,7 @@ export default class AuthController {
 
 	public async login(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
-		const user = await AuthActions.validateUserLoginData(req.body.username, password, res, next)
+		const user = await AuthActions.validateUserLoginData(req.body.username, password)
 
 		if (user instanceof ResInfo) {
 			return res.status(user.code).json(user.resBody)
@@ -91,7 +91,6 @@ export default class AuthController {
 	 */
 
 	public async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		AuthActions.getUserId(req)
 		return res.json('Get me')
 	}
 

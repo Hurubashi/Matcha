@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
 import { UserSession, UserSessionModel } from '../models/UserSession'
@@ -9,15 +9,6 @@ const userModel = new UserModel()
 const userSessionModel = new UserSessionModel()
 
 export default class AuthActions {
-	createUser() {}
-
-	static getUserId(req: Request): void {
-		let token = req.cookies['jwt']
-		console.log(token)
-		var decoded = jwt.decode(token)
-		console.log(decoded)
-	}
-
 	static clearSessionCookies(res: Response): void {
 		res.clearCookie('user')
 		res.clearCookie('jwt')
@@ -36,12 +27,7 @@ export default class AuthActions {
 		res.cookie('jwt', token, options)
 	}
 
-	static async validateUserLoginData(
-		username: string,
-		password: string,
-		res: Response,
-		next: NextFunction,
-	): Promise<ResInfo | User> {
+	static async validateUserLoginData(username: string, password: string): Promise<ResInfo | User> {
 		try {
 			const user = await userModel.getOneWith('username', username)
 			if (!user || user instanceof Error) {

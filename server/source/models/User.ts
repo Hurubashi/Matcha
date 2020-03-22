@@ -21,7 +21,7 @@ export class UserModel extends Model<User> {
 	customSqlErrors: Object = {
 		user_email_uindex: 'This email is already taken',
 		user_username_uindex: 'This username is already taken',
-		'Unknown column': 'Unknown column',
+		'Unknown column': 'Something went wrong',
 	}
 
 	validate(obj: Object): Error | null {
@@ -65,7 +65,7 @@ export class UserModel extends Model<User> {
 			}),
 	}
 
-	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: String) {
+	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: string) {
 		errors.forEach((err: Joi.ValidationErrorItem) => {
 			switch (err.type) {
 				case 'string.email':
@@ -75,9 +75,7 @@ export class UserModel extends Model<User> {
 					err.message = `${field} should not be empty!`
 					break
 				case 'string.min':
-					err.message = `${field} should have at least ${
-						err.context ? err.context.limit : ''
-					} characters!`
+					err.message = `${field} should have at least ${err.context ? err.context.limit : ''} characters!`
 					break
 				default:
 					break
@@ -92,7 +90,7 @@ export class UserModel extends Model<User> {
 		return res
 	}
 
-	async setInterests(userId: Number, interests: [String]) {
+	async setInterests(userId: Number, interests: [string]) {
 		const interestModel = new InterestModel()
 
 		interests.forEach(async name => {

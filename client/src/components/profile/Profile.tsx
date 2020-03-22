@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
 	Box,
 	Container,
@@ -17,6 +17,7 @@ import {
 import styles from '../../styles'
 import Interests from './Interests'
 import { ProfileData } from './ProfileInterface'
+import axios from 'axios'
 
 interface BasicField {
 	name: string
@@ -25,6 +26,22 @@ interface BasicField {
 
 const Profile: React.FC = () => {
 	const classes = styles()
+
+	useEffect(() => {
+		axios
+			.get('/api/user/me')
+			.then(function(res) {
+				if (res['data']['success'] === true) {
+					console.log(res['data']['data'])
+				}
+			})
+			.catch(function(error) {
+				if (error.response['data']['success'] === true) {
+					console.log(error.response['data']['msg'])
+				}
+			})
+		return () => {}
+	}, [])
 
 	let fields: BasicField[] = [
 		{
@@ -56,9 +73,7 @@ const Profile: React.FC = () => {
 		biography: 'string',
 	})
 
-	const changeProfileData = (prop: keyof ProfileData) => (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
+	const changeProfileData = (prop: keyof ProfileData) => (event: React.ChangeEvent<HTMLInputElement>) => {
 		setProfile({ ...profile, [prop]: event.target.value })
 	}
 	const [editable, setEditable] = React.useState<boolean>(false)
@@ -141,11 +156,7 @@ const Profile: React.FC = () => {
 								<Box>
 									<FormControl component='fieldset'>
 										<FormLabel component='legend'>Your sexual preference</FormLabel>
-										<RadioGroup
-											aria-label='position'
-											row
-											value={profile.preferences}
-											onChange={changePreferences}>
+										<RadioGroup aria-label='position' row value={profile.preferences} onChange={changePreferences}>
 											<FormControlLabel
 												value='Male'
 												control={<Radio color='primary' />}
@@ -203,11 +214,7 @@ const Profile: React.FC = () => {
 				) : (
 					<Box textAlign='center'>
 						<Typography>{'Biography'}:</Typography>
-						<Typography>
-							{
-								'"John Doe" (for males) and "Jane Doe" (for females) are multiple-use names that are used when the true name of a person is unknown or is being intentionally concealed. In the context of law enforcement in the United States, such names are often used to refer to a corpse whose identity is unknown or unconfirmed. Secondly, such names are also often used to refer to a hypothetical "everyman" in other contexts, in a manner similar to "John Q. Public" or "Joe Public". There are many variants to the above names, including "John Roe", "Richard Roe", "Jane Roe" and "Baby Doe", "Janie Doe" or "Johnny Doe" (for children).'
-							}
-						</Typography>
+						<Typography>{profile.biography}</Typography>
 						<Button onClick={changeEditable} variant='outlined'>
 							{'Edit'}
 						</Button>

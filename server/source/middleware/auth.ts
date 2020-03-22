@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { UserSessionModel } from '../models/UserSession'
+import AuthActions from '../actions/AuthActions'
 
 export default async function protect(req: Request, res: Response, next: NextFunction) {
 	let token
@@ -12,6 +13,7 @@ export default async function protect(req: Request, res: Response, next: NextFun
 	if (req.cookies['jwt']) {
 		token = req.cookies['jwt']
 	} else {
+		AuthActions.clearSessionCookies(res)
 		return next(res.status(401).json('Not authorized to access this route'))
 	}
 
@@ -32,6 +34,7 @@ export default async function protect(req: Request, res: Response, next: NextFun
 		}
 		next()
 	} catch (err) {
+		AuthActions.clearSessionCookies(res)
 		return next(res.status(401).json('Not authorized to access this route'))
 	}
 }

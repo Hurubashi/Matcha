@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
 import ResManager from '../util/ResManager'
 import { Interest, InterestModel } from '../models/Interest'
+import UserActions from '../actions/UserActions'
+import { ResInfo } from '../util/ResManager'
 
 interface Params {
 	name: string
@@ -15,7 +17,7 @@ export default class UserController {
 	 * @access      Public
 	 */
 
-	public static async getUsers(req: Request, res: Response, next: NextFunction) {
+	public static async getUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		let userModel = new UserModel()
 		let user: User[] = await userModel.getAll()
 		return res.status(200).json(ResManager.success(user))
@@ -27,24 +29,38 @@ export default class UserController {
 	 * @access      Public
 	 */
 
-	public static async getUser(req: Request, res: Response, next: NextFunction) {
-		let userModel = new UserModel()
-		let user: User | Error = await userModel.getOne(Number(req.params.id))
+	public static async getUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		let user
+		if (req.params.id === 'me') {
+			user = await UserActions.getMeFromCookeis(req)
+		} else {
+			let userModel = new UserModel()
+			user = await userModel.getOne(Number(req.params.id))
+		}
+
 		if (userModel.isInstance(user)) {
 			return res.status(200).json(ResManager.success(user))
 		} else {
-			return res.status(404).json(ResManager.error(user.message))
+			return res.sendStatus(500)
 		}
 	}
 
 	/**
-	 * @desc        Create user
-	 * @route       POST /api/user/
+	 * @desc        Get user
+	 * @route       GET /api/user/me
 	 * @access      Public
 	 */
 
-	public static async createUser(req: Request, res: Response, next: NextFunction) {
-		return res.json('Create user not works yet')
+	public static async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		console.log('getme ALLALALALLALAL')
+
+		const user = await UserActions.getMeFromCookeis(req)
+
+		if (userModel.isInstance(user)) {
+			return res.status(200).json(ResManager.success(user))
+		} else {
+			return res.sendStatus(500)
+		}
 	}
 
 	/**
@@ -53,9 +69,15 @@ export default class UserController {
 	 * @access      Private/Admin
 	 */
 
-	public static async updateUser(req: Request, res: Response, next: NextFunction) {
-		userModel.updateWhere({ id: req.params.id }, req.body)
-		return res.json('Update user not works yet')
+	public static async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		let userModel = new UserModel()
+		let user: User | Error = await userModel.getOne(Number(req.params.id))
+		userModel.updateWhere({ id: req.params.id }, req.params)
+		if (userModel.isInstance(user)) {
+			return res.status(200).json(ResManager.success(user))
+		} else {
+			return res.status(404).json(ResManager.error(user.message))
+		}
 	}
 
 	/**
@@ -64,7 +86,7 @@ export default class UserController {
 	 * @access      Private/Admin
 	 */
 
-	public static async deleteUser(req: Request, res: Response, next: NextFunction) {
+	public static async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		return res.json('Delete user not works yet')
 	}
 
@@ -74,28 +96,22 @@ export default class UserController {
 	 * @access      Public
 	 */
 
-	public static async getInterests(req: Request, res: Response, next: NextFunction) {
-		let userModel = new UserModel()
-		let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
+	public static async getInterests(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		const interests = UserActions.getInterests(Number(req.params.id))
 		return res.status(200).json(ResManager.success(interests))
 	}
 
 	/**
 	 * @desc        Set user interests
-	 * @route       POST /api/user/interests/:id
+	 * @route       POST /api/user/:id/interests
 	 * @access      Public
 	 */
 
-	public static async setUserInterests(req: Request, res: Response, next: NextFunction) {
-		let userModel = new UserModel()
-		let interestModel = new InterestModel()
-		try {
-			await interestModel.delete({ userId: req.params.id })
-			await userModel.setInterests(Number(req.params.id), req.body.interests)
-			let interests: Interest[] = await userModel.getInterests(Number(req.params.id))
-			return res.status(200).json(ResManager.success(interests))
-		} catch {
-			return ResManager.serverError()
+	public static async setUserInterests(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		const result = UserActions.setInterests(Number(req.params.id), req.body.interests)
+		if (result instanceof ResInfo) {
+			return res.status(result.code).json(result.resBody)
 		}
+		return res.status(200).json()
 	}
 }

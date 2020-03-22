@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.get('/', protect, UserController.getUsers)
 router.get('/:id', protect, UserController.getUser)
-router.post('/', protect, UserController.createUser)
 
 router.get('/:id/interests/', protect, UserController.getInterests)
 router.post('/:id/interests/', protect, UserController.setUserInterests)
