@@ -52,21 +52,19 @@ export default abstract class Model<T> {
 		}
 	}
 
-	async getOneWith(field: string, value: string): Promise<T | null> {
+	async getOneWith(field: string, value: string): Promise<T | Error> {
 		try {
 			let result = await db<T>(this.tableName)
 				.where(field, value)
 				.first()
 			if (result && this.isInstance(result)) {
-				// @ts-ignore
 				return result
 			} else {
-				// return new Error(`Cannot find ${field} with ${value}`)
+				return new Error(`Cannot find ${field} with ${value}`)
 			}
 		} catch (e) {
-			// return this.errorMsg(e.message)
+			return this.errorMsg(e.message)
 		}
-		return null
 	}
 
 	async updateWhere(where: Object, update: Object) {

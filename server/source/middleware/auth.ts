@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { User, UserModel } from '../models/User'
-import { UserSession, UserSessionModel } from '../models/UserSession'
+import { UserSessionModel } from '../models/UserSession'
 
 export default async function protect(req: Request, res: Response, next: NextFunction) {
 	let token
-	console.log('Protect route')
 	// if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 	// 	// Set token from Bearer token in header
 	// 	token = req.headers.authorization.split(' ')[1]
@@ -27,7 +25,7 @@ export default async function protect(req: Request, res: Response, next: NextFun
 			session = await userSessionModel.getOneWith('userId', `${decoded.id}`)
 		}
 
-		if (session) {
+		if (session && !(session instanceof Error)) {
 			jwt.verify(token, session.uuid as jwt.Secret)
 			if (decoded && typeof decoded !== 'string') {
 			}

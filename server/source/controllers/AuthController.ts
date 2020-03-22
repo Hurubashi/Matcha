@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import ResTemplate from './ResTemplate'
+import ResTemplate, { ResInfo } from './ResTemplate'
 import { User, UserModel } from '../models/User'
 import Joi, { Err } from 'joi'
 import bcrypt from 'bcrypt'
 import uuidv1 from 'uuid/v1'
 import { UserActivationUUID, UserActivationUUIDModel } from '../models/UserActivationUUID'
-import { UserSession, UserSessionModel } from '../models/UserSession'
 import pug from 'pug'
 import MailService from '../util/MailService'
 import path from 'path'
@@ -44,7 +43,6 @@ export default class AuthController {
 				imgSrc: process.env.APP_SERVER + '/images/dating.jpg',
 			})
 			let mail = await MailService.sendMail(user.email, 'registration', letter)
-			console.log(mail)
 
 			return res.status(201).json(ResTemplate.success(user))
 		} else {
@@ -59,54 +57,23 @@ export default class AuthController {
 	 */
 
 	public async login(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = await userModel.getOneWith('username', req.body.username)
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
-
-		if (!user || user.password != password)
-			return res.status(422).json(ResTemplate.error('Incorrect username or password'))
-
-		if (!user.isVerified)
-			return res
-				.status(403)
-				.json(ResTemplate.error('User is not verified. Check your email for verification link.'))
-
-		let session = null
-		try {
-			session = await AuthController.createNewSession(user)
-		} catch {
-			return res.status(500).json(ResTemplate.error('Something went wrong'))
-		}
-
-		if (session) {
-			const options = {
-				expires: session.expire,
-				httpOnly: true,
-				sameSite: true,
+		const user = AuthActions.validateUserLoginData(req.body.username, password, res, next)
+		if (userModel.isInstance(user)) {
+			try {
+				await AuthActions.removeCurrentSession(user.id)
+				const session = await AuthActions.createNewSession(user.id)
+				if (!(session instanceof Error)) {
+					AuthActions.setSessionCookies(res, user.id, session)
+					return res.json(ResTemplate.success(user))
+				}
+			} catch (err) {
+				return res.status(500).json(ResTemplate.error(err.message))
 			}
-			const token = jwt.sign({ id: user.id }, session.uuid, {
-				expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
-			})
-			res.cookie('user', true, { expires: session.expire, sameSite: true })
-			return res.cookie('jwt', token, options).json(ResTemplate.success(user))
-		} else {
-			return res.status(500).json(ResTemplate.error('Cannot set session cookies'))
 		}
+		return res.status(500).json(ResTemplate.serverError())
 	}
 
-	private static async createNewSession(user: User): Promise<UserSession | null> {
-		console.log('create session func')
-		const userSessionModel = new UserSessionModel()
-		await userSessionModel.delete({ userId: user.id })
-		const uuid = uuidv1()
-		const expire = new Date(
-			Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000,
-		)
-		await userSessionModel.create({ userId: user.id, uuid: uuid, expire: expire })
-
-		const session = await userSessionModel.getOneWith('userId', `${user.id}`)
-		console.log('session: ' + session)
-		return session
-	}
 	/**
 	 * @desc        Log user out / clear cookie
 	 * @route       POST /api/auth/logout
@@ -114,9 +81,7 @@ export default class AuthController {
 	 */
 
 	public async logout(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		res.clearCookie('user')
-		res.clearCookie('jwt')
-		res.clearCookie('io')
+		AuthActions.clearSessionCookies(res)
 		return res.json(ResTemplate.success({}))
 	}
 
@@ -127,15 +92,7 @@ export default class AuthController {
 	 */
 
 	public async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		// const user = await User.getUser(Number(req.params.id))
-		//
-		// res.status(200).json({
-		// 	success: true,
-		// 	data: user
-		// })
-		console.log('get me route')
 		AuthActions.getUserId(req)
-
 		return res.json('Get me')
 	}
 

@@ -5,7 +5,6 @@ import { Message } from '../models/Message'
 import { User } from '../models/User'
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
-import { string } from 'joi'
 
 export class ChatServer {
 	public static readonly PORT: number = 8080
@@ -35,7 +34,7 @@ export class ChatServer {
 				var cookies = cookie.parse(socket.handshake.headers.cookie)
 				var decoded = jwt.decode(cookies['jwt'])
 				if (decoded && typeof decoded !== 'string') {
-					console.log(decoded.id)
+					// console.log(decoded.id)
 				}
 			}
 

@@ -1,5 +1,21 @@
+type ResBody = {
+	success: boolean
+	data?: Object
+	msg?: string
+}
+
+export class ResInfo {
+	code: number
+	resBody: ResBody
+
+	constructor(code: number, resBody: ResBody) {
+		this.code = code
+		this.resBody = resBody
+	}
+}
+
 export default class ResTemplate {
-	static success(data: Object, message?: String | undefined): Object {
+	static success(data: Object, message?: string | undefined): ResBody {
 		const res = message
 			? {
 					success: true,
@@ -14,7 +30,7 @@ export default class ResTemplate {
 		return res
 	}
 
-	static error(message?: String | undefined): Object {
+	static error(message?: string | undefined): ResBody {
 		const res = message
 			? {
 					success: false,
@@ -25,5 +41,11 @@ export default class ResTemplate {
 			  }
 
 		return res
+	}
+
+	static resWithCode(code: number, res: ResBody) {}
+
+	static serverError(): ResInfo {
+		return new ResInfo(500, ResTemplate.error('Something went wrong'))
 	}
 }
