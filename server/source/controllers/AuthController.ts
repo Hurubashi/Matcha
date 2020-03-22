@@ -58,7 +58,7 @@ export default class AuthController {
 
 	public async login(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const password = await bcrypt.hash(req.body.password, String(process.env.ENCRYPTION_SALT))
-		const user = AuthActions.validateUserLoginData(req.body.username, password, res, next)
+		const user = await AuthActions.validateUserLoginData(req.body.username, password, res, next)
 		if (userModel.isInstance(user)) {
 			try {
 				await AuthActions.removeCurrentSession(user.id)
