@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
 import ResManager from '../util/ResManager'
-import { Interest, InterestModel } from '../models/Interest'
 import UserActions from '../actions/UserActions'
 import { ResInfo } from '../util/ResManager'
 
-interface Params {
-	name: string
-}
 const userModel = new UserModel()
 
 export default class UserController {
@@ -30,30 +26,22 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let user
-		if (req.params.id === 'me') {
-			user = await UserActions.getMeFromCookeis(req)
-		} else {
-			let userModel = new UserModel()
-			user = await userModel.getOne(Number(req.params.id))
-		}
+		const user = UserActions.getUserFromRequest(req)
 
-		if (userModel.isInstance(user)) {
+		if (user) {
 			return res.status(200).json(ResManager.success(user))
 		} else {
-			return res.sendStatus(500)
+			return res.status(404)
 		}
 	}
 
 	/**
-	 * @desc        Get user
+	 * @desc        Get me
 	 * @route       GET /api/user/me
 	 * @access      Public
 	 */
 
 	public static async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		console.log('getme ALLALALALLALAL')
-
 		const user = await UserActions.getMeFromCookeis(req)
 
 		if (userModel.isInstance(user)) {
@@ -64,26 +52,29 @@ export default class UserController {
 	}
 
 	/**
-	 * @desc        Update user
-	 * @route       PUT /api/user/:id
-	 * @access      Private/Admin
+	 * @desc        Update me
+	 * @route       PUT /api/user/me
+	 * @access      Private
 	 */
 
 	public static async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let userModel = new UserModel()
-		let user: User | Error = await userModel.getOne(Number(req.params.id))
-		userModel.updateWhere({ id: req.params.id }, req.params)
-		if (userModel.isInstance(user)) {
-			return res.status(200).json(ResManager.success(user))
-		} else {
-			return res.status(404).json(ResManager.error(user.message))
+		const user = await UserActions.getMeFromCookeis(req)
+		let update = userModel.fillAccessibleColumns({ ...req.body })
+		if (user) {
+			try {
+				await userModel.updateWhere({ id: user.id }, update)
+				return res.sendStatus(200)
+			} catch (e) {
+				return res.status(406).json(ResManager.error(e.message))
+			}
 		}
+		return res.sendStatus(500)
 	}
 
 	/**
-	 * @desc        Delete user
-	 * @route       DELETE /api/user/:id
-	 * @access      Private/Admin
+	 * @desc        Delete me
+	 * @route       DELETE /api/user/me
+	 * @access      Private
 	 */
 
 	public static async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response> {

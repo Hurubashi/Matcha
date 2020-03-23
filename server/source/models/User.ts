@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import Joi, { string } from 'joi'
 import Model from './Model'
 import { Interest, InterestModel } from './Interest'
 
@@ -22,7 +22,9 @@ export class UserModel extends Model<User> {
 		user_email_uindex: 'This email is already taken',
 		user_username_uindex: 'This username is already taken',
 		'Unknown column': 'Something went wrong',
+		"Data truncated for column 'sex'": 'Sex value allowed [male | female]',
 	}
+	accessibleColumns = ['username', 'firsName', 'secondName', 'sex', 'preferences', 'biography']
 
 	validate(obj: Object): Error | null {
 		Joi.validate(obj, this.schema, (e: Joi.ValidationError) => {

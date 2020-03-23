@@ -2,10 +2,15 @@ import knex from 'knex'
 import { knexConfig } from '../config'
 let db = knex(knexConfig)
 
+interface KeyValue {
+	[key: string]: string
+}
+
 export default abstract class Model<T> {
 	abstract tableName: string
 	abstract indexRow: string
 	abstract customSqlErrors: Object
+	abstract accessibleColumns: string[]
 
 	public isInstance(object: any): object is T {
 		return this.indexRow in object
@@ -30,9 +35,9 @@ export default abstract class Model<T> {
 			.from(this.tableName)
 	}
 
-	async getWhere(params: Object, select?: [String] | undefined): Promise<T[]> {
+	async getWhere(params: Object, columns?: [String] | undefined): Promise<T[]> {
 		const res = await db<T>(this.tableName)
-			.select(select ? select : '*')
+			.select(columns ? columns : '*')
 			.where(params)
 			.from(this.tableName)
 		return res
@@ -67,10 +72,14 @@ export default abstract class Model<T> {
 		}
 	}
 
-	async updateWhere(where: Object, update: Object) {
-		return db(this.tableName)
-			.where(where)
-			.update(update)
+	async updateWhere(where: Object, update: Object): Promise<void | Error> {
+		try {
+			await db(this.tableName)
+				.where(where)
+				.update(update)
+		} catch (e) {
+			return this.errorMsg(e.sqlMessage)
+		}
 	}
 
 	async delete(where: Object) {
@@ -79,12 +88,20 @@ export default abstract class Model<T> {
 			.delete()
 	}
 
+	fillAccessibleColumns(args: any): KeyValue {
+		let obj: KeyValue = {}
+		this.accessibleColumns.forEach(elem => {
+			obj[elem] = args[elem]
+		})
+		return obj
+	}
+
 	private errorMsg(msg: string): Error {
 		for (let [key, value] of Object.entries(this.customSqlErrors)) {
 			if (msg.includes(key)) {
-				return new Error(value ? value : msg)
+				throw new Error(value ? value : msg)
 			}
 		}
-		return new Error(msg)
+		throw new Error(msg)
 	}
 }

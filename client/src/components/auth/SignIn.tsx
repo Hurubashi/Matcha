@@ -3,15 +3,7 @@ import { Link as ReactLink, Redirect } from 'react-router-dom'
 import * as Yup from 'yup'
 import { withFormik, FormikProps, Form } from 'formik'
 import axios from 'axios'
-import {
-	Button,
-	Link,
-	Box,
-	Checkbox,
-	FormControlLabel,
-	Typography,
-	Container,
-} from '@material-ui/core'
+import { Button, Link, Box, Checkbox, FormControlLabel, Typography, Container } from '@material-ui/core'
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 

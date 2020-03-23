@@ -9,4 +9,5 @@ export class UserActivationUUIDModel extends Model<UserActivationUUID> {
 	tableName: string = 'userActivationUuid'
 	indexRow: string = 'userId'
 	customSqlErrors: Object = {}
+	accessibleColumns = []
 }

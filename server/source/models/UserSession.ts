@@ -10,4 +10,5 @@ export class UserSessionModel extends Model<UserSession> {
 	tableName: string = 'userSession'
 	indexRow: string = 'userId'
 	customSqlErrors: Object = {}
+	accessibleColumns = []
 }

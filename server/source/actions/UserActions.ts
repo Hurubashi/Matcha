@@ -24,9 +24,7 @@ export default class UserActions {
 
 	static async getMeFromCookeis(req: Request): Promise<User | null> {
 		const token = req.cookies['jwt']
-		console.log(token)
 		const decoded = jwt.decode(token)
-		console.log(decoded)
 
 		if (decoded && typeof decoded !== 'string') {
 			const user = await userModel.getOne(Number(decoded.id))
@@ -37,5 +35,24 @@ export default class UserActions {
 			}
 		}
 		return null
+	}
+
+	static async getUserFromRequest(req: Request): Promise<User | null> {
+		let user
+		if (req.params.id === 'me') {
+			user = await UserActions.getMeFromCookeis(req)
+		} else {
+			let userModel = new UserModel()
+			try {
+				user = await userModel.getOne(Number(req.params.id))
+			} catch (err) {
+				console.log(err)
+			}
+		}
+		if (userModel.isInstance(user)) {
+			return user
+		} else {
+			return null
+		}
 	}
 }

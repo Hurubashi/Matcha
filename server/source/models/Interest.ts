@@ -9,4 +9,5 @@ export class InterestModel extends Model<Interest> {
 	tableName: string = 'interest'
 	indexRow: string = 'userId'
 	customSqlErrors: Object = {}
+	accessibleColumns = []
 }
