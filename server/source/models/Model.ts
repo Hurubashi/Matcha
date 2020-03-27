@@ -20,10 +20,10 @@ export default abstract class Model<T> {
 		try {
 			let id = await db(this.tableName).insert(src)
 			let obj = await db<T>(this.tableName)
-				.where(this.indexRow, id[0])
+				.where('id', id[0])
 				.first()
 			if (this.isInstance(obj)) return obj
-			else return new Error(`Cannot create ${this.tableName} with ${src}`)
+			else throw Error(`Cannot create ${this.tableName} with ${src}`)
 		} catch (e) {
 			return this.errorMsg(e.message)
 		}
@@ -48,12 +48,13 @@ export default abstract class Model<T> {
 			let result = await db<T>(this.tableName)
 				.where(this.indexRow, index)
 				.first()
-			if (this.isInstance(result))
-				// @ts-ignore
+			if (this.isInstance(result)) {
 				return result
-			else return new Error(`Cannot find ${this.tableName} with ${this.indexRow} of ${index}`)
+			} else {
+				throw new Error(`Cannot find ${this.tableName} with ${this.indexRow} of ${index}`)
+			}
 		} catch (e) {
-			return this.errorMsg(e.message)
+			throw this.errorMsg(e.message)
 		}
 	}
 
@@ -65,10 +66,10 @@ export default abstract class Model<T> {
 			if (result && this.isInstance(result)) {
 				return result
 			} else {
-				return new Error(`Cannot find ${field} with ${value}`)
+				throw new Error(`Cannot find ${field} with ${value}`)
 			}
 		} catch (e) {
-			return this.errorMsg(e.message)
+			throw this.errorMsg(e.message)
 		}
 	}
 
@@ -78,7 +79,7 @@ export default abstract class Model<T> {
 				.where(where)
 				.update(update)
 		} catch (e) {
-			return this.errorMsg(e.sqlMessage)
+			throw this.errorMsg(e.sqlMessage)
 		}
 	}
 
@@ -90,8 +91,10 @@ export default abstract class Model<T> {
 
 	fillAccessibleColumns(args: any): KeyValue {
 		let obj: KeyValue = {}
+		console.log(args)
+
 		this.accessibleColumns.forEach(elem => {
-			obj[elem] = args[elem]
+			obj[elem] = args[elem] ? args[elem] : ''
 		})
 		return obj
 	}
@@ -99,9 +102,9 @@ export default abstract class Model<T> {
 	private errorMsg(msg: string): Error {
 		for (let [key, value] of Object.entries(this.customSqlErrors)) {
 			if (msg.includes(key)) {
-				throw new Error(value ? value : msg)
+				return new Error(value ? value : msg)
 			}
 		}
-		throw new Error(msg)
+		return new Error(msg)
 	}
 }

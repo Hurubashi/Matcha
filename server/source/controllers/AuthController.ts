@@ -63,7 +63,6 @@ export default class AuthController {
 		if (user instanceof ResInfo) {
 			return res.status(user.code).json(user.resBody)
 		}
-
 		await AuthActions.removeCurrentSession(user.id)
 		const session = await AuthActions.createNewSession(user.id)
 		if (session instanceof ResInfo) {

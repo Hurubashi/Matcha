@@ -24,7 +24,7 @@ export class UserModel extends Model<User> {
 		'Unknown column': 'Something went wrong',
 		"Data truncated for column 'sex'": 'Sex value allowed [male | female]',
 	}
-	accessibleColumns = ['username', 'firsName', 'secondName', 'sex', 'preferences', 'biography']
+	accessibleColumns = ['username', 'firstName', 'lastName', 'email', 'sex', 'preferences', 'biography']
 
 	validate(obj: Object): Error | null {
 		Joi.validate(obj, this.schema, (e: Joi.ValidationError) => {

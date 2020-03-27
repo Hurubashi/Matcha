@@ -53,8 +53,7 @@ export default class AuthActions {
 		try {
 			const uuid = uuidv1()
 			const expire = new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000)
-			await userSessionModel.create({ userId: userId, uuid: uuid, expire: expire })
-			session = await userSessionModel.getOneWith('userId', `${userId}`)
+			session = await userSessionModel.create({ userId: userId, uuid: uuid, expire: expire })
 		} catch (err) {
 			return new ResInfo(500, ResManager.error(err.message))
 		}

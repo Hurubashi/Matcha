@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import {
 	Box,
 	Container,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core'
 import styles from '../../styles'
 import Interests from './Interests'
-import { ProfileData } from './ProfileInterface'
+import { ProfileData, Gender } from './ProfileInterface'
 import axios from 'axios'
 
 interface BasicField {
@@ -24,24 +24,30 @@ interface BasicField {
 	key: 'username' | 'email' | 'firstName' | 'lastName'
 }
 
+type State = {
+	data: ProfileData
+	isLoading: boolean
+	error?: string
+}
+
+type Action =
+	| { type: 'request'; results: ProfileData }
+	| { type: 'success'; results: ProfileData }
+	| { type: 'failure'; error: string; results: ProfileData }
+
+const reducer = (state: State, action: Action): State => {
+	switch (action.type) {
+		case 'request':
+			return { isLoading: true, data: action.results }
+		case 'success':
+			return { isLoading: false, data: action.results }
+		case 'failure':
+			return { isLoading: false, error: action.error, data: action.results }
+	}
+}
+
 const Profile: React.FC = () => {
 	const classes = styles()
-
-	useEffect(() => {
-		axios
-			.get('/api/user/me')
-			.then(function(res) {
-				if (res['data']['success'] === true) {
-					console.log(res['data']['data'])
-				}
-			})
-			.catch(function(error) {
-				if (error.response['data']['success'] === true) {
-					console.log(error.response['data']['msg'])
-				}
-			})
-		return () => {}
-	}, [])
 
 	let fields: BasicField[] = [
 		{
@@ -62,39 +68,68 @@ const Profile: React.FC = () => {
 		},
 	]
 
-	let [profile, setProfile] = React.useState<ProfileData>({
-		username: 'string',
-		email: 'test',
-		firstName: 'string',
-		lastName: 'string',
-		gender: 'Male',
-		preferences: 'Female',
-		interests: ['Angular', 'jQuery', 'Polymer', 'React'],
-		biography: 'string',
+	let [state, dispatch] = useReducer(reducer, {
+		isLoading: true,
+		data: {
+			username: '',
+			email: '',
+			firstName: '',
+			lastName: '',
+			gender: '',
+			preferences: '',
+			interests: [],
+			biography: '',
+		},
 	})
 
+	let profile = state.data
+
 	const changeProfileData = (prop: keyof ProfileData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-		setProfile({ ...profile, [prop]: event.target.value })
+		// setProfile({ ...profile, [prop]: event.target.value })
 	}
 	const [editable, setEditable] = React.useState<boolean>(false)
+	const [loading, setLoading] = React.useState<boolean>(true)
 
 	const changeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const val = (event.target as HTMLInputElement).value
-		if (val === 'Male' || val === 'Female') {
-			setProfile({ ...profile, gender: val })
-		}
+		dispatch({ type: 'success', results: { ...profile, gender: val as Gender } })
+		// if (val === 'Male' || val === 'Female') {
+		// 	setProfile({ ...profile, gender: val })
+		// }
 	}
 
 	const changePreferences = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const val = (event.target as HTMLInputElement).value
-		if (val === 'Male' || val === 'Female' || val === 'Male & Female') {
-			setProfile({ ...profile, preferences: val })
+		if (val === 'Male' || val === 'Female' || val === 'Male and Female') {
+			// setProfile({ ...profile, preferences: val })
 		}
 	}
 
 	const changeEditable = () => {
 		setEditable(!editable)
 	}
+
+	useEffect(() => {
+		axios
+			.get('/api/user/me')
+			.then(function(res) {
+				if (res['data']['success'] === true) {
+					// return { ...profile, ...res['data']['data'] }
+					// console.log(res['data']['data'])
+					// setProfile({ ...profile, ...res['data']['data'] })
+					console.log('DATA LOADED')
+					dispatch({ type: 'success', results: res['data']['success'] as ProfileData })
+				}
+			})
+			.catch(function(error) {
+				// return { ...profile }
+				console.log(error)
+				// setProfile({ ...profile })
+				// if (error.response && error.response['data']['success'] === true) {
+				// 	console.log(error.response['data']['msg'])
+				// }
+			})
+	}, [])
 
 	return (
 		<Container maxWidth='md'>
@@ -170,7 +205,7 @@ const Profile: React.FC = () => {
 												labelPlacement='start'
 											/>
 											<FormControlLabel
-												value='Male & Female'
+												value='Male and Female'
 												control={<Radio color='primary' />}
 												label='Male and Female'
 												labelPlacement='start'
@@ -192,7 +227,7 @@ const Profile: React.FC = () => {
 					</Grid>
 				</Grid>
 
-				<Interests setProfile={setProfile} profile={profile} editable={editable} />
+				{/* <Interests setProfile={setProfile} profile={profile} editable={editable} /> */}
 
 				{editable ? (
 					<Box textAlign='center'>

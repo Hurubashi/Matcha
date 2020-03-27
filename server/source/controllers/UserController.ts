@@ -26,29 +26,14 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = UserActions.getUserFromRequest(req)
+		const user = await UserActions.getUserFromRequest(req)
 
-		if (user) {
-			return res.status(200).json(ResManager.success(user))
-		} else {
-			return res.status(404)
+		if (user instanceof ResInfo) {
+			return res.status(user.code).json(user.resBody)
 		}
-	}
 
-	/**
-	 * @desc        Get me
-	 * @route       GET /api/user/me
-	 * @access      Public
-	 */
-
-	public static async getMe(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = await UserActions.getMeFromCookeis(req)
-
-		if (userModel.isInstance(user)) {
-			return res.status(200).json(ResManager.success(user))
-		} else {
-			return res.sendStatus(500)
-		}
+		const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
+		return res.status(200).json(ResManager.success(userAccessibleData))
 	}
 
 	/**
@@ -59,16 +44,18 @@ export default class UserController {
 
 	public static async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const user = await UserActions.getMeFromCookeis(req)
-		let update = userModel.fillAccessibleColumns({ ...req.body })
-		if (user) {
-			try {
-				await userModel.updateWhere({ id: user.id }, update)
-				return res.sendStatus(200)
-			} catch (e) {
-				return res.status(406).json(ResManager.error(e.message))
-			}
+		if (user instanceof ResInfo) {
+			return res.status(user.code).json(user.resBody)
 		}
-		return res.sendStatus(500)
+
+		let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
+
+		try {
+			await userModel.updateWhere({ id: user.id }, userAccessibleData)
+			return res.sendStatus(200)
+		} catch (e) {
+			return res.status(406).json(ResManager.error(e.message))
+		}
 	}
 
 	/**

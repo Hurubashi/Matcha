@@ -22,37 +22,39 @@ export default class UserActions {
 		}
 	}
 
-	static async getMeFromCookeis(req: Request): Promise<User | null> {
+	static async getMeFromCookeis(req: Request): Promise<User | ResInfo> {
 		const token = req.cookies['jwt']
 		const decoded = jwt.decode(token)
 
 		if (decoded && typeof decoded !== 'string') {
-			const user = await userModel.getOne(Number(decoded.id))
-			if (userModel.isInstance(user)) {
+			try {
+				const user = await userModel.getOne(Number(decoded.id))
+				if (!user || user instanceof Error) {
+					return new ResInfo(422, ResManager.error('No such user'))
+				}
 				return user
-			} else {
-				return null
+			} catch (e) {
+				return ResManager.serverError()
 			}
 		}
-		return null
+		return ResManager.serverError()
 	}
 
-	static async getUserFromRequest(req: Request): Promise<User | null> {
+	static async getUserFromRequest(req: Request): Promise<User | ResInfo> {
 		let user
 		if (req.params.id === 'me') {
 			user = await UserActions.getMeFromCookeis(req)
 		} else {
-			let userModel = new UserModel()
 			try {
 				user = await userModel.getOne(Number(req.params.id))
 			} catch (err) {
-				console.log(err)
+				return ResManager.serverError()
 			}
 		}
 		if (userModel.isInstance(user)) {
 			return user
 		} else {
-			return null
+			return ResManager.serverError()
 		}
 	}
 }

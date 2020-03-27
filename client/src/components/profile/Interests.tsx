@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-	Box,
-	TextField,
-	Button,
-	Typography,
-	Dialog,
-	DialogContent,
-	InputAdornment,
-	Chip,
-} from '@material-ui/core'
+import { Box, TextField, Button, Typography, Dialog, DialogContent, InputAdornment, Chip } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import styles from '../../styles'
 
@@ -69,21 +60,9 @@ const Interests: React.FC<Props> = (props: Props) => {
 				<Box>
 					<Typography>{'Interests'}:</Typography>
 					{profile.interests.map(data => {
-						return (
-							<Chip
-								key={data}
-								label={data}
-								className={classes.chip}
-								onDelete={removeInterest(data)}
-							/>
-						)
+						return <Chip key={data} label={data} className={classes.chip} onDelete={removeInterest(data)} />
 					})}
-					<Chip
-						icon={<AddCircleOutlineIcon />}
-						label={'New'}
-						clickable={true}
-						onClick={interestDialogOpen}
-					/>
+					<Chip icon={<AddCircleOutlineIcon />} label={'New'} clickable={true} onClick={interestDialogOpen} />
 				</Box>
 			) : (
 				<Box textAlign='left' m={1}>
@@ -94,10 +73,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 				</Box>
 			)}
 
-			<Dialog
-				onClose={interestDialogClose}
-				aria-labelledby='customized-dialog-title'
-				open={interestsDialog}>
+			<Dialog onClose={interestDialogClose} aria-labelledby='customized-dialog-title' open={interestsDialog}>
 				<DialogContent dividers>
 					<TextField
 						id='outlined-search'
