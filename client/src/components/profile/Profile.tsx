@@ -16,34 +16,13 @@ import {
 } from '@material-ui/core'
 import styles from '../../styles'
 import Interests from './Interests'
-import { ProfileData, Gender } from './ProfileInterface'
+import { ProfileData, Gender, Preferences } from './ProfileInterface'
 import axios from 'axios'
+import { reducer, initialState } from './ProfileReducer'
 
 interface BasicField {
 	name: string
 	key: 'username' | 'email' | 'firstName' | 'lastName'
-}
-
-type State = {
-	data: ProfileData
-	isLoading: boolean
-	error?: string
-}
-
-type Action =
-	| { type: 'request'; results: ProfileData }
-	| { type: 'success'; results: ProfileData }
-	| { type: 'failure'; error: string; results: ProfileData }
-
-const reducer = (state: State, action: Action): State => {
-	switch (action.type) {
-		case 'request':
-			return { isLoading: true, data: action.results }
-		case 'success':
-			return { isLoading: false, data: action.results }
-		case 'failure':
-			return { isLoading: false, error: action.error, data: action.results }
-	}
 }
 
 const Profile: React.FC = () => {
@@ -68,21 +47,7 @@ const Profile: React.FC = () => {
 		},
 	]
 
-	let [state, dispatch] = useReducer(reducer, {
-		isLoading: true,
-		data: {
-			username: '',
-			email: '',
-			firstName: '',
-			lastName: '',
-			gender: '',
-			preferences: '',
-			interests: [],
-			biography: '',
-		},
-	})
-
-	let profile = state.data
+	let [state, dispatch] = useReducer(reducer, initialState)
 
 	const changeProfileData = (prop: keyof ProfileData) => (event: React.ChangeEvent<HTMLInputElement>) => {
 		// setProfile({ ...profile, [prop]: event.target.value })
@@ -92,7 +57,10 @@ const Profile: React.FC = () => {
 
 	const changeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const val = (event.target as HTMLInputElement).value
-		dispatch({ type: 'success', results: { ...profile, gender: val as Gender } })
+		// dispatch({ type: 'success', results: { ...profile, gender: val as Gender } })
+
+		dispatch({ type: 'success', results: { ...state.data, gender: val as Gender } })
+
 		// if (val === 'Male' || val === 'Female') {
 		// 	setProfile({ ...profile, gender: val })
 		// }
@@ -100,6 +68,16 @@ const Profile: React.FC = () => {
 
 	const changePreferences = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const val = (event.target as HTMLInputElement).value
+
+		// state.data = { ...profile, preferences: val as Preferences }
+		dispatch({ type: 'success', results: { ...state.data, preferences: val as Preferences } })
+		// console.log('data')
+
+		// console.log(state.data.preferences)
+		// console.log('profile')
+
+		// console.log(profile.preferences)
+
 		if (val === 'Male' || val === 'Female' || val === 'Male and Female') {
 			// setProfile({ ...profile, preferences: val })
 		}
@@ -107,9 +85,13 @@ const Profile: React.FC = () => {
 
 	const changeEditable = () => {
 		setEditable(!editable)
+		dispatch({ type: 'request', results: state.data })
 	}
 
+	const saveProfile = () => {}
+
 	useEffect(() => {
+		console.log('useEffect')
 		axios
 			.get('/api/user/me')
 			.then(function(res) {
@@ -118,18 +100,18 @@ const Profile: React.FC = () => {
 					// console.log(res['data']['data'])
 					// setProfile({ ...profile, ...res['data']['data'] })
 					console.log('DATA LOADED')
-					dispatch({ type: 'success', results: res['data']['success'] as ProfileData })
+					console.log(res['data']['data'])
+					dispatch({ type: 'success', results: res['data']['data'] as ProfileData })
 				}
 			})
 			.catch(function(error) {
-				// return { ...profile }
 				console.log(error)
 				// setProfile({ ...profile })
 				// if (error.response && error.response['data']['success'] === true) {
 				// 	console.log(error.response['data']['msg'])
 				// }
 			})
-	}, [])
+	}, [dispatch])
 
 	return (
 		<Container maxWidth='md'>
@@ -138,7 +120,6 @@ const Profile: React.FC = () => {
 					<Grid item xs={12} sm={6}>
 						<Avatar className={classes.profileAvatar} alt='User Name' src='/images/1.jpg' />
 					</Grid>
-
 					<Grid item xs={12} sm={6} className={classes.basicInputFieldsContainer}>
 						{editable
 							? fields.map(elem => {
@@ -146,7 +127,7 @@ const Profile: React.FC = () => {
 										<TextField
 											label={elem.name}
 											onChange={changeProfileData(elem.key)}
-											value={profile[elem.key]}
+											value={state.data[elem.key]}
 											key={elem.key}
 											fullWidth={true}
 											margin='dense'
@@ -156,79 +137,59 @@ const Profile: React.FC = () => {
 							: fields.map(elem => {
 									return (
 										<Typography align='left' className={classes.marginBottom10} key={elem.key}>
-											{elem.name}: {profile[elem.key]}
+											{elem.name}: {state.data[elem.key]}
 										</Typography>
 									)
 							  })}
 
 						{editable ? (
 							<Box>
-								<Box>
-									<FormControl component='fieldset'>
-										<FormLabel component='legend'>Choose your Gender</FormLabel>
-										<RadioGroup
-											aria-label='position'
-											name='position'
-											value={profile.gender}
-											onChange={changeGender}
-											row>
-											<FormControlLabel
-												value='Male'
-												control={<Radio color='primary' />}
-												label='Male'
-												labelPlacement='start'
-											/>
-											<FormControlLabel
-												value='Female'
-												control={<Radio color='primary' />}
-												label='Female'
-												labelPlacement='start'
-											/>
-										</RadioGroup>
-									</FormControl>
-								</Box>
-
-								<Box>
-									<FormControl component='fieldset'>
-										<FormLabel component='legend'>Your sexual preference</FormLabel>
-										<RadioGroup aria-label='position' row value={profile.preferences} onChange={changePreferences}>
-											<FormControlLabel
-												value='Male'
-												control={<Radio color='primary' />}
-												label='Male'
-												labelPlacement='start'
-											/>
-											<FormControlLabel
-												value='Female'
-												control={<Radio color='primary' />}
-												label='Female'
-												labelPlacement='start'
-											/>
-											<FormControlLabel
-												value='Male and Female'
-												control={<Radio color='primary' />}
-												label='Male and Female'
-												labelPlacement='start'
-											/>
-										</RadioGroup>
-									</FormControl>
-								</Box>
+								<FormControl component='fieldset'>
+									<FormLabel component='legend'>Choose your Gender</FormLabel>
+									<RadioGroup aria-label='gender' value={state.data.gender || ''} onChange={changeGender} row>
+										{['Male', 'Female'].map(elem => {
+											return (
+												<FormControlLabel
+													key={'gender' + elem}
+													value={elem}
+													control={<Radio color='primary' />}
+													label={elem}
+													labelPlacement='start'
+												/>
+											)
+										})}
+									</RadioGroup>
+								</FormControl>
+								<FormControl component='fieldset'>
+									<FormLabel component='legend'>Your sexual preference</FormLabel>
+									<RadioGroup aria-label='preferences' row value={state.data.preferences} onChange={changePreferences}>
+										{['Male', 'Female', 'Male and Female'].map(elem => {
+											return (
+												<FormControlLabel
+													key={'pref' + elem}
+													value={elem}
+													control={<Radio color='primary' />}
+													label={elem}
+													labelPlacement='start'
+												/>
+											)
+										})}
+									</RadioGroup>
+								</FormControl>
 							</Box>
 						) : (
 							<Box textAlign='left'>
 								<Typography className={classes.marginBottom10}>
-									{'Gender'}: {profile.gender}
+									{'Gender'}: {state.data.gender}
 								</Typography>
 								<Typography className={classes.marginBottom10}>
-									{'Sexual preferences'}: {profile.preferences}
+									{'Sexual preferences'}: {state.data.preferences}
 								</Typography>
 							</Box>
 						)}
 					</Grid>
 				</Grid>
-
 				{/* <Interests setProfile={setProfile} profile={profile} editable={editable} /> */}
-
 				{editable ? (
 					<Box textAlign='center'>
 						<TextField
@@ -249,7 +210,7 @@ const Profile: React.FC = () => {
 				) : (
 					<Box textAlign='center'>
 						<Typography>{'Biography'}:</Typography>
-						<Typography>{profile.biography}</Typography>
+						<Typography>{state.data.biography}</Typography>
 						<Button onClick={changeEditable} variant='outlined'>
 							{'Edit'}
 						</Button>
