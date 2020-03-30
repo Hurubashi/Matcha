@@ -7,6 +7,7 @@ interface Props {
 	path: string
 	component: React.FC
 }
+
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	return isUser() ? (
 		<React.Fragment>

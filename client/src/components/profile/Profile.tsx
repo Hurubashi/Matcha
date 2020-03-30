@@ -15,7 +15,7 @@ import {
 	Grid,
 } from '@material-ui/core'
 import styles from '../../styles'
-import Interests from './Interests'
+// import Interests from './Interests'
 import { ProfileData, Gender, Preferences } from './ProfileInterface'
 import axios from 'axios'
 import { reducer, initialState } from './ProfileReducer'
