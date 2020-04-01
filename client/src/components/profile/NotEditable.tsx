@@ -3,10 +3,12 @@ import { Box, Avatar, Card, Button, Typography, Grid } from '@material-ui/core'
 import styles from '../../styles'
 import fields from './BasicFields'
 import { ProfileData } from './ProfileInterface'
+import Interests from './Interests'
 
 interface Props {
 	changeEditable: () => void
-	data: ProfileData
+	setProfile: (value: React.SetStateAction<ProfileData>) => void
+	profile: ProfileData
 }
 
 const NotEditable: React.FC<Props> = (props: Props) => {
@@ -23,24 +25,25 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 						{fields.map(elem => {
 							return (
 								<Typography align='left' className={classes.marginBottom10} key={elem.key}>
-									{elem.name}: {props.data[elem.key]}
+									{elem.name}: {props.profile[elem.key]}
 								</Typography>
 							)
 						})}
 					</Box>
 					<Box textAlign='left'>
 						<Typography className={classes.marginBottom10}>
-							{'Gender'}: {props.data.gender}
+							{'Gender'}: {props.profile.gender}
 						</Typography>
 						<Typography className={classes.marginBottom10}>
-							{'Sexual preferences'}: {props.data.preferences}
+							{'Sexual preferences'}: {props.profile.preferences}
 						</Typography>
 					</Box>
 				</Grid>
 			</Grid>
+			<Interests setProfile={props.setProfile} profile={props.profile} editable={false} />
 			<Box textAlign='center'>
 				<Typography>{'Biography'}:</Typography>
-				<Typography>{props.data.biography}</Typography>
+				<Typography>{props.profile.biography}</Typography>
 				<Button onClick={props.changeEditable} variant='outlined'>
 					{'Edit'}
 				</Button>

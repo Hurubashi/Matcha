@@ -1,5 +1,5 @@
-export type Gender = 'Male' | 'Female' | ''
-export type Preferences = 'Male' | 'Female' | 'Male and Female' | ''
+export type Gender = 'male' | 'female' | ''
+export type Preferences = 'male' | 'female' | 'male and female' | ''
 
 export interface ProfileData {
 	username: string

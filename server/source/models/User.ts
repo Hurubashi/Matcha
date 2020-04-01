@@ -9,8 +9,8 @@ export interface User {
 	firstName: string
 	lastName: string
 	password: string
-	sex: 'male' | 'female' | undefined
-	preferences: 'male' | 'female' | 'male and female' | undefined
+	gender: 'male' | 'female' | '' | undefined
+	preferences: 'male' | 'female' | 'male and female' | '' | undefined
 	biography: string
 	isVerified: boolean
 }
@@ -24,7 +24,7 @@ export class UserModel extends Model<User> {
 		'Unknown column': 'Something went wrong',
 		"Data truncated for column 'sex'": 'Sex value allowed [male | female]',
 	}
-	accessibleColumns = ['username', 'firstName', 'lastName', 'email', 'sex', 'preferences', 'biography']
+	accessibleColumns = ['username', 'firstName', 'lastName', 'email', 'gender', 'preferences', 'biography']
 
 	validate(obj: Object): Error | null {
 		Joi.validate(obj, this.schema, (e: Joi.ValidationError) => {

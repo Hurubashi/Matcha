@@ -8,8 +8,13 @@ const userModel = new UserModel()
 const interestModel = new InterestModel()
 
 export default class UserActions {
-	static async getInterests(userId: number): Promise<Interest[]> {
-		return await userModel.getInterests(userId)
+	static async getInterests(userId: number): Promise<string[]> {
+		const interests = await userModel.getInterests(userId)
+		let names: string[] = []
+		interests.forEach(element => {
+			names.push(element.name)
+		})
+		return names
 	}
 
 	static async setInterests(userId: number, interestsList: [string]): Promise<void | ResInfo> {

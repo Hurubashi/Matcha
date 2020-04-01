@@ -33,6 +33,8 @@ export default class UserController {
 		}
 
 		const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
+		const interests = await UserActions.getInterests(Number(user.id))
+		userAccessibleData['interests'] = interests
 		return res.status(200).json(ResManager.success(userAccessibleData))
 	}
 
@@ -52,6 +54,7 @@ export default class UserController {
 
 		try {
 			await userModel.updateWhere({ id: user.id }, userAccessibleData)
+			await UserActions.setInterests(Number(user.id), req.body.interests)
 			return res.sendStatus(200)
 		} catch (e) {
 			return res.status(406).json(ResManager.error(e.message))
@@ -75,7 +78,7 @@ export default class UserController {
 	 */
 
 	public static async getInterests(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const interests = UserActions.getInterests(Number(req.params.id))
+		const interests = await UserActions.getInterests(Number(req.params.id))
 		return res.status(200).json(ResManager.success(interests))
 	}
 
@@ -86,7 +89,7 @@ export default class UserController {
 	 */
 
 	public static async setUserInterests(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const result = UserActions.setInterests(Number(req.params.id), req.body.interests)
+		const result = await UserActions.setInterests(Number(req.params.id), req.body.interests)
 		if (result instanceof ResInfo) {
 			return res.status(result.code).json(result.resBody)
 		}

@@ -15,13 +15,14 @@ import {
 import styles from '../../styles'
 import fields from './BasicFields'
 import { ProfileData } from './ProfileInterface'
+import Interests from './Interests'
 
 interface Props {
 	changeProfileData: (prop: keyof ProfileData) => (event: React.ChangeEvent<HTMLInputElement>) => void
-	changeGender: (event: React.ChangeEvent<HTMLInputElement>) => void
-	changePreferences: (event: React.ChangeEvent<HTMLInputElement>) => void
+	setProfile: (value: React.SetStateAction<ProfileData>) => void
 	changeEditable: () => void
-	data: ProfileData
+	saveProfile: () => void
+	profile: ProfileData
 }
 
 const Editable: React.FC<Props> = (props: Props) => {
@@ -40,7 +41,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 								<TextField
 									label={elem.name}
 									onChange={props.changeProfileData(elem.key)}
-									value={props.data[elem.key]}
+									value={props.profile[elem.key]}
 									key={elem.key}
 									fullWidth={true}
 									margin='dense'
@@ -51,8 +52,12 @@ const Editable: React.FC<Props> = (props: Props) => {
 					<Box>
 						<FormControl component='fieldset'>
 							<FormLabel component='legend'>Choose your Gender</FormLabel>
-							<RadioGroup aria-label='gender' value={props.data.gender || ''} onChange={props.changeGender} row>
-								{['Male', 'Female'].map(elem => {
+							<RadioGroup
+								aria-label='gender'
+								value={props.profile.gender || ''}
+								onChange={props.changeProfileData('gender')}
+								row>
+								{['male', 'female'].map(elem => {
 									return (
 										<FormControlLabel
 											key={'gender' + elem}
@@ -70,9 +75,9 @@ const Editable: React.FC<Props> = (props: Props) => {
 							<RadioGroup
 								aria-label='preferences'
 								row
-								value={props.data.preferences}
-								onChange={props.changePreferences}>
-								{['Male', 'Female', 'Male and Female'].map(elem => {
+								value={props.profile.preferences}
+								onChange={props.changeProfileData('preferences')}>
+								{['male', 'female', 'male and female'].map(elem => {
 									return (
 										<FormControlLabel
 											key={'pref' + elem}
@@ -88,6 +93,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
+			<Interests setProfile={props.setProfile} profile={props.profile} editable={true} />
 			<Box textAlign='center'>
 				<TextField
 					fullWidth={true}
@@ -100,7 +106,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				<Button onClick={props.changeEditable} variant='outlined'>
 					{'Close'}
 				</Button>
-				<Button onClick={props.changeEditable} variant='outlined'>
+				<Button onClick={props.saveProfile} variant='outlined'>
 					{'Save'}
 				</Button>
 			</Box>

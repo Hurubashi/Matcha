@@ -3,7 +3,7 @@ import { knexConfig } from '../config'
 let db = knex(knexConfig)
 
 interface KeyValue {
-	[key: string]: string
+	[key: string]: any
 }
 
 export default abstract class Model<T> {
@@ -91,7 +91,6 @@ export default abstract class Model<T> {
 
 	fillAccessibleColumns(args: any): KeyValue {
 		let obj: KeyValue = {}
-		console.log(args)
 
 		this.accessibleColumns.forEach(elem => {
 			obj[elem] = args[elem] ? args[elem] : ''
