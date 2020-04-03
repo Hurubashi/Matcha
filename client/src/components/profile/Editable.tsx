@@ -102,6 +102,8 @@ const Editable: React.FC<Props> = (props: Props) => {
 					multiline
 					rows='8'
 					variant='outlined'
+					value={props.profile.biography}
+					onChange={props.changeProfileData('biography')}
 				/>
 				<Button onClick={props.changeEditable} variant='outlined'>
 					{'Close'}

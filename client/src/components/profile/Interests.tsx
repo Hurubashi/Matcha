@@ -84,6 +84,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 						onChange={newInterestOnChange}
 						onKeyDown={runFuncOnEnter(addInterest)}
 						fullWidth={true}
+						autoFocus
 						InputProps={{
 							startAdornment: <InputAdornment position='start'>#</InputAdornment>,
 						}}
