@@ -62,7 +62,13 @@ const Interests: React.FC<Props> = (props: Props) => {
 					{profile.interests.map(data => {
 						return <Chip key={data} label={data} className={classes.chip} onDelete={removeInterest(data)} />
 					})}
-					<Chip icon={<AddCircleOutlineIcon />} label={'New'} clickable={true} onClick={interestDialogOpen} />
+					<Chip
+						icon={<AddCircleOutlineIcon />}
+						className={classes.chip}
+						label={'New'}
+						clickable={true}
+						onClick={interestDialogOpen}
+					/>
 				</Box>
 			) : (
 				<Box textAlign='left' m={1}>

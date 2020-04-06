@@ -4,7 +4,6 @@ import { ProfileData, Gender, Preferences } from './ProfileInterface'
 import axios from 'axios'
 import NotEditable from './NotEditable'
 import Editable from './Editable'
-import Interests from './Interests'
 
 let emptyProfile = {
 	username: '',
@@ -38,6 +37,7 @@ const Profile: React.FC = () => {
 			.then(function(res) {
 				if (res['data']['success'] === true) {
 					setProfile(res['data']['data'] as ProfileData)
+					setLoading(false)
 				}
 			})
 			.catch(function(error) {

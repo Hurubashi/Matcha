@@ -31,10 +31,10 @@ const Editable: React.FC<Props> = (props: Props) => {
 	return (
 		<Card className={classes.profileCard}>
 			<Grid container>
-				<Grid item xs={12} sm={6}>
+				<Grid item xs={12} md={6}>
 					<Avatar className={classes.profileAvatar} alt='User Name' src='/images/1.jpg' />
 				</Grid>
-				<Grid item xs={12} sm={6} className={classes.basicInputFieldsContainer}>
+				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
 						{fields.map(elem => {
 							return (

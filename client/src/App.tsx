@@ -21,6 +21,7 @@ export default function App() {
 					{/* <PrivateRoute path='/profile' component={Profile} /> */}
 					<PrivateRoute path='/profile' component={Profile} />
 					<PrivateRoute path='/search' component={Search} />
+					<PrivateRoute path='/gallery' component={Search} />
 				</Switch>
 			</Router>
 		</React.Fragment>
