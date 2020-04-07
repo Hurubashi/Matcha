@@ -38,6 +38,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 					<img
 						className={classes.profileAvatar}
 						src='/images/1.jpg'
+						alt='Your avatar'
 						onMouseEnter={mouseEnterAvatar}
 						onMouseLeave={mouseLeaveAvatar}
 					/>

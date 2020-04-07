@@ -105,7 +105,9 @@ export default function PrimaryAppBar() {
 			<ReactLink to='/profile'>
 				<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
 			</ReactLink>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<ReactLink to='/gallery'>
+				<MenuItem onClick={handleMenuClose}>Gallery</MenuItem>
+			</ReactLink>
 			<MenuItem onClick={handleLogOut}>LogOut</MenuItem>
 		</Menu>
 	)
@@ -141,7 +143,7 @@ export default function PrimaryAppBar() {
 								<SearchIcon />
 							</div>
 							<InputBase
-								placeholder='Search…'
+								placeholder='Search for user'
 								classes={{
 									root: classes.inputRoot,
 									input: classes.inputInput,
@@ -152,17 +154,15 @@ export default function PrimaryAppBar() {
 					)}
 					<div className={classes.grow} />
 					{showUserMenus && (
-						<div className={classes.sectionDesktop}>
-							<IconButton
-								edge='end'
-								aria-label='account of current user'
-								aria-controls={menuId}
-								aria-haspopup='true'
-								onClick={handleProfileMenuOpen}
-								color='inherit'>
-								<AccountCircle />
-							</IconButton>
-						</div>
+						<IconButton
+							edge='end'
+							aria-label='account of current user'
+							aria-controls={menuId}
+							aria-haspopup='true'
+							onClick={handleProfileMenuOpen}
+							color='inherit'>
+							<AccountCircle />
+						</IconButton>
 					)}
 				</Toolbar>
 			</AppBar>
