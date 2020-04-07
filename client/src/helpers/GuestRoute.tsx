@@ -15,7 +15,6 @@ const GuestRoute: React.FC<Props> = (props: Props) => {
 			<PrimaryAppBar />
 			<Route path={props.path} component={props.component} />
 		</React.Fragment>
-
 	)
 }
 

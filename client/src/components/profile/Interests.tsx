@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, TextField, Button, Typography, Dialog, DialogContent, InputAdornment, Chip } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import styles from '../../styles'
+import profileClasses from './styles'
 
 import { ProfileData } from './ProfileInterface'
 
@@ -13,7 +13,7 @@ interface Props {
 
 const Interests: React.FC<Props> = (props: Props) => {
 	const { setProfile, profile, editable } = props
-	const classes = styles()
+	const classes = profileClasses()
 
 	const [interestsDialog, setInterestsDialog] = React.useState<boolean>(false)
 	const [newInterest, setNewInterest] = React.useState<string>('')

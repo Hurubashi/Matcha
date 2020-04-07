@@ -7,14 +7,13 @@ import {
 	FormLabel,
 	FormControlLabel,
 	TextField,
-	Avatar,
 	Card,
 	Button,
 	Grid,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
-import styles from '../../styles'
+import profileClasses from './styles'
 import fields from './BasicFields'
 import { ProfileData } from './ProfileInterface'
 import Interests from './Interests'
@@ -28,7 +27,7 @@ interface Props {
 }
 
 const Editable: React.FC<Props> = (props: Props) => {
-	const classes = styles()
+	const classes = profileClasses()
 	let avChange = React.useRef<HTMLDivElement>(null)
 
 	const mouseEnterAvatar = () => {
@@ -54,6 +53,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 						src='/images/1.jpg'
 						onMouseEnter={mouseEnterAvatar}
 						onMouseLeave={mouseLeaveAvatar}
+						alt='Your avatar'
 					/>
 					<Link to='/gallery'>
 						<div

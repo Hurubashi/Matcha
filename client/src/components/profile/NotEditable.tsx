@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box, Avatar, Card, Button, Typography, Grid } from '@material-ui/core'
+import { Box, Card, Button, Typography, Grid } from '@material-ui/core'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
-import styles from '../../styles'
+import profileClasses from './styles'
 import fields from './BasicFields'
 import { ProfileData } from './ProfileInterface'
 import Interests from './Interests'
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const NotEditable: React.FC<Props> = (props: Props) => {
-	const classes = styles()
+	const classes = profileClasses()
 	let avChange = React.useRef<HTMLDivElement>(null)
 
 	const mouseEnterAvatar = () => {
