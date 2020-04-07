@@ -55,7 +55,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 	}
 
 	return (
-		<Box p={1}>
+		<Box marginBottom='1em'>
 			{editable ? (
 				<Box>
 					<Typography>{'Interests'}:</Typography>
@@ -71,7 +71,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 					/>
 				</Box>
 			) : (
-				<Box textAlign='left' m={1}>
+				<Box textAlign='left'>
 					<Typography>{'Interests'}:</Typography>
 					{profile.interests.map(data => {
 						return <Chip key={data} label={data} className={classes.chip} variant='outlined' />

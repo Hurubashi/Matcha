@@ -12,6 +12,8 @@ import {
 	Button,
 	Grid,
 } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import styles from '../../styles'
 import fields from './BasicFields'
 import { ProfileData } from './ProfileInterface'
@@ -27,12 +29,41 @@ interface Props {
 
 const Editable: React.FC<Props> = (props: Props) => {
 	const classes = styles()
+	let avChange = React.useRef<HTMLDivElement>(null)
+
+	const mouseEnterAvatar = () => {
+		const elem = avChange.current
+		if (elem) {
+			elem.style.visibility = 'visible'
+		}
+	}
+
+	const mouseLeaveAvatar = () => {
+		const elem = avChange.current
+		if (elem) {
+			elem.style.visibility = 'hidden'
+		}
+	}
 
 	return (
 		<Card className={classes.profileCard}>
 			<Grid container>
 				<Grid item xs={12} md={6}>
-					<Avatar className={classes.profileAvatar} alt='User Name' src='/images/1.jpg' />
+					<img
+						className={classes.profileAvatar}
+						src='/images/1.jpg'
+						onMouseEnter={mouseEnterAvatar}
+						onMouseLeave={mouseLeaveAvatar}
+					/>
+					<Link to='/gallery'>
+						<div
+							className={`${classes.profileAvatar} ${classes.profileAvatarChange}`}
+							ref={avChange}
+							onMouseEnter={mouseEnterAvatar}
+							onMouseLeave={mouseLeaveAvatar}>
+							<PhotoLibraryIcon className={classes.photoLibraryIcon} />
+						</div>
+					</Link>
 				</Grid>
 				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
@@ -105,10 +136,10 @@ const Editable: React.FC<Props> = (props: Props) => {
 					value={props.profile.biography}
 					onChange={props.changeProfileData('biography')}
 				/>
-				<Button onClick={props.changeEditable} variant='outlined'>
+				<Button onClick={props.changeEditable} variant='outlined' className={classes.marginSm}>
 					{'Close'}
 				</Button>
-				<Button onClick={props.saveProfile} variant='outlined'>
+				<Button onClick={props.saveProfile} variant='outlined' className={classes.marginSm}>
 					{'Save'}
 				</Button>
 			</Box>

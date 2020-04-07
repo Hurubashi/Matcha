@@ -15,7 +15,9 @@ const styles = makeStyles((theme: Theme) =>
 			backgroundPosition: 'center 40%',
 			marginTop: '2em',
 		},
-
+		marginSm: {
+			margin: `${theme.spacing(0.1)}em`,
+		},
 		// Profile
 		profileAvatar: {
 			width: `${theme.spacing(3)}em`,
@@ -31,12 +33,8 @@ const styles = makeStyles((theme: Theme) =>
 			border: `1px solid ${theme.palette.primary.main}`,
 		},
 		profileAvatarChange: {
-			// height: `${theme.spacing(3) / 2}em`,
-			// borderRadius: `0 0 ${theme.spacing(3)}em ${theme.spacing(3)}em`,
 			marginTop: `-${theme.spacing(3)}em`,
 			[theme.breakpoints.down('xs')]: {
-				// height: `${theme.spacing(2.2) / 2}em`,
-				// borderRadius: `0 0 ${theme.spacing(2.2)}em ${theme.spacing(2.2)}em`,
 				marginTop: `-${theme.spacing(2.2)}em`,
 			},
 			lineHeight: `${theme.spacing(0.5)}em`,
@@ -55,13 +53,14 @@ const styles = makeStyles((theme: Theme) =>
 		},
 		profileCard: {
 			padding: '1em',
+			marginBottom: '2em',
 		},
 		basicInputFieldsContainer: {
-			paddingTop: 20,
+			paddingTop: '1.5em',
 			alignSelf: 'flex-start',
 		},
 		chip: {
-			marginRight: `${theme.spacing(0.05)}em`,
+			margin: `${theme.spacing(0.05)}em`,
 		},
 	}),
 )

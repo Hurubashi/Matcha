@@ -73,9 +73,9 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 			</Grid>
 			<Interests setProfile={props.setProfile} profile={props.profile} editable={false} />
 			<Box textAlign='center'>
-				<Typography>{'Biography'}:</Typography>
-				<Typography>{props.profile.biography}</Typography>
-				<Button onClick={props.changeEditable} variant='outlined'>
+				<Typography align='left'>{'Biography'}:</Typography>
+				<Typography align='left'>{props.profile.biography}</Typography>
+				<Button onClick={props.changeEditable} variant='outlined' className={classes.marginSm}>
 					{'Edit'}
 				</Button>
 			</Box>
