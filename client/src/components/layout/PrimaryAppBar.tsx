@@ -28,7 +28,7 @@ import {
 import axios from 'axios'
 import { Link as ReactLink, Redirect } from 'react-router-dom'
 import styles from './primaryAppBarStyles'
-import ChatBox from './ChatBox'
+import ChatBox from '../chat/ChatBox'
 import { isUser } from '../../helpers/getJwt'
 
 const useStyles = styles
@@ -49,14 +49,11 @@ export default function PrimaryAppBar() {
 	})
 
 	type DrawerSide = 'left'
-	const toggleDrawer = (side: DrawerSide, open: boolean) => (
-		event: React.KeyboardEvent | React.MouseEvent,
-	) => {
+	const toggleDrawer = (side: DrawerSide, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
 		if (
 			event &&
 			event.type === 'keydown' &&
-			((event as React.KeyboardEvent).key === 'Tab' ||
-				(event as React.KeyboardEvent).key === 'Shift')
+			((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
 		) {
 			return
 		}
