@@ -18,6 +18,7 @@ const styles = makeStyles((theme: Theme) =>
 			width: '100%',
 		},
 		image: {
+			fontSize: '12px',
 			position: 'relative',
 			height: '20em',
 			border: `1px groove ${theme.palette.primary.main}`,

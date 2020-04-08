@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Card, Tooltip, Button, ButtonBase, Typography } from '@material-ui/core'
+import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 
@@ -20,15 +20,20 @@ const images = [
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
 
+	const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		console.log(event)
+	}
+
 	return (
 		<Container>
 			<Card className={classes.card}>
 				<p style={{ textAlign: 'center' }}>Gallery</p>
-				<ButtonBase focusRipple key='publish' className={classes.image}>
+				<Button className={classes.image} component='label'>
+					<Input type='file' style={{ display: 'none' }} />
 					<Tooltip title='Add new photo' aria-label='add'>
 						<AddCircleOutlineIcon color='primary' fontSize='large' />
 					</Tooltip>
-				</ButtonBase>
+				</Button>
 				{images.map((image, idx) => (
 					<ButtonBase key={idx} className={classes.image}>
 						<span
