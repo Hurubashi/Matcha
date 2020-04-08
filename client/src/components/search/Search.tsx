@@ -6,33 +6,29 @@ import { Box, Container } from '@material-ui/core'
 
 // import styles from '../../styles'
 
-import image from './av1.jpg'
-import image1 from './av2.jpg'
-import image2 from './av3.jpg'
-
 const images = [
 	{
-		url: image,
+		url: '/images/av1.jpg',
 		title: 'User',
 		width: '33.3%',
 	},
 	{
-		url: image1,
+		url: '/images/av2.jpg',
 		title: 'User',
 		width: '33.3%',
 	},
 	{
-		url: image2,
+		url: '/images/av3.jpg',
 		title: 'User',
 		width: '33.3%',
 	},
 	{
-		url: image2,
+		url: '/images/av1.jpg',
 		title: 'User',
 		width: '33.3%',
 	},
 	{
-		url: image2,
+		url: '/images/av2.jpg',
 		title: 'User',
 		width: '33.3%',
 	},
@@ -133,11 +129,7 @@ const Search: React.FC = () => {
 						/>
 						<span className={classes.imageBackdrop} />
 						<span className={classes.imageButton}>
-							<Typography
-								component='span'
-								variant='subtitle1'
-								color='inherit'
-								className={classes.imageTitle}>
+							<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
 								{image.title}
 								{/* <span className={classes.imageMarked} /> */}
 							</Typography>

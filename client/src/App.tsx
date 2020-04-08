@@ -4,7 +4,8 @@ import SingUp from './components/auth/SignUp'
 import VerifyEmail from './components/auth/VerifyEmail'
 import GuestRoute from './helpers/GuestRoute'
 import Profile from './components/profile/Profile'
-import Search from './components/start/Search'
+import Gallery from './components/gallery/Gallery'
+import Search from './components/search/Search'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import PrivateRoute from './helpers/PrivateRoute'
@@ -21,7 +22,7 @@ export default function App() {
 					{/* <PrivateRoute path='/profile' component={Profile} /> */}
 					<PrivateRoute path='/profile' component={Profile} />
 					<PrivateRoute path='/search' component={Search} />
-					<PrivateRoute path='/gallery' component={Search} />
+					<PrivateRoute path='/gallery' component={Gallery} />
 				</Switch>
 			</Router>
 		</React.Fragment>

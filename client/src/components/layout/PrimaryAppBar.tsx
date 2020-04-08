@@ -27,15 +27,13 @@ import {
 
 import axios from 'axios'
 import { Link as Redirect } from 'react-router-dom'
-import styles from './primaryAppBarStyles'
+import appBarMakeStyles from './styles'
 import ChatBox from '../chat/ChatBox'
 import { isUser } from '../../helpers/getJwt'
 import { Link } from 'react-router-dom'
 
-const useStyles = styles
-
-export default function PrimaryAppBar() {
-	const classes = useStyles()
+const PrimaryAppBar: React.FC = () => {
+	const classes = appBarMakeStyles()
 	const [redirect, setRedirect] = React.useState<boolean>(false)
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -180,3 +178,5 @@ export default function PrimaryAppBar() {
 		</Box>
 	)
 }
+
+export default PrimaryAppBar
