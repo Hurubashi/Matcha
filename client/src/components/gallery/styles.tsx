@@ -6,6 +6,11 @@ const styles = makeStyles((theme: Theme) =>
 			marginTop: '1em',
 			marginBottom: '1em',
 			padding: '1em',
+			[theme.breakpoints.down('xs')]: {
+				marginTop: '0.5em',
+				marginBottom: '0.5em',
+				padding: '0.5em',
+			},
 		},
 		root: {
 			display: 'flex',
@@ -15,31 +20,38 @@ const styles = makeStyles((theme: Theme) =>
 		image: {
 			position: 'relative',
 			height: '20em',
-			border: '4px double #946556',
+			border: `1px groove ${theme.palette.primary.main}`,
+			margin: '1.16%',
+			width: '31%',
 			[theme.breakpoints.down('xs')]: {
-				width: '100% !important', // Overrides inline-style
-				height: '20em',
-			},
-			'&:hover, &$focusVisible': {
-				zIndex: 1,
+				height: '10em',
 				'& $imageBackdrop': {
-					opacity: 0.15,
+					opacity: 0.25,
 				},
-				// '& $imageMarked': {
-				// 	opacity: 0,
-				// },
+				'& $thumbUp': {
+					visibility: 'visible',
+				},
+			},
+			'&:hover': {
+				zIndex: 2,
+				'& $imageBackdrop': {
+					opacity: 0.25,
+				},
+				'& $thumbUp': {
+					visibility: 'visible',
+				},
 			},
 		},
-		focusVisible: {},
+		imageBackdrop: {
+			opacity: 0,
+			backgroundColor: 'black',
+		},
 		imageButton: {
 			position: 'absolute',
-			// left: 0,
 			right: 0,
 			top: 0,
 			bottom: 0,
 			display: 'flex',
-			// alignItems: 'center',
-			// justifyContent: 'center',
 			color: theme.palette.common.white,
 		},
 		imageSrc: {
@@ -51,29 +63,26 @@ const styles = makeStyles((theme: Theme) =>
 			backgroundSize: 'cover',
 			backgroundPosition: 'center 40%',
 		},
-		imageBackdrop: {
+		thumbUp: {
 			position: 'absolute',
-			left: 0,
-			right: 0,
-			top: 0,
-			bottom: 0,
-			backgroundColor: theme.palette.common.black,
-			opacity: 0.4,
-			transition: theme.transitions.create('opacity'),
+			right: '1em',
+			bottom: '1em',
+			display: 'flex',
+			alignItems: 'center',
+			color: 'white',
+			visibility: 'hidden',
+			[theme.breakpoints.down('xs')]: {
+				right: '0.1em',
+				bottom: '0.1em',
+				visibility: 'hidden',
+			},
+			'&:hover': {
+				backgroundColor: 'rgba(255, 255, 255, 0.5)',
+			},
 		},
-		imageTitle: {
-			position: 'relative',
-			padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+		thumbsCount: {
+			margin: '0.1em',
 		},
-		// imageMarked: {
-		// 	height: 3,
-		// 	width: 18,
-		// 	backgroundColor: theme.palette.common.white,
-		// 	position: 'absolute',
-		// 	bottom: -2,
-		// 	left: 'calc(50% - 9px)',
-		// 	transition: theme.transitions.create('opacity'),
-		// },
 	}),
 )
 

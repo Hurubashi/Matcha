@@ -1,7 +1,7 @@
 import React from 'react'
-import ButtonBase from '@material-ui/core/ButtonBase'
-import Typography from '@material-ui/core/Typography'
-import { Box, Container, Card } from '@material-ui/core'
+import { Container, Card, Tooltip, Button, ButtonBase, Typography } from '@material-ui/core'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 
 import galleryMakeStyles from './styles'
 
@@ -9,18 +9,12 @@ const images = [
 	{
 		url: '/images/av1.jpg',
 	},
-	{
-		url: '/images/av2.jpg',
-	},
-	{
-		url: '/images/av3.jpg',
-	},
-	{
-		url: '/images/av1.jpg',
-	},
-	{
-		url: '/images/av2.jpg',
-	},
+	// {
+	// 	url: '/images/av2.jpg',
+	// },
+	// {
+	// 	url: '/images/av3.jpg',
+	// },
 ]
 
 const Gallery: React.FC = () => {
@@ -29,28 +23,27 @@ const Gallery: React.FC = () => {
 	return (
 		<Container>
 			<Card className={classes.card}>
+				<p style={{ textAlign: 'center' }}>Gallery</p>
+				<ButtonBase focusRipple key='publish' className={classes.image}>
+					<Tooltip title='Add new photo' aria-label='add'>
+						<AddCircleOutlineIcon color='primary' fontSize='large' />
+					</Tooltip>
+				</ButtonBase>
 				{images.map((image, idx) => (
-					<ButtonBase
-						focusRipple
-						key={idx}
-						className={classes.image}
-						focusVisibleClassName={classes.focusVisible}
-						style={{
-							width: '33.3%',
-						}}>
+					<ButtonBase key={idx} className={classes.image}>
 						<span
 							className={classes.imageSrc}
 							style={{
 								backgroundImage: `url(${image.url})`,
 							}}
 						/>
-						<span className={classes.imageBackdrop} />
-						<span className={classes.imageButton}>
-							<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
-								{'User'}
-								{/* <span className={classes.imageMarked} /> */}
+						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
+						<Button key={idx} size='small' className={classes.thumbUp}>
+							<ThumbUpAltIcon />
+							<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>
+								{'66'}
 							</Typography>
-						</span>
+						</Button>
 					</ButtonBase>
 				))}
 			</Card>
