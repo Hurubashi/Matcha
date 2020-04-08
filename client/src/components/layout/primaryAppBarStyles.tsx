@@ -69,9 +69,13 @@ const styles = makeStyles((theme: Theme) =>
 		},
 		chatButton: {
 			position: 'fixed',
-			right: '4em',
+			right: '1em',
 			bottom: '4em',
 			zIndex: 2,
+		},
+		link: {
+			textDecoration: 'none',
+			color: 'black',
 		},
 	}),
 )

@@ -26,10 +26,11 @@ import {
 } from '@material-ui/icons/'
 
 import axios from 'axios'
-import { Link as ReactLink, Redirect } from 'react-router-dom'
+import { Link as Redirect } from 'react-router-dom'
 import styles from './primaryAppBarStyles'
 import ChatBox from '../chat/ChatBox'
 import { isUser } from '../../helpers/getJwt'
+import { Link } from 'react-router-dom'
 
 const useStyles = styles
 
@@ -102,12 +103,12 @@ export default function PrimaryAppBar() {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<ReactLink to='/profile'>
+			<Link to='/profile' className={classes.link}>
 				<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			</ReactLink>
-			<ReactLink to='/gallery'>
+			</Link>
+			<Link to='/gallery' className={classes.link}>
 				<MenuItem onClick={handleMenuClose}>Gallery</MenuItem>
-			</ReactLink>
+			</Link>
 			<MenuItem onClick={handleLogOut}>LogOut</MenuItem>
 		</Menu>
 	)
