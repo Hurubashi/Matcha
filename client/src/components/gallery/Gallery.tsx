@@ -25,9 +25,11 @@ const Gallery: React.FC = () => {
 		const elem = event.target
 		if (elem.files) {
 			console.log(elem.files[0])
-			// let fd = new FormData()
-			// fd.append('image', elem.files[0])
-			// axios.post()
+			let fd = new FormData()
+			fd.append('image', elem.files[0])
+			axios.post('/api/gallery/me', fd).then(res => {
+				console.log(res)
+			})
 		}
 	}
 
