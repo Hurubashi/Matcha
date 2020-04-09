@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
-import multer from 'multer'
 import { ResInfo } from '../util/ResManager'
 
 const userModel = new UserModel()
@@ -28,9 +27,9 @@ export default class UserController {
 
 	public static async postImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const user = await UserActions.getUserFromRequest(req)
-		const multer = multer({
-			dest: '/dest',
-		})
+
+		console.log(req.file)
+		console.log(req.files)
 		console.log(user)
 
 		return res.status(200).json(ResManager.success({}, 'Images successfuly fetched'))
