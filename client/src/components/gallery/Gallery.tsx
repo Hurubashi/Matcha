@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
+import axios from 'axios'
 
 import galleryMakeStyles from './styles'
 
@@ -21,7 +22,13 @@ const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
 
 	const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event)
+		const elem = event.target
+		if (elem.files) {
+			console.log(elem.files[0])
+			// let fd = new FormData()
+			// fd.append('image', elem.files[0])
+			// axios.post()
+		}
 	}
 
 	return (
@@ -29,7 +36,7 @@ const Gallery: React.FC = () => {
 			<Card className={classes.card}>
 				<p style={{ textAlign: 'center' }}>Gallery</p>
 				<Button className={classes.image} component='label'>
-					<Input type='file' style={{ display: 'none' }} />
+					<Input type='file' style={{ display: 'none' }} onChange={fileSelectedHandler} />
 					<Tooltip title='Add new photo' aria-label='add'>
 						<AddCircleOutlineIcon color='primary' fontSize='large' />
 					</Tooltip>

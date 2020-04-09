@@ -71,6 +71,8 @@ export default class UserController {
 		return res.json('Delete user not works yet')
 	}
 
+	/** @todo move interests regueest and routes */
+
 	/**
 	 * @desc        Get user interests
 	 * @route       GET /api/user/:id/interests
