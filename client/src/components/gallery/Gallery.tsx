@@ -21,15 +21,24 @@ const images = [
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
 
-	const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const elem = event.target
 		if (elem.files) {
 			console.log(elem.files[0])
 			let fd = new FormData()
 			fd.append('image', elem.files[0])
-			axios.post('/api/gallery/me', fd).then(res => {
-				console.log(res)
-			})
+			axios
+				.post('/api/gallery/me', fd)
+				.then(function (res) {
+					if (res['data']['success'] === true) {
+						console.log('uccess')
+						console.log(res['data'])
+					}
+				})
+				.catch(function (error) {
+					console.log('Error catched')
+					console.log(error.response['data'])
+				})
 		}
 	}
 
@@ -38,7 +47,7 @@ const Gallery: React.FC = () => {
 			<Card className={classes.card}>
 				<p style={{ textAlign: 'center' }}>Gallery</p>
 				<Button className={classes.image} component='label'>
-					<Input type='file' style={{ display: 'none' }} onChange={fileSelectedHandler} />
+					<Input type='file' style={{ display: 'none' }} onChange={uploadFile} />
 					<Tooltip title='Add new photo' aria-label='add'>
 						<AddCircleOutlineIcon color='primary' fontSize='large' />
 					</Tooltip>

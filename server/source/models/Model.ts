@@ -19,9 +19,7 @@ export default abstract class Model<T> {
 	async create(src: Object): Promise<T | Error> {
 		try {
 			let id = await db(this.tableName).insert(src)
-			let obj = await db<T>(this.tableName)
-				.where('id', id[0])
-				.first()
+			let obj = await db<T>(this.tableName).where('id', id[0]).first()
 			if (this.isInstance(obj)) return obj
 			else throw Error(`Cannot create ${this.tableName} with ${src}`)
 		} catch (e) {
@@ -30,9 +28,7 @@ export default abstract class Model<T> {
 	}
 
 	async getAll(): Promise<T[]> {
-		return db<T>(this.tableName)
-			.select('*')
-			.from(this.tableName)
+		return db<T>(this.tableName).select('*').from(this.tableName)
 	}
 
 	async getWhere(params: Object, columns?: [String] | undefined): Promise<T[]> {
@@ -45,9 +41,7 @@ export default abstract class Model<T> {
 
 	async getOne(index: number): Promise<T | Error> {
 		try {
-			let result = await db<T>(this.tableName)
-				.where(this.indexRow, index)
-				.first()
+			let result = await db<T>(this.tableName).where(this.indexRow, index).first()
 			if (this.isInstance(result)) {
 				return result
 			} else {
@@ -60,9 +54,7 @@ export default abstract class Model<T> {
 
 	async getOneWith(field: string, value: string): Promise<T | Error> {
 		try {
-			let result = await db<T>(this.tableName)
-				.where(field, value)
-				.first()
+			let result = await db<T>(this.tableName).where(field, value).first()
 			if (result && this.isInstance(result)) {
 				return result
 			} else {
@@ -75,24 +67,20 @@ export default abstract class Model<T> {
 
 	async updateWhere(where: Object, update: Object): Promise<void | Error> {
 		try {
-			await db(this.tableName)
-				.where(where)
-				.update(update)
+			await db(this.tableName).where(where).update(update)
 		} catch (e) {
 			throw this.errorMsg(e.sqlMessage)
 		}
 	}
 
 	async delete(where: Object) {
-		return db(this.tableName)
-			.where(where)
-			.delete()
+		return db(this.tableName).where(where).delete()
 	}
 
 	fillAccessibleColumns(args: any): KeyValue {
 		let obj: KeyValue = {}
 
-		this.accessibleColumns.forEach(elem => {
+		this.accessibleColumns.forEach((elem) => {
 			obj[elem] = args[elem] ? args[elem] : ''
 		})
 		return obj
