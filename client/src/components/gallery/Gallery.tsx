@@ -74,7 +74,7 @@ const Gallery: React.FC = () => {
 						<span
 							className={classes.imageSrc}
 							style={{
-								backgroundImage: `http://localhost:5000/public/uploads/(${image})`,
+								backgroundImage: `url(http://localhost:5000/public/uploads/${image})`,
 							}}
 						/>
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
