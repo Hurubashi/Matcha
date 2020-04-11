@@ -95,7 +95,7 @@ export class UserModel extends Model<User> {
 	async setInterests(userId: Number, interests: [string]) {
 		const interestModel = new InterestModel()
 
-		interests.forEach(async name => {
+		interests.forEach(async (name) => {
 			await interestModel.create({ userId: userId, name: name })
 		})
 		const res = await interestModel.getWhere({ userId: userId }, ['name'])

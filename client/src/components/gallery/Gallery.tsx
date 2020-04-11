@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
@@ -6,20 +6,37 @@ import axios from 'axios'
 
 import galleryMakeStyles from './styles'
 
-const images = [
-	{
-		url: '/images/av1.jpg',
-	},
-	// {
-	// 	url: '/images/av2.jpg',
-	// },
-	// {
-	// 	url: '/images/av3.jpg',
-	// },
-]
+// const images = [
+// 	{
+// 		url: '/images/av1.jpg',
+// 	},
+// 	// {
+// 	// 	url: '/images/av2.jpg',
+// 	// },
+// 	// {
+// 	// 	url: '/images/av3.jpg',
+// 	// },
+// ]
 
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
+	const [images, setImages] = useState<string[]>([])
+
+	useEffect(() => {
+		axios
+			.get('/api/gallery/me')
+			.then(function (res) {
+				if (res['data']['success'] === true) {
+					console.log(res)
+					console.log('http://localhost:5000/public/uploads/' + res['data']['data'][0])
+					setImages(res['data']['data'])
+					// setLoading(false)
+				}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+	}, [])
 
 	const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const elem = event.target
@@ -37,7 +54,7 @@ const Gallery: React.FC = () => {
 				})
 				.catch(function (error) {
 					console.log('Error catched')
-					console.log(error.response['data'])
+					console.log(error.response)
 				})
 		}
 	}
@@ -57,7 +74,7 @@ const Gallery: React.FC = () => {
 						<span
 							className={classes.imageSrc}
 							style={{
-								backgroundImage: `url(${image.url})`,
+								backgroundImage: `http://localhost:5000/public/uploads/(${image})`,
 							}}
 						/>
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />

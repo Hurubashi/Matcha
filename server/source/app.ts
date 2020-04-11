@@ -30,12 +30,12 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(function(error: Error, req: Request, res: Response, next: NextFunction) {
+app.use(function (error: Error, req: Request, res: Response, next: NextFunction) {
 	//Catch json error
 	res.json(ResManager.error('JSON parsing error'))
 })
 
-// app.use('/public', express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname.slice(0, __dirname.length - 4) + 'public'))
 
 import { ChatServer } from './util/ChatServer'
 

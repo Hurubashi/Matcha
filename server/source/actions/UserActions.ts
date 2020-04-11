@@ -11,7 +11,7 @@ export default class UserActions {
 	static async getInterests(userId: number): Promise<string[]> {
 		const interests = await userModel.getInterests(userId)
 		let names: string[] = []
-		interests.forEach(element => {
+		interests.forEach((element) => {
 			names.push(element.name)
 		})
 		return names
@@ -54,7 +54,7 @@ export default class UserActions {
 		try {
 			user = await userModel.getOne(id)
 		} finally {
-			if (userModel.isInstance(user)) {
+			if (user && userModel.isInstance(user)) {
 				return user
 			} else {
 				return ResManager.serverError()

@@ -38,14 +38,4 @@ var limits = {
 
 const upload = multer({ storage: storage, limits: limits }).single('image')
 
-const handgeUpload = function (req: any, res: any) {
-	upload(req, res, function (err) {
-		if (err instanceof multer.MulterError) {
-			return res.status(err.code).json(ResManager.error(err.message))
-		} else if (err) {
-			return res.status(415).json(ResManager.error(err.message))
-		}
-	})
-}
-
-export default handgeUpload
+export default upload

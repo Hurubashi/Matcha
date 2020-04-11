@@ -18,7 +18,7 @@ export default class MailService {
 			html: letter,
 		}
 
-		await transporter.sendMail(message, (err, info) => {
+		transporter.sendMail(message, (err, info) => {
 			if (err) {
 				console.log('Error occurred. ' + err.message)
 				return process.exit(1)
