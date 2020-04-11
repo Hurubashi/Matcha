@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { User, UserModel } from '../models/User'
+import { Image, imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import fs from 'fs'
@@ -30,6 +31,7 @@ export default class UserController {
 		const user = await UserActions.getUserFromRequest(req)
 		console.log('postImage')
 		console.log(req.file)
+		imageModel.create()
 
 		return res.status(200).json(ResManager.success({}, 'Images successfuly fetched'))
 	}
