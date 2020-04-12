@@ -20,6 +20,7 @@ import galleryMakeStyles from './styles'
 
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
+	const [refresh, setRefresh] = useState<boolean>(false)
 	const [images, setImages] = useState<string[]>([])
 
 	useEffect(() => {
@@ -27,16 +28,14 @@ const Gallery: React.FC = () => {
 			.get('/api/gallery/me')
 			.then(function (res) {
 				if (res['data']['success'] === true) {
-					console.log(res)
-					console.log('http://localhost:5000/public/uploads/' + res['data']['data'][0])
 					setImages(res['data']['data'])
-					// setLoading(false)
 				}
 			})
 			.catch(function (error) {
-				console.log(error)
+				// alert(error)
+				console.log(error.response['data']['msg'])
 			})
-	}, [])
+	}, [refresh])
 
 	const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const elem = event.target
@@ -50,6 +49,7 @@ const Gallery: React.FC = () => {
 					if (res['data']['success'] === true) {
 						console.log('uccess')
 						console.log(res['data'])
+						setRefresh(!refresh)
 					}
 				})
 				.catch(function (error) {
@@ -74,7 +74,7 @@ const Gallery: React.FC = () => {
 						<span
 							className={classes.imageSrc}
 							style={{
-								backgroundImage: `url(http://localhost:5000/public/uploads/${image})`,
+								backgroundImage: `url(${image})`,
 							}}
 						/>
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />

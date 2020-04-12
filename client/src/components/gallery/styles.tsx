@@ -34,7 +34,6 @@ const styles = makeStyles((theme: Theme) =>
 				},
 			},
 			'&:hover': {
-				zIndex: 2,
 				'& $imageBackdrop': {
 					opacity: 0.25,
 				},

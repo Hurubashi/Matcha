@@ -20,13 +20,13 @@ export default class UserController {
 
 	public static async getImages(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const user = await UserActions.getUserFromRequest(req)
-		console
+
 		if (!(user instanceof ResInfo)) {
 			const images = await imageModel.getWhere({ userId: user.id })
 			console.log(images)
 			let names: string[] = []
 			images.forEach((element) => {
-				names.push(user.id + '/' + element.image)
+				names.push(`http://localhost:5000/public/uploads/${user.id}/${element.image}`)
 			})
 			console.log(images)
 			console.log(names)
@@ -45,8 +45,10 @@ export default class UserController {
 		console.log('post image')
 		upload(req, res, function (err) {
 			if (err instanceof multer.MulterError) {
+				console.log('multer error')
 				return res.sendStatus(500)
 			} else if (err) {
+				console.log('custom error')
 				return res.status(415).json(ResManager.error(err.message))
 			}
 		})
