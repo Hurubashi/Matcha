@@ -23,14 +23,11 @@ export default class UserController {
 
 		if (!(user instanceof ResInfo)) {
 			const images = await imageModel.getWhere({ userId: user.id })
-			console.log(images)
-			let names: string[] = []
-			images.forEach((element) => {
-				names.push(`http://localhost:5000/public/uploads/${user.id}/${element.image}`)
+			images.forEach((element, idx) => {
+				images[idx].image = `http://localhost:5000/public/uploads/${user.id}/${element.image}`
+				delete images[idx].userId
 			})
-			console.log(images)
-			console.log(names)
-			return res.status(200).json(ResManager.success(names, 'Images successfuly fetched'))
+			return res.status(200).json(ResManager.success(images, 'Images successfuly fetched'))
 		}
 		return res.sendStatus(500)
 	}

@@ -3,6 +3,7 @@ import Model from './Model'
 export interface Image {
 	userId: number
 	image: string
+	likes: number
 }
 
 class ImageModel extends Model<Image> {

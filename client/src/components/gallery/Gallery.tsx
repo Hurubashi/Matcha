@@ -17,11 +17,14 @@ import galleryMakeStyles from './styles'
 // 	// 	url: '/images/av3.jpg',
 // 	// },
 // ]
-
+interface Image {
+	image: string
+	likes: number
+}
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
 	const [refresh, setRefresh] = useState<boolean>(false)
-	const [images, setImages] = useState<string[]>([])
+	const [images, setImages] = useState<Image[]>([])
 
 	useEffect(() => {
 		axios
@@ -74,14 +77,14 @@ const Gallery: React.FC = () => {
 						<span
 							className={classes.imageSrc}
 							style={{
-								backgroundImage: `url(${image})`,
+								backgroundImage: `url(${image.image})`,
 							}}
 						/>
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
 						<Button key={idx} size='small' className={classes.thumbUp}>
 							<ThumbUpAltIcon />
 							<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>
-								{'66'}
+								{image.likes}
 							</Typography>
 						</Button>
 					</ButtonBase>
