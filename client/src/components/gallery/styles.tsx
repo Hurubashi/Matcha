@@ -17,7 +17,15 @@ const styles = makeStyles((theme: Theme) =>
 			flexWrap: 'wrap',
 			width: '100%',
 		},
+		centered: {
+			position: 'absolute',
+			left: '50%',
+			top: '50%',
+			msTransform: 'translateY(-50%)',
+			transform: 'translateX(-50%) translateY(-50%)',
+		},
 		image: {
+			display: 'inline-block',
 			fontSize: '12px',
 			position: 'relative',
 			height: '20em',
@@ -32,12 +40,18 @@ const styles = makeStyles((theme: Theme) =>
 				'& $thumbUp': {
 					visibility: 'visible',
 				},
+				'& $edit': {
+					visibility: 'visible',
+				},
 			},
 			'&:hover': {
 				'& $imageBackdrop': {
 					opacity: 0.25,
 				},
 				'& $thumbUp': {
+					visibility: 'visible',
+				},
+				'& $edit': {
 					visibility: 'visible',
 				},
 			},
@@ -64,6 +78,23 @@ const styles = makeStyles((theme: Theme) =>
 			backgroundPosition: 'center 40%',
 		},
 		thumbUp: {
+			right: '1em',
+			bottom: '1em',
+			[theme.breakpoints.down('xs')]: {
+				right: '0.1em',
+				bottom: '0.1em',
+			},
+		},
+		edit: {
+			right: '1em',
+			top: '1em',
+			[theme.breakpoints.down('xs')]: {
+				right: '0.1em',
+				top: '0.1em',
+			},
+		},
+		iconButton: {
+			height: 'fit-content',
 			position: 'absolute',
 			right: '1em',
 			bottom: '1em',

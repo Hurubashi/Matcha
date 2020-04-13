@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input } from '@material-ui/core'
+import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input, Box } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
+import EditIcon from '@material-ui/icons/Edit'
 import axios from 'axios'
 
 import galleryMakeStyles from './styles'
@@ -65,29 +66,36 @@ const Gallery: React.FC = () => {
 	return (
 		<Container>
 			<Card className={classes.card}>
-				<p style={{ textAlign: 'center' }}>Gallery</p>
-				<Button className={classes.image} component='label'>
+				<Typography align='center'>Gallery</Typography>
+				<div className={classes.image}>
 					<Input type='file' style={{ display: 'none' }} onChange={uploadFile} />
+
 					<Tooltip title='Add new photo' aria-label='add'>
-						<AddCircleOutlineIcon color='primary' fontSize='large' />
+						<Button size='small' className={classes.centered}>
+							<AddCircleOutlineIcon color='primary' fontSize='large' />
+						</Button>
 					</Tooltip>
-				</Button>
+				</div>
 				{images.map((image, idx) => (
-					<ButtonBase key={idx} className={classes.image}>
+					<div key={idx} className={classes.image}>
 						<span
 							className={classes.imageSrc}
 							style={{
 								backgroundImage: `url(${image.image})`,
 							}}
 						/>
+
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-						<Button key={idx} size='small' className={classes.thumbUp}>
+						<Button key={idx} size='small' className={`${classes.iconButton} ${classes.edit}`}>
+							<EditIcon />
+						</Button>
+						<Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
 							<ThumbUpAltIcon />
 							<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>
 								{image.likes}
 							</Typography>
 						</Button>
-					</ButtonBase>
+					</div>
 				))}
 			</Card>
 		</Container>
