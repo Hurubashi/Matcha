@@ -23,6 +23,8 @@ const styles = makeStyles((theme: Theme) =>
 			top: '50%',
 			msTransform: 'translateY(-50%)',
 			transform: 'translateX(-50%) translateY(-50%)',
+			width: 'fit-content',
+			height: 'fit-content',
 		},
 		image: {
 			display: 'inline-block',

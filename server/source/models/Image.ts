@@ -1,6 +1,7 @@
 import Model from './Model'
 
 export interface Image {
+	id: number
 	userId: number
 	image: string
 	likes: number

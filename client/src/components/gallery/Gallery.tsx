@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Card, Tooltip, Button, ButtonBase, Typography, Input, Box } from '@material-ui/core'
+import { Container, Card, Tooltip, Button, Typography, Input, Menu, MenuItem, Box } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 import EditIcon from '@material-ui/icons/Edit'
 import axios from 'axios'
 
+import Edit from './Edit'
 import galleryMakeStyles from './styles'
 
 // const images = [
@@ -19,6 +20,7 @@ import galleryMakeStyles from './styles'
 // 	// },
 // ]
 interface Image {
+	id: string
 	image: string
 	likes: number
 }
@@ -68,16 +70,15 @@ const Gallery: React.FC = () => {
 			<Card className={classes.card}>
 				<Typography align='center'>Gallery</Typography>
 				<div className={classes.image}>
-					<Input type='file' style={{ display: 'none' }} onChange={uploadFile} />
-
 					<Tooltip title='Add new photo' aria-label='add'>
-						<Button size='small' className={classes.centered}>
+						<Button className={classes.centered} size='small' component='label'>
+							<Input type='file' style={{ display: 'none' }} onChange={uploadFile} />
 							<AddCircleOutlineIcon color='primary' fontSize='large' />
 						</Button>
 					</Tooltip>
 				</div>
 				{images.map((image, idx) => (
-					<div key={idx} className={classes.image}>
+					<div key={idx} className={classes.image} id={image.id}>
 						<span
 							className={classes.imageSrc}
 							style={{
@@ -86,9 +87,7 @@ const Gallery: React.FC = () => {
 						/>
 
 						<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-						<Button key={idx} size='small' className={`${classes.iconButton} ${classes.edit}`}>
-							<EditIcon />
-						</Button>
+						<Edit id={image.id} />
 						<Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
 							<ThumbUpAltIcon />
 							<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>
