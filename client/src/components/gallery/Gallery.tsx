@@ -16,6 +16,10 @@ const Gallery: React.FC = () => {
 		fetchImages(dispatch)
 	}, [])
 
+	const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		uploadFile(event, dispatch)
+	}
+
 	return (
 		<Container>
 			<Card className={classes.card}>
@@ -23,7 +27,7 @@ const Gallery: React.FC = () => {
 				<div className={classes.image}>
 					<Tooltip title='Add new photo' aria-label='add'>
 						<Button className={classes.centered} size='small' component='label'>
-							<Input type='file' style={{ display: 'none' }} onChange={uploadFile} />
+							<Input type='file' style={{ display: 'none' }} onChange={handleUpload} />
 							<AddCircleOutlineIcon color='primary' fontSize='large' />
 						</Button>
 					</Tooltip>

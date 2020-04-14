@@ -31,7 +31,6 @@ const Edit: React.FC<Props> = (props: Props) => {
 				onMouseLeave: handleMenuClose,
 			}}
 			anchorEl={anchorEl}
-			anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 			transformOrigin={{ vertical: 'top', horizontal: 'center' }}
 			keepMounted
 			open={isMenuOpen}
