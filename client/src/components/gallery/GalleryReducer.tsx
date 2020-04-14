@@ -1,5 +1,4 @@
-import React, { useReducer, ReducerState, ReducerAction, Dispatch } from 'react'
-import { isFunction } from 'lodash'
+import React from 'react'
 import axios from 'axios'
 
 type State =

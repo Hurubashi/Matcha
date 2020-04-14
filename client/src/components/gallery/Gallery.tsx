@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from 'react'
 import { Container, Card, Tooltip, Button, Typography, Input } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
-import axios from 'axios'
 
 import reducer, { fetchImages, uploadFile } from './GalleryReducer'
 import Edit from './Edit'
