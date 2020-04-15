@@ -48,6 +48,29 @@ export default class UserActions {
 		}
 		return ResManager.serverError()
 	}
+	/*
+	static async getMeFromCookeis(req: Request): Promise<[User, null] | [null, ResInfo]> {
+		const token = req.cookies['jwt']
+		const decoded = jwt.decode(token)
+		let user
+
+		if (decoded && typeof decoded !== 'string') {
+			try {
+				user = await userModel.getOne(Number(decoded.id))
+				if (!user || user instanceof Error) {
+					return [null, new ResInfo(422, ResManager.error('No such user'))]
+				}
+			} finally {
+				if (userModel.isInstance(user)) {
+					return [user, null]
+				} else {
+					return [null, ResManager.serverError()]
+				}
+			}
+		}
+		return [null, ResManager.serverError()]
+	}
+	*/
 
 	static async getUserById(id: number): Promise<User | ResInfo> {
 		let user

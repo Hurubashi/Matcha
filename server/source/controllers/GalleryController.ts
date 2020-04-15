@@ -14,7 +14,7 @@ const userModel = new UserModel()
 export default class UserController {
 	/**
 	 * @desc        Get user images
-	 * @route       GET /api/gallery/:userId
+	 * @route       GET /api/gallery/:id
 	 * @access      Public
 	 */
 
