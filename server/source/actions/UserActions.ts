@@ -64,10 +64,10 @@ export default class UserActions {
 
 	static async getUserFromRequest(req: Request): Promise<[User, null] | [null, ResInfo]> {
 		let user: [User, null] | [null, ResInfo]
-		if (req.params.id === 'me') {
-			user = await UserActions.getUserFromCookeis(req)
-		} else {
+		if (req.params.id) {
 			user = await UserActions.getUserById(Number(req.params.id))
+		} else {
+			user = await UserActions.getUserFromCookeis(req)
 		}
 		return user
 	}

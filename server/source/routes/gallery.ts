@@ -1,11 +1,11 @@
 import express from 'express'
-import GalleryController from '../controllers/GalleryController'
+import ImageController from '../controllers/ImageController'
 import protect from '../middleware/auth'
 import upload from '../middleware/upload'
 
 const router = express.Router()
 
-router.get('/:id', protect, GalleryController.getImages)
-router.post('/:id', protect, upload, GalleryController.postImage)
+router.get('/', protect, ImageController.getImages)
+router.post('/', protect, upload, ImageController.postImage)
 
 export default router

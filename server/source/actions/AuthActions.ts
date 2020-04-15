@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
 import { UserSession, UserSessionModel } from '../models/UserSession'

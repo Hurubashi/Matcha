@@ -1,25 +1,20 @@
 import { Request, Response, NextFunction } from 'express'
-import { User, UserModel } from '../models/User'
-import { Image, imageModel } from '../models/Image'
-
+import { imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
-import fs from 'fs'
-import { ResInfo } from '../util/ResManager'
 import upload from '../middleware/upload'
 import multer from 'multer'
+import fs from 'fs'
 
-const userModel = new UserModel()
-
-export default class UserController {
+export default class ImageController {
 	/**
 	 * @desc        Get user images
-	 * @route       GET /api/gallery/:id
-	 * @access      Public
+	 * @route       GET /api/image/
+	 * @access      public
 	 */
 
 	public static async getImages(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const [user, err] = await UserActions.getUserFromRequest(req)
+		const [user, err] = await UserActions.getUserFromCookeis(req)
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
@@ -35,8 +30,8 @@ export default class UserController {
 
 	/**
 	 * @desc        Post user image
-	 * @route       POST /api/gallery/:id
-	 * @access      Public
+	 * @route       POST /api/image/
+	 * @access      public
 	 */
 
 	public static async postImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
@@ -47,7 +42,7 @@ export default class UserController {
 				return res.status(415).json(ResManager.error(err.message))
 			}
 		})
-		const [user, err] = await UserActions.getUserFromRequest(req)
+		const [user, err] = await UserActions.getUserFromCookeis(req)
 
 		if (err) {
 			return res.status(err.code).json(err.resBody)
@@ -56,15 +51,5 @@ export default class UserController {
 			return res.status(200).json(ResManager.success({}, 'Image successfuly saved'))
 		}
 		return res.sendStatus(500)
-	}
-
-	/**
-	 * @desc        Get user image
-	 * @route       GET /api/gallery/image/:id
-	 * @access      Public
-	 */
-
-	public static async getImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		return res.status(200).json(ResManager.success({}, 'Images successfuly fetched'))
 	}
 }

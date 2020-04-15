@@ -28,7 +28,7 @@ const reducer = (state: State, action: Action): State => {
 
 export function fetchImages(dispatch: React.Dispatch<Action>) {
 	axios
-		.get('/api/gallery/me')
+		.get('/api/gallery/')
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				dispatch({ type: 'success', results: res['data']['data'] })
@@ -45,7 +45,7 @@ export const uploadFile = (event: React.ChangeEvent<HTMLInputElement>, dispatch:
 		const fd = new FormData()
 		fd.append('image', elem.files[0])
 		axios
-			.post('/api/gallery/me', fd)
+			.post('/api/gallery/', fd)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					fetchImages(dispatch)

@@ -12,7 +12,7 @@ const userModel = new UserModel()
 export default class ImageThumbsUpController {
 	/**
 	 * @desc        Get thumbs up of the picture
-	 * @route       GET /api/imagethumths/:id
+	 * @route       GET /api/imagethumths/:imageId
 	 * @access      private
 	 */
 
@@ -29,7 +29,7 @@ export default class ImageThumbsUpController {
 
 	/**
 	 * @desc        Post thumbs up for the picture
-	 * @route       POST /api/imagethumths/me
+	 * @route       POST /api/imagethumths/:imageId
 	 * @access      private
 	 */
 
@@ -39,7 +39,7 @@ export default class ImageThumbsUpController {
 
 	/**
 	 * @desc        Delete thumb up for the picture
-	 * @route       DELETE /api/gallery/image/:id
+	 * @route       DELETE /api/image/:imageId
 	 * @access      private
 	 */
 
