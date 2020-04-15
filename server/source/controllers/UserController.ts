@@ -26,16 +26,17 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = await UserActions.getUserFromRequest(req)
+		const [user, err] = await UserActions.getUserFromRequest(req)
 
-		if (user instanceof ResInfo) {
-			return res.status(user.code).json(user.resBody)
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
+			const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
+			const interests = await UserActions.getInterests(Number(user.id))
+			userAccessibleData['interests'] = interests
+			return res.status(200).json(ResManager.success(userAccessibleData))
 		}
-
-		const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
-		const interests = await UserActions.getInterests(Number(user.id))
-		userAccessibleData['interests'] = interests
-		return res.status(200).json(ResManager.success(userAccessibleData))
+		return res.sendStatus(500)
 	}
 
 	/**

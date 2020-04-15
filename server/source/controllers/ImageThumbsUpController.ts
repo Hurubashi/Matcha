@@ -34,8 +34,7 @@ export default class ImageThumbsUpController {
 	 */
 
 	public static async postThumbUp(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		// const user = await UserActions.getUserFromRequest(req)
-		// return res.status(user.code).json(user.resBody)
+		return res.sendStatus(500)
 	}
 
 	/**
@@ -45,7 +44,6 @@ export default class ImageThumbsUpController {
 	 */
 
 	public static async deleteThumbUp(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		// let user = await UserActions.getUserById(Number(req.params.userId))
-		// return res.status(200).json(ResManager.success({}, 'Images successfuly fetched'))
+		return res.sendStatus(500)
 	}
 }

@@ -9,9 +9,11 @@ const allowedMimes = ['image/png', 'image/jpeg', 'image/gif']
 
 var storage = multer.diskStorage({
 	destination: async function (req, file, cb) {
-		const user = await UserActions.getMeFromCookeis(req)
+		const [user, err] = await UserActions.getUserFromCookeis(req)
 
-		if (model.isInstance(user)) {
+		if (err) {
+			cb(Error('Session error'), '')
+		} else if (user) {
 			const dir = `public/uploads/${user.id}`
 			if (!fs.existsSync(dir)) {
 				fs.mkdirSync(dir)
@@ -21,8 +23,6 @@ var storage = multer.diskStorage({
 			} else {
 				cb(new Error('Invalid file type. Only jpg, png and gif image files are allowed.'), '')
 			}
-		} else {
-			cb(Error('Session error'), '')
 		}
 	},
 	filename: function (req, file, cb) {
