@@ -8,12 +8,12 @@ type State =
 	| { status: 'success'; data: Image[] }
 
 type Image = {
-	id: string
+	id: number
 	image: string
 	likes: number
 }
 
-type Action = { type: 'request' } | { type: 'success'; results: Image[] } | { type: 'failure'; error: string }
+export type Action = { type: 'request' } | { type: 'success'; results: Image[] } | { type: 'failure'; error: string }
 
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
@@ -28,7 +28,7 @@ const reducer = (state: State, action: Action): State => {
 
 export function fetchImages(dispatch: React.Dispatch<Action>) {
 	axios
-		.get('/api/gallery/')
+		.get('/api/image/')
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				dispatch({ type: 'success', results: res['data']['data'] })
@@ -39,13 +39,13 @@ export function fetchImages(dispatch: React.Dispatch<Action>) {
 		})
 }
 
-export const uploadFile = (event: React.ChangeEvent<HTMLInputElement>, dispatch: React.Dispatch<Action>) => {
+export const uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch: React.Dispatch<Action>) => {
 	const elem = event.target
 	if (elem.files) {
 		const fd = new FormData()
 		fd.append('image', elem.files[0])
 		axios
-			.post('/api/gallery/', fd)
+			.post('/api/image/', fd)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					fetchImages(dispatch)
@@ -55,6 +55,19 @@ export const uploadFile = (event: React.ChangeEvent<HTMLInputElement>, dispatch:
 				dispatch({ type: 'failure', error })
 			})
 	}
+}
+
+export const deleteImage = (id: number, dispatch: React.Dispatch<Action>) => {
+	axios
+		.delete(`/api/image/${id}`)
+		.then(function (res) {
+			if (res['data']['success'] === true) {
+				fetchImages(dispatch)
+			}
+		})
+		.catch(function (error) {
+			dispatch({ type: 'failure', error })
+		})
 }
 
 export default reducer

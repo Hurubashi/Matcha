@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import users from './routes/user'
 import auth from './routes/auth'
-import gallery from './routes/gallery'
+import image from './routes/image'
 import imagethumbsup from './routes/imagethumbup'
 import ResManager from './util/ResManager'
 
@@ -73,8 +73,8 @@ new ChatServer()
 
 app.use('/api/user', users)
 app.use('/api/auth', auth)
-app.use('/api/gallery', gallery)
-app.use('/api/imagethumbsup', gallery)
+app.use('/api/image', image)
+app.use('/api/imagethumbsup', imagethumbsup)
 
 app.listen(process.env.APP_PORT, () => {
 	console.log(`Server is running on port ${process.env.APP_PORT}`)

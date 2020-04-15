@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
-
+import { Action } from './GalleryReducer'
 import galleryMakeStyles from './styles'
 
 interface Props {
-	id: string
+	id: number
+	deleteImage: (id: number, dispatch: React.Dispatch<Action>) => void
+	dispatch: React.Dispatch<Action>
 }
 
 const Edit: React.FC<Props> = (props: Props) => {
@@ -36,7 +38,7 @@ const Edit: React.FC<Props> = (props: Props) => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
 			<MenuItem onClick={handleMenuClose}>Set as Avatar</MenuItem>
-			<MenuItem onClick={handleMenuClose}>Remove</MenuItem>
+			<MenuItem onClick={() => props.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
 		</Menu>
 	)
 

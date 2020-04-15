@@ -39,7 +39,7 @@ export default class ImageThumbsUpController {
 
 	/**
 	 * @desc        Delete thumb up for the picture
-	 * @route       DELETE /api/image/:imageId
+	 * @route       DELETE /api/imagethumths/:imageId
 	 * @access      private
 	 */
 

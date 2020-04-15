@@ -1,7 +1,7 @@
-import { Request, Response } from 'express'
+import { Request } from 'express'
 import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
-import { Interest, InterestModel } from '../models/Interest'
+import { InterestModel } from '../models/Interest'
 import ResManager, { ResInfo } from '../util/ResManager'
 
 const userModel = new UserModel()

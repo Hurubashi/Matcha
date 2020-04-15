@@ -3,7 +3,7 @@ import { Container, Card, Tooltip, Button, Typography, Input } from '@material-u
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 
-import reducer, { fetchImages, uploadFile } from './GalleryReducer'
+import reducer, { fetchImages, uploadImage, deleteImage } from './GalleryReducer'
 import Edit from './Edit'
 import galleryMakeStyles from './styles'
 
@@ -16,10 +16,6 @@ const Gallery: React.FC = () => {
 		fetchImages(dispatch)
 	}, [])
 
-	const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		uploadFile(event, dispatch)
-	}
-
 	return (
 		<Container>
 			<Card className={classes.card}>
@@ -27,14 +23,18 @@ const Gallery: React.FC = () => {
 				<div className={classes.image}>
 					<Tooltip title='Add new photo' aria-label='add'>
 						<Button className={classes.centered} size='small' component='label'>
-							<Input type='file' style={{ display: 'none' }} onChange={handleUpload} />
+							<Input
+								type='file'
+								style={{ display: 'none' }}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => uploadImage(event, dispatch)}
+							/>
 							<AddCircleOutlineIcon color='primary' fontSize='large' />
 						</Button>
 					</Tooltip>
 				</div>
 				{state.status === 'success' &&
 					state.data.map((image, idx) => (
-						<div key={idx} className={classes.image} id={image.id}>
+						<div key={idx} className={classes.image}>
 							<span
 								className={classes.imageSrc}
 								style={{
@@ -42,7 +42,7 @@ const Gallery: React.FC = () => {
 								}}
 							/>
 							<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-							<Edit id={image.id} />
+							<Edit id={image.id} deleteImage={deleteImage} dispatch={dispatch} />
 							<Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
 								<ThumbUpAltIcon />
 								<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>

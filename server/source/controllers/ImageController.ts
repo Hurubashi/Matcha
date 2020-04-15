@@ -48,6 +48,24 @@ export default class ImageController {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
 			await imageModel.create({ userId: user.id, image: req.file.filename })
+			return res.status(201).json(ResManager.success({}, 'Image successfuly saved'))
+		}
+		return res.sendStatus(500)
+	}
+
+	/**
+	 * @desc        Delete user image
+	 * @route       DELETE /api/image/:id
+	 * @access      public
+	 */
+
+	public static async deleteImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
+		const [user, err] = await UserActions.getUserFromCookeis(req)
+
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
+			await imageModel.delete({ id: req.params.id })
 			return res.status(200).json(ResManager.success({}, 'Image successfuly saved'))
 		}
 		return res.sendStatus(500)
