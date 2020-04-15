@@ -37,7 +37,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 				<Grid item xs={12} md={6}>
 					<img
 						className={classes.profileAvatar}
-						src='/images/1.jpg'
+						src={props.profile.avatar}
 						alt='Your avatar'
 						onMouseEnter={mouseEnterAvatar}
 						onMouseLeave={mouseLeaveAvatar}
@@ -54,7 +54,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 				</Grid>
 				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
-						{fields.map(elem => {
+						{fields.map((elem) => {
 							return (
 								<Typography align='left' className={classes.profileTextField} key={elem.key}>
 									{elem.name}: {props.profile[elem.key]}

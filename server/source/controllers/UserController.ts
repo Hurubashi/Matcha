@@ -3,6 +3,7 @@ import { User, UserModel } from '../models/User'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import { ResInfo } from '../util/ResManager'
+import { imageModel } from '../models/Image'
 
 const userModel = new UserModel()
 
@@ -21,6 +22,12 @@ export default class UserController {
 		} else if (user) {
 			const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
 			const interests = await UserActions.getInterests(Number(user.id))
+			if (user.avatar) {
+				const image = await imageModel.getWhere({ id: user.avatar })
+				if (image[0]) {
+					userAccessibleData['avatar'] = `http://localhost:5000/public/uploads/${user.id}/${image[0].image}`
+				}
+			}
 			userAccessibleData['interests'] = interests
 			return res.status(200).json(ResManager.success(userAccessibleData))
 		}

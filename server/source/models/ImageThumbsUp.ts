@@ -13,4 +13,4 @@ class ImageThumbUpModel extends Model<ImageThumbUp> {
 	accessibleColumns = []
 }
 
-export const imageModel = new ImageThumbUpModel()
+export const imageThumbUpModel = new ImageThumbUpModel()

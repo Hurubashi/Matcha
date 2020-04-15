@@ -39,7 +39,7 @@ export default abstract class Model<T> {
 		return res
 	}
 
-	async getOne(index: number): Promise<T | Error> {
+	async getOne(index: number | string): Promise<T | Error> {
 		try {
 			let result = await db<T>(this.tableName).where(this.indexRow, index).first()
 			if (this.isInstance(result)) {

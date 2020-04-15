@@ -8,6 +8,7 @@ export interface ProfileData {
 	lastName: string
 	gender: Gender
 	preferences: Preferences
+	avatar: string
 	interests: string[]
 	biography: string
 }

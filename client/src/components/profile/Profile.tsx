@@ -12,6 +12,7 @@ let emptyProfile = {
 	lastName: '',
 	gender: '' as Gender,
 	preferences: '' as Preferences,
+	avatar: '',
 	interests: [],
 	biography: '',
 }

@@ -9,7 +9,7 @@ export interface Image {
 
 class ImageModel extends Model<Image> {
 	tableName: string = 'image'
-	indexRow: string = 'userId'
+	indexRow: string = 'id'
 	customSqlErrors: Object = {}
 	accessibleColumns = []
 }

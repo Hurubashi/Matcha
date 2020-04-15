@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { imageModel } from '../models/Image'
+import { Image, imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import upload from '../middleware/upload'
@@ -9,7 +9,7 @@ import fs from 'fs'
 export default class ImageController {
 	/**
 	 * @desc        Get user images
-	 * @route       GET /api/image/
+	 * @route       GET /api/image/:id
 	 * @access      public
 	 */
 
@@ -18,7 +18,12 @@ export default class ImageController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
-			const images = await imageModel.getWhere({ userId: user.id })
+			let images: Image[]
+			if (req.params.id) {
+				images = await imageModel.getWhere({ id: req.params.id })
+			} else {
+				images = await imageModel.getWhere({ userId: user.id })
+			}
 			images.forEach((element, idx) => {
 				images[idx].image = `http://localhost:5000/public/uploads/${user.id}/${element.image}`
 				delete images[idx].userId

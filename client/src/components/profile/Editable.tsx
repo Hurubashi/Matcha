@@ -50,7 +50,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				<Grid item xs={12} md={6}>
 					<img
 						className={classes.profileAvatar}
-						src='/images/1.jpg'
+						src={props.profile.avatar}
 						onMouseEnter={mouseEnterAvatar}
 						onMouseLeave={mouseLeaveAvatar}
 						alt='Your avatar'
@@ -67,7 +67,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				</Grid>
 				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
-						{fields.map(elem => {
+						{fields.map((elem) => {
 							return (
 								<TextField
 									label={elem.name}
@@ -88,7 +88,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 								value={props.profile.gender || ''}
 								onChange={props.changeProfileData('gender')}
 								row>
-								{['male', 'female'].map(elem => {
+								{['male', 'female'].map((elem) => {
 									return (
 										<FormControlLabel
 											key={'gender' + elem}
@@ -108,7 +108,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 								row
 								value={props.profile.preferences}
 								onChange={props.changeProfileData('preferences')}>
-								{['male', 'female', 'male and female'].map(elem => {
+								{['male', 'female', 'male and female'].map((elem) => {
 									return (
 										<FormControlLabel
 											key={'pref' + elem}

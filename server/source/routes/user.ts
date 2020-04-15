@@ -4,6 +4,7 @@ import protect from '../middleware/auth'
 
 const router = express.Router()
 
+router.get('/', protect, UserController.getUser)
 router.get('/:id', protect, UserController.getUser)
 router.put('/', protect, UserController.updateUser)
 router.delete('/', protect, UserController.deleteUser)
