@@ -3,7 +3,7 @@ import { Container, Card, Tooltip, Button, Typography, Input } from '@material-u
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 
-import reducer, { fetchImages, uploadImage, deleteImage } from './GalleryReducer'
+import reducer, { fetchImages, uploadImage, deleteImage, setAvatar } from './GalleryReducer'
 import Edit from './Edit'
 import galleryMakeStyles from './styles'
 
@@ -42,7 +42,7 @@ const Gallery: React.FC = () => {
 								}}
 							/>
 							<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-							<Edit id={image.id} deleteImage={deleteImage} dispatch={dispatch} />
+							<Edit id={image.id} deleteImage={deleteImage} setAvatar={setAvatar} dispatch={dispatch} />
 							<Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
 								<ThumbUpAltIcon />
 								<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>

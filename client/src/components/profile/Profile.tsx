@@ -33,14 +33,14 @@ const Profile: React.FC = () => {
 
 	useEffect(() => {
 		axios
-			.get('/api/user/me')
-			.then(function(res) {
+			.get('/api/user/')
+			.then(function (res) {
 				if (res['data']['success'] === true) {
 					setProfile(res['data']['data'] as ProfileData)
 					setLoading(false)
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error)
 			})
 	}, [])
@@ -51,13 +51,13 @@ const Profile: React.FC = () => {
 
 	const saveProfile = () => {
 		axios
-			.put('/api/user/me', profile)
-			.then(function(res) {
+			.put('/api/user/', profile)
+			.then(function (res) {
 				if (res['data']['success'] === true) {
 					console.log(res['data'])
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error)
 			})
 	}

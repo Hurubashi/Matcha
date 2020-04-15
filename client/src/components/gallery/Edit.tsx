@@ -7,6 +7,7 @@ import galleryMakeStyles from './styles'
 interface Props {
 	id: number
 	deleteImage: (id: number, dispatch: React.Dispatch<Action>) => void
+	setAvatar: (id: number, dispatch: React.Dispatch<Action>) => void
 	dispatch: React.Dispatch<Action>
 }
 
@@ -37,7 +38,7 @@ const Edit: React.FC<Props> = (props: Props) => {
 			keepMounted
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<MenuItem onClick={handleMenuClose}>Set as Avatar</MenuItem>
+			<MenuItem onClick={() => props.setAvatar(props.id, props.dispatch)}>Set as Avatar</MenuItem>
 			<MenuItem onClick={() => props.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
 		</Menu>
 	)

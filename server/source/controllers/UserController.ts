@@ -9,18 +9,6 @@ const userModel = new UserModel()
 export default class UserController {
 	/**
 	 * @desc        Get user
-	 * @route       GET /api/user
-	 * @access      Public
-	 */
-
-	public static async getUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let userModel = new UserModel()
-		let user: User[] = await userModel.getAll()
-		return res.status(200).json(ResManager.success(user))
-	}
-
-	/**
-	 * @desc        Get user
 	 * @route       GET /api/user/:id
 	 * @access      Public
 	 */
@@ -54,6 +42,7 @@ export default class UserController {
 
 			try {
 				await userModel.updateWhere({ id: user.id }, userAccessibleData)
+				console.log(userAccessibleData)
 				await UserActions.setInterests(Number(user.id), req.body.interests)
 				return res.sendStatus(200)
 			} catch (e) {

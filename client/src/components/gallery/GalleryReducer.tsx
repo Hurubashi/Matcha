@@ -70,4 +70,17 @@ export const deleteImage = (id: number, dispatch: React.Dispatch<Action>) => {
 		})
 }
 
+export const setAvatar = (id: number, dispatch: React.Dispatch<Action>) => {
+	axios
+		.put('/api/user/', { avatar: id })
+		.then(function (res) {
+			if (res['data']['success'] === true) {
+				console.log(res['data'])
+			}
+		})
+		.catch(function (error) {
+			console.log(error)
+		})
+}
+
 export default reducer

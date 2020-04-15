@@ -81,7 +81,9 @@ export default abstract class Model<T> {
 		let obj: KeyValue = {}
 
 		this.accessibleColumns.forEach((elem) => {
-			obj[elem] = args[elem] ? args[elem] : ''
+			if (args[elem]) {
+				obj[elem] = args[elem]
+			}
 		})
 		return obj
 	}
