@@ -27,29 +27,7 @@ export default class UserActions {
 		}
 	}
 
-	static async getMeFromCookeis(req: Request): Promise<User | ResInfo> {
-		const token = req.cookies['jwt']
-		const decoded = jwt.decode(token)
-		let user
-
-		if (decoded && typeof decoded !== 'string') {
-			try {
-				user = await userModel.getOne(Number(decoded.id))
-				if (!user || user instanceof Error) {
-					return new ResInfo(422, ResManager.error('No such user'))
-				}
-			} finally {
-				if (userModel.isInstance(user)) {
-					return user
-				} else {
-					return ResManager.serverError()
-				}
-			}
-		}
-		return ResManager.serverError()
-	}
-	/*
-	static async getMeFromCookeis(req: Request): Promise<[User, null] | [null, ResInfo]> {
+	static async getUserFromCookeis(req: Request): Promise<[User, null] | [null, ResInfo]> {
 		const token = req.cookies['jwt']
 		const decoded = jwt.decode(token)
 		let user
@@ -70,25 +48,24 @@ export default class UserActions {
 		}
 		return [null, ResManager.serverError()]
 	}
-	*/
 
-	static async getUserById(id: number): Promise<User | ResInfo> {
+	static async getUserById(id: number): Promise<[User, null] | [null, ResInfo]> {
 		let user
 		try {
 			user = await userModel.getOne(id)
 		} finally {
 			if (user && userModel.isInstance(user)) {
-				return user
+				return [user, null]
 			} else {
-				return ResManager.serverError()
+				return [null, ResManager.serverError()]
 			}
 		}
 	}
 
-	static async getUserFromRequest(req: Request): Promise<User | ResInfo> {
-		let user
+	static async getUserFromRequest(req: Request): Promise<[User, null] | [null, ResInfo]> {
+		let user: [User, null] | [null, ResInfo]
 		if (req.params.id === 'me') {
-			user = await UserActions.getMeFromCookeis(req)
+			user = await UserActions.getUserFromCookeis(req)
 		} else {
 			user = await UserActions.getUserById(Number(req.params.id))
 		}

@@ -45,20 +45,21 @@ export default class UserController {
 	 */
 
 	public static async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = await UserActions.getMeFromCookeis(req)
-		if (user instanceof ResInfo) {
-			return res.status(user.code).json(user.resBody)
-		}
+		const [user, err] = await UserActions.getUserFromCookeis(req)
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
+			let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
 
-		let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
-
-		try {
-			await userModel.updateWhere({ id: user.id }, userAccessibleData)
-			await UserActions.setInterests(Number(user.id), req.body.interests)
-			return res.sendStatus(200)
-		} catch (e) {
-			return res.status(406).json(ResManager.error(e.message))
+			try {
+				await userModel.updateWhere({ id: user.id }, userAccessibleData)
+				await UserActions.setInterests(Number(user.id), req.body.interests)
+				return res.sendStatus(200)
+			} catch (e) {
+				return res.status(406).json(ResManager.error(e.message))
+			}
 		}
+		return res.sendStatus(500)
 	}
 
 	/**

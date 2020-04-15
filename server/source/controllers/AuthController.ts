@@ -1,14 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 import ResManager, { ResInfo } from '../util/ResManager'
-import { User, UserModel } from '../models/User'
-import Joi, { Err } from 'joi'
+import { UserModel } from '../models/User'
 import bcrypt from 'bcrypt'
 import uuidv1 from 'uuid/v1'
 import { UserActivationUUID, UserActivationUUIDModel } from '../models/UserActivationUUID'
 import pug from 'pug'
 import MailService from '../util/MailService'
 import path from 'path'
-import jwt from 'jsonwebtoken'
 import AuthActions from '../actions/AuthActions'
 
 const userModel = new UserModel()

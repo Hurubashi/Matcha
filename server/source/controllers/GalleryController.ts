@@ -19,9 +19,10 @@ export default class UserController {
 	 */
 
 	public static async getImages(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const user = await UserActions.getUserFromRequest(req)
-
-		if (!(user instanceof ResInfo)) {
+		const [user, err] = await UserActions.getUserFromRequest(req)
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
 			const images = await imageModel.getWhere({ userId: user.id })
 			images.forEach((element, idx) => {
 				images[idx].image = `http://localhost:5000/public/uploads/${user.id}/${element.image}`
@@ -39,30 +40,22 @@ export default class UserController {
 	 */
 
 	public static async postImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		console.log('post image')
 		upload(req, res, function (err) {
 			if (err instanceof multer.MulterError) {
-				console.log('multer error')
 				return res.sendStatus(500)
 			} else if (err) {
-				console.log('custom error')
 				return res.status(415).json(ResManager.error(err.message))
 			}
 		})
-		const user = await UserActions.getUserFromRequest(req)
+		const [user, err] = await UserActions.getUserFromRequest(req)
 
-		console.log(user)
-		if (!(user instanceof ResInfo)) {
-			console.log(req.file)
-			const result = await imageModel.create({ userId: user.id, image: req.file.filename })
-			if (result instanceof Error) {
-				console.log(result.message)
-			} else {
-				console.log(result)
-			}
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
+			await imageModel.create({ userId: user.id, image: req.file.filename })
 			return res.status(200).json(ResManager.success({}, 'Image successfuly saved'))
 		}
-		return res.status(user.code).json(user.resBody)
+		return res.sendStatus(500)
 	}
 
 	/**
@@ -72,8 +65,6 @@ export default class UserController {
 	 */
 
 	public static async getImage(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let user = await UserActions.getUserById(Number(req.params.userId))
-
 		return res.status(200).json(ResManager.success({}, 'Images successfuly fetched'))
 	}
 }
