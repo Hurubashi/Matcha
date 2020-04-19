@@ -3,10 +3,10 @@ import { Box, TextField, Button, Typography, Dialog, DialogContent, InputAdornme
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import profileClasses from './styles'
 
-import { ProfileData } from './ProfileInterface'
+import { ProfileData } from './ProfileReducer'
 
 interface Props {
-	setProfile: (value: React.SetStateAction<ProfileData>) => void
+	setProfile: ((value: React.SetStateAction<ProfileData>) => void) | null
 	profile: ProfileData
 	editable: boolean
 }
@@ -31,21 +31,25 @@ const Interests: React.FC<Props> = (props: Props) => {
 	}
 
 	const removeInterest = (interest: string) => () => {
-		setProfile({
-			...profile,
-			interests: profile.interests.filter(chip => chip !== interest),
-		})
+		if (setProfile) {
+			setProfile({
+				...profile,
+				interests: profile.interests.filter((chip) => chip !== interest),
+			})
+		}
 	}
 
 	const addInterest = () => {
-		let arr = profile.interests
-		arr.push(newInterest)
-		setProfile({
-			...profile,
-			interests: arr,
-		})
-		setNewInterest('')
-		interestDialogClose()
+		if (setProfile) {
+			let arr = profile.interests
+			arr.push(newInterest)
+			setProfile({
+				...profile,
+				interests: arr,
+			})
+			setNewInterest('')
+			interestDialogClose()
+		}
 	}
 
 	const runFuncOnEnter = (func: () => void) => (e: React.KeyboardEvent) => {
@@ -59,7 +63,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 			{editable ? (
 				<Box>
 					<Typography>{'Interests'}:</Typography>
-					{profile.interests.map(data => {
+					{profile.interests.map((data) => {
 						return <Chip key={data} label={data} className={classes.chip} onDelete={removeInterest(data)} />
 					})}
 					<Chip
@@ -73,7 +77,7 @@ const Interests: React.FC<Props> = (props: Props) => {
 			) : (
 				<Box textAlign='left'>
 					<Typography>{'Interests'}:</Typography>
-					{profile.interests.map(data => {
+					{profile.interests.map((data) => {
 						return <Chip key={data} label={data} className={classes.chip} variant='outlined' />
 					})}
 				</Box>

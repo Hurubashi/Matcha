@@ -3,84 +3,70 @@ import { Box, Card, Button, Typography, Grid } from '@material-ui/core'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
-import { ProfileData } from './ProfileInterface'
 import Interests from './Interests'
 import { Link } from 'react-router-dom'
+import { ProfileData, State, Action } from './ProfileReducer'
 
 interface Props {
-	changeEditable: () => void
-	setProfile: (value: React.SetStateAction<ProfileData>) => void
-	profile: ProfileData
+	dispatch: React.Dispatch<Action>
+	state: State
 }
 
 const NotEditable: React.FC<Props> = (props: Props) => {
 	const classes = profileClasses()
-	let avChange = React.useRef<HTMLDivElement>(null)
 
-	const mouseEnterAvatar = () => {
-		const elem = avChange.current
-		if (elem) {
-			elem.style.visibility = 'visible'
-		}
-	}
-
-	const mouseLeaveAvatar = () => {
-		const elem = avChange.current
-		if (elem) {
-			elem.style.visibility = 'hidden'
-		}
-	}
-
-	return (
+	return props.state.status === 'success' ? (
 		<Card className={classes.profileCard}>
 			<Grid container>
 				<Grid item xs={12} md={6}>
-					<img
-						className={classes.profileAvatar}
-						src={props.profile.avatar}
-						alt='Your avatar'
-						onMouseEnter={mouseEnterAvatar}
-						onMouseLeave={mouseLeaveAvatar}
-					/>
-					<Link to='/gallery'>
-						<div
-							className={`${classes.profileAvatar} ${classes.profileAvatarChange}`}
-							ref={avChange}
-							onMouseEnter={mouseEnterAvatar}
-							onMouseLeave={mouseLeaveAvatar}>
-							<PhotoLibraryIcon className={classes.photoLibraryIcon} />
-						</div>
-					</Link>
+					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
+						<img
+							className={classes.profileAvatar}
+							src={props.state.data.avatarUrl ? props.state.data.avatarUrl : '/images/noavatar.png'}
+							alt='Your avatar'
+						/>
+						<Link to='/gallery'>
+							<div className={`${classes.profileAvatar} ${classes.profileAvatarChange}`}>
+								<PhotoLibraryIcon className={classes.photoLibraryIcon} />
+							</div>
+						</Link>
+					</div>
 				</Grid>
 				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
 						{fields.map((elem) => {
-							return (
+							return props.state.status === 'success' ? (
 								<Typography align='left' className={classes.profileTextField} key={elem.key}>
-									{elem.name}: {props.profile[elem.key]}
+									{elem.name}: {props.state.data[elem.key]}
 								</Typography>
-							)
+							) : null
 						})}
 					</Box>
 					<Box textAlign='left'>
 						<Typography className={classes.profileTextField}>
-							{'Gender'}: {props.profile.gender}
+							{'Gender'}: {props.state.data.gender}
 						</Typography>
 						<Typography className={classes.profileTextField}>
-							{'Sexual preferences'}: {props.profile.preferences}
+							{'Sexual preferences'}: {props.state.data.preferences}
 						</Typography>
 					</Box>
 				</Grid>
 			</Grid>
-			<Interests setProfile={props.setProfile} profile={props.profile} editable={false} />
+			<Interests setProfile={null} profile={props.state.data} editable={false} />
 			<Box textAlign='center'>
 				<Typography align='left'>{'Biography'}:</Typography>
-				<Typography align='left'>{props.profile.biography}</Typography>
-				<Button onClick={props.changeEditable} variant='outlined' className={classes.marginSm}>
+				<Typography align='left'>{props.state.data.biography}</Typography>
+				<Button
+					// @ts-ignore
+					onClick={() => props.dispatch({ type: 'edit', data: props.state.data, editedData: props.state.data })}
+					variant='outlined'
+					className={classes.marginSm}>
 					{'Edit'}
 				</Button>
 			</Box>
 		</Card>
+	) : (
+		<div>Not editalbe</div>
 	)
 }
 

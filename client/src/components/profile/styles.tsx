@@ -17,6 +17,14 @@ const styles = makeStyles((theme: Theme) =>
 			margin: 'auto',
 			position: 'relative',
 			border: `1px solid ${theme.palette.primary.main}`,
+			cursor: 'pointer',
+		},
+		visibleAvatarChange: {
+			'&:hover': {
+				'& $profileAvatarChange': {
+					visibility: 'visible',
+				},
+			},
 		},
 		profileAvatarChange: {
 			marginTop: `-${theme.spacing(3)}em`,
@@ -29,7 +37,6 @@ const styles = makeStyles((theme: Theme) =>
 			color: 'white',
 			opacity: 0.5,
 			visibility: 'hidden',
-			cursor: 'pointer',
 		},
 		photoLibraryIcon: { fontSize: `${theme.spacing(0.5)}em`, margin: 'auto' },
 		profileTextField: {

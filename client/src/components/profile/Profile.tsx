@@ -1,80 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Container } from '@material-ui/core'
-import { ProfileData, Gender, Preferences } from './ProfileInterface'
 import axios from 'axios'
+
+import reducer, { fetchProfile, saveProfile } from './ProfileReducer'
 import NotEditable from './NotEditable'
 import Editable from './Editable'
 
-let emptyProfile = {
-	username: '',
-	email: '',
-	firstName: '',
-	lastName: '',
-	gender: '' as Gender,
-	preferences: '' as Preferences,
-	avatar: '',
-	interests: [],
-	biography: '',
-}
-
 const Profile: React.FC = () => {
-	const [profile, setProfile] = useState<ProfileData>(emptyProfile)
-	const [editable, setEditable] = React.useState<boolean>(false)
-	const [loading, setLoading] = React.useState<boolean>(true)
-	const [unchangedProfile, setUnchangedProfile] = React.useState<ProfileData>(emptyProfile)
-
-	const changeEditable = () => {
-		setEditable(!editable)
-		if (!editable) {
-			setUnchangedProfile({ ...profile, interests: profile.interests.slice() })
-		} else {
-			setProfile(unchangedProfile)
-		}
-	}
+	const [state, dispatch] = useReducer(reducer, { status: 'empty' })
 
 	useEffect(() => {
-		axios
-			.get('/api/user/')
-			.then(function (res) {
-				if (res['data']['success'] === true) {
-					setProfile(res['data']['data'] as ProfileData)
-					setLoading(false)
-				}
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
+		dispatch({ type: 'request' })
+		fetchProfile(dispatch)
 	}, [])
-
-	const changeProfileData = (prop: keyof ProfileData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-		setProfile({ ...profile, [prop]: event.target.value })
-	}
-
-	const saveProfile = () => {
-		axios
-			.put('/api/user/', profile)
-			.then(function (res) {
-				if (res['data']['success'] === true) {
-					console.log(res['data'])
-				}
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-	}
 
 	return (
 		<Container maxWidth='md'>
-			{editable ? (
-				<Editable
-					changeProfileData={changeProfileData}
-					setProfile={setProfile}
-					changeEditable={changeEditable}
-					saveProfile={saveProfile}
-					profile={profile}
-				/>
+			{state.status === 'editing' ? (
+				<Editable state={state} dispatch={dispatch} />
 			) : (
-				<NotEditable changeEditable={changeEditable} setProfile={setProfile} profile={profile} />
+				<NotEditable state={state} dispatch={dispatch} />
 			)}
 		</Container>
 	)

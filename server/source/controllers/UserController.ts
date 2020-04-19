@@ -20,15 +20,7 @@ export default class UserController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
-			const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
-			const interests = await UserActions.getInterests(Number(user.id))
-			if (user.avatar) {
-				const image = await imageModel.getWhere({ id: user.avatar })
-				if (image[0]) {
-					userAccessibleData['avatar'] = `http://localhost:5000/public/uploads/${user.id}/${image[0].image}`
-				}
-			}
-			userAccessibleData['interests'] = interests
+			const userAccessibleData = await UserActions.getProfileData(user)
 			return res.status(200).json(ResManager.success(userAccessibleData))
 		}
 		return res.sendStatus(500)
@@ -36,7 +28,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Update me
-	 * @route       PUT /api/user/me
+	 * @route       PUT /api/user
 	 * @access      Private
 	 */
 
@@ -49,9 +41,12 @@ export default class UserController {
 
 			try {
 				await userModel.updateWhere({ id: user.id }, userAccessibleData)
-				console.log(userAccessibleData)
 				await UserActions.setInterests(Number(user.id), req.body.interests)
-				return res.sendStatus(200)
+				const [updateUser, updateErr] = await UserActions.getUserById(user.id)
+				if (updateUser) {
+					const updatedProfile = await UserActions.getProfileData(updateUser)
+					return res.status(200).json(ResManager.success(updatedProfile))
+				}
 			} catch (e) {
 				return res.status(406).json(ResManager.error(e.message))
 			}
@@ -61,7 +56,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Delete me
-	 * @route       DELETE /api/user/me
+	 * @route       DELETE /api/user
 	 * @access      Private
 	 */
 

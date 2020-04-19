@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
 import { InterestModel } from '../models/Interest'
 import ResManager, { ResInfo } from '../util/ResManager'
+import { imageModel } from '../models/Image'
 
 const userModel = new UserModel()
 const interestModel = new InterestModel()
@@ -70,5 +71,18 @@ export default class UserActions {
 			user = await UserActions.getUserFromCookeis(req)
 		}
 		return user
+	}
+
+	static async getProfileData(user: User) {
+		const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
+		const interests = await UserActions.getInterests(Number(user.id))
+		if (user.avatar) {
+			const image = await imageModel.getWhere({ id: user.avatar })
+			if (image[0]) {
+				userAccessibleData['avatarUrl'] = `http://localhost:5000/public/uploads/${user.id}/${image[0].image}`
+			}
+		}
+		userAccessibleData['interests'] = interests
+		return userAccessibleData
 	}
 }
