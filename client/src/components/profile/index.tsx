@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { Container } from '@material-ui/core'
 
 import reducer, { fetchProfile } from './ProfileReducer'
@@ -6,7 +6,8 @@ import NotEditable from './NotEditable'
 import Editable from './Editable'
 
 const Profile: React.FC = () => {
-	const [state, dispatch] = useReducer(reducer, { status: 'empty' })
+	const [state, dispatch] = useReducer(reducer, { status: 'loading' })
+	const [editable, setEditable] = useState<boolean>(false)
 
 	useEffect(() => {
 		dispatch({ type: 'request' })
@@ -15,10 +16,10 @@ const Profile: React.FC = () => {
 
 	return (
 		<Container maxWidth='md'>
-			{state.status === 'editing' ? (
-				<Editable state={state} dispatch={dispatch} />
+			{editable && state.status === 'success' ? (
+				<Editable state={state} dispatch={dispatch} setEditable={setEditable} />
 			) : (
-				<NotEditable state={state} dispatch={dispatch} />
+				<NotEditable state={state} dispatch={dispatch} setEditable={setEditable} />
 			)}
 		</Container>
 	)

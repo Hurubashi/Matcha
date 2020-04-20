@@ -10,6 +10,7 @@ import { State, Action } from './ProfileReducer'
 interface Props {
 	dispatch: React.Dispatch<Action>
 	state: State
+	setEditable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const NotEditable: React.FC<Props> = (props: Props) => {
@@ -56,11 +57,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 			<Box textAlign='center'>
 				<Typography align='left'>{'Biography'}:</Typography>
 				<Typography align='left'>{props.state.data.biography}</Typography>
-				<Button
-					// @ts-ignore
-					onClick={() => props.dispatch({ type: 'edit', data: props.state.data, editedData: props.state.data })}
-					variant='outlined'
-					className={classes.marginSm}>
+				<Button onClick={() => props.setEditable(true)} variant='outlined' className={classes.marginSm}>
 					{'Edit'}
 				</Button>
 			</Box>

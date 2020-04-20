@@ -18,24 +18,19 @@ export type ProfileData = {
 }
 
 export type State =
-	| { status: 'empty' }
 	| { status: 'loading' }
-	| { status: 'editing'; data: ProfileData }
 	| { status: 'error'; error: string }
 	| { status: 'success'; data: ProfileData }
 
 export type Action =
 	| { type: 'request' }
 	| { type: 'success'; results: ProfileData }
-	| { type: 'edit'; data: ProfileData }
 	| { type: 'failure'; error: string }
 
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
 		case 'request':
 			return { status: 'loading' }
-		case 'edit':
-			return { status: 'editing', data: action.data }
 		case 'success':
 			return { status: 'success', data: action.results }
 		case 'failure':
@@ -45,7 +40,7 @@ const reducer = (state: State, action: Action): State => {
 
 export function fetchProfile(dispatch: React.Dispatch<Action>) {
 	axios
-		.get('/api/user/')
+		.get('/user/')
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				dispatch({ type: 'success', results: res['data']['data'] })
@@ -58,7 +53,7 @@ export function fetchProfile(dispatch: React.Dispatch<Action>) {
 
 export function saveProfile(profile: ProfileData, dispatch: React.Dispatch<Action>) {
 	axios
-		.put('/api/user/', profile)
+		.put('/user/', profile)
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				dispatch({ type: 'success', results: res['data']['data'] })

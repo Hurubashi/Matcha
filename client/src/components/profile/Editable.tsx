@@ -21,9 +21,10 @@ import { ProfileData, Action, saveProfile } from './ProfileReducer'
 interface Props {
 	dispatch: React.Dispatch<Action>
 	state: {
-		status: 'editing'
+		status: 'success'
 		data: ProfileData
 	}
+	setEditable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Editable: React.FC<Props> = (props: Props) => {
@@ -35,6 +36,11 @@ const Editable: React.FC<Props> = (props: Props) => {
 
 	const changeProfileData = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
 		setProfile({ ...profile, [prop]: event.target.value })
+	}
+
+	const closeEditing = () => {
+		props.dispatch({ type: 'success', results: props.state.data })
+		props.setEditable(false)
 	}
 
 	return (
@@ -121,10 +127,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					value={profile.biography}
 					onChange={changeProfileData('biography')}
 				/>
-				<Button
-					onClick={() => props.dispatch({ type: 'success', results: props.state.data })}
-					variant='outlined'
-					className={classes.marginSm}>
+				<Button onClick={closeEditing} variant='outlined' className={classes.marginSm}>
 					{'Close'}
 				</Button>
 				<Button onClick={() => saveProfile(profile, props.dispatch)} variant='outlined' className={classes.marginSm}>

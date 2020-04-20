@@ -28,7 +28,7 @@ const reducer = (state: State, action: Action): State => {
 
 export function fetchImages(dispatch: React.Dispatch<Action>) {
 	axios
-		.get('/api/image/')
+		.get('/image/')
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				dispatch({ type: 'success', results: res['data']['data'] })
@@ -45,7 +45,7 @@ export const uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch
 		const fd = new FormData()
 		fd.append('image', elem.files[0])
 		axios
-			.post('/api/image/', fd)
+			.post('/image/', fd)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					fetchImages(dispatch)
@@ -59,7 +59,7 @@ export const uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch
 
 export const deleteImage = (id: number, dispatch: React.Dispatch<Action>) => {
 	axios
-		.delete(`/api/image/${id}`)
+		.delete(`/image/${id}`)
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				fetchImages(dispatch)
@@ -72,7 +72,7 @@ export const deleteImage = (id: number, dispatch: React.Dispatch<Action>) => {
 
 export const setAvatar = (id: number, dispatch: React.Dispatch<Action>) => {
 	axios
-		.put('/api/user/', { avatar: id })
+		.put('/user/', { avatar: id })
 		.then(function (res) {
 			if (res['data']['success'] === true) {
 				console.log(res['data'])

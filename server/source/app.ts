@@ -71,10 +71,10 @@ new ChatServer()
 
 // });
 
-app.use('/api/user', users)
-app.use('/api/auth', auth)
-app.use('/api/image', image)
-app.use('/api/imagethumbsup', imagethumbsup)
+app.use('/user', users)
+app.use('/auth', auth)
+app.use('/image', image)
+app.use('/imagethumbsup', imagethumbsup)
 
 app.listen(process.env.APP_PORT, () => {
 	console.log(`Server is running on port ${process.env.APP_PORT}`)
