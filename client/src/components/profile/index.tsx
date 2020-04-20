@@ -1,8 +1,7 @@
 import React, { useEffect, useReducer } from 'react'
 import { Container } from '@material-ui/core'
-import axios from 'axios'
 
-import reducer, { fetchProfile, saveProfile } from './ProfileReducer'
+import reducer, { fetchProfile } from './ProfileReducer'
 import NotEditable from './NotEditable'
 import Editable from './Editable'
 

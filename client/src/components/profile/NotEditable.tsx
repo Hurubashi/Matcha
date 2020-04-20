@@ -5,7 +5,7 @@ import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
 import { Link } from 'react-router-dom'
-import { ProfileData, State, Action } from './ProfileReducer'
+import { State, Action } from './ProfileReducer'
 
 interface Props {
 	dispatch: React.Dispatch<Action>

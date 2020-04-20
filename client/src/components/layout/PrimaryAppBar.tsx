@@ -28,7 +28,7 @@ import {
 import axios from 'axios'
 import { Link as Redirect } from 'react-router-dom'
 import appBarMakeStyles from './styles'
-import ChatBox from '../chat/ChatBox'
+import ChatBox from '../chat'
 import { isUser } from '../../helpers/getJwt'
 import { Link } from 'react-router-dom'
 
@@ -83,10 +83,10 @@ const PrimaryAppBar: React.FC = () => {
 	const handleLogOut = () => {
 		axios
 			.post('/api/auth/logout')
-			.then(function(res) {
+			.then(function (res) {
 				setRedirect(true)
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				// props.setErrors({ username: error })
 			})
 	}
