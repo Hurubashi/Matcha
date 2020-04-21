@@ -1,4 +1,4 @@
-import RequesReduser, { State, Action } from './RequestReducer'
+import RequesReduser, { Action } from './RequestReducer'
 
 type Gender = 'male' | 'female' | ''
 type Preferences = 'male' | 'female' | 'male and female' | ''
@@ -17,15 +17,13 @@ export type User = {
 }
 
 class UserReducer extends RequesReduser<User> {
-	baseUrl = '/user'
-
 	getUser(dispatch: React.Dispatch<Action<User>>) {
 		this.request(this.getReq(), dispatch)
 	}
 
-	saveUser(data: User, dispatch: React.Dispatch<Action<User>>, cb: () => void) {
-		this.request(this.putReq(data), dispatch, cb)
+	saveUser(data: User, dispatch: React.Dispatch<Action<User>>, onSuccess: () => void) {
+		this.request(this.putReq(data), dispatch, onSuccess)
 	}
 }
 
-export default new UserReducer()
+export default new UserReducer('/user')

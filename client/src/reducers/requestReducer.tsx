@@ -6,7 +6,11 @@ export type State<T> = { status: 'loading' } | { status: 'error'; error: string 
 export type Action<T> = { type: 'request' } | { type: 'success'; results: T } | { type: 'failure'; error: string }
 
 export default abstract class RequesReduser<T> {
-	abstract baseUrl: string
+	baseUrl: string
+	constructor(baseUrl: string) {
+		this.baseUrl = baseUrl
+	}
+
 	reducer = (state: State<T>, action: Action<T>): State<T> => {
 		switch (action.type) {
 			case 'request':
@@ -17,7 +21,6 @@ export default abstract class RequesReduser<T> {
 				return { status: 'error', error: action.error }
 		}
 	}
-
 	protected request(
 		reqConfig: AxiosRequestConfig,
 		dispatch: React.Dispatch<Action<T>>,
@@ -31,10 +34,11 @@ export default abstract class RequesReduser<T> {
 					successCb()
 				} else {
 					dispatch({ type: 'failure', error: res['data']['message'] })
+					errorCb()
 				}
 			})
 			.catch(function (error) {
-				dispatch({ type: 'failure', error })
+				errorCb()
 			})
 	}
 

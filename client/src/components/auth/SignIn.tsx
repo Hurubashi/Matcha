@@ -98,7 +98,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 }
 
 const SignIn = withFormik<{}, FormValues>({
-	mapPropsToValues: props => {
+	mapPropsToValues: (props) => {
 		return {
 			username: '',
 			password: '',
@@ -107,18 +107,16 @@ const SignIn = withFormik<{}, FormValues>({
 	},
 	validationSchema: Yup.object().shape({
 		username: Yup.string().required('Required'),
-		password: Yup.string()
-			.required('Required')
-			.min(6, 'Must be 6 characters or less'),
+		password: Yup.string().required('Required').min(6, 'Must be 6 characters or less'),
 	}),
 
 	handleSubmit: (values: FormValues, props) => {
 		axios
-			.post('/api/auth/login', {
+			.post('/auth/login', {
 				username: values.username,
 				password: values.password,
 			})
-			.then(function(res) {
+			.then(function (res) {
 				if (res['data']['success'] === true) {
 					props.setStatus(true)
 				} else {
@@ -126,7 +124,7 @@ const SignIn = withFormik<{}, FormValues>({
 					props.setSubmitting(false)
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				if (error.response['data']['success'] === true) {
 					props.setStatus(true)
 				} else {

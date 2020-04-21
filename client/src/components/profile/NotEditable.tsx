@@ -5,26 +5,25 @@ import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
 import { Link } from 'react-router-dom'
-import { Action, State } from '../../reducers/RequestReducer'
 import { User } from '../../reducers/UserReducer'
 
 interface Props {
-	dispatch: React.Dispatch<Action<User>>
-	state: State<User>
+	user: User
 	setEditable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const NotEditable: React.FC<Props> = (props: Props) => {
+	const { user, setEditable } = props
 	const classes = profileClasses()
 
-	return props.state.status === 'success' ? (
+	return (
 		<Card className={classes.profileCard}>
 			<Grid container>
 				<Grid item xs={12} md={6}>
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
 						<img
 							className={classes.profileAvatar}
-							src={props.state.data.avatarUrl ? props.state.data.avatarUrl : '/images/noavatar.png'}
+							src={user.avatarUrl ? user.avatarUrl : '/images/noavatar.png'}
 							alt='Your avatar'
 						/>
 						<Link to='/gallery'>
@@ -37,34 +36,32 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 				<Grid item xs={12} md={6} className={classes.basicInputFieldsContainer}>
 					<Box>
 						{fields.map((elem) => {
-							return props.state.status === 'success' ? (
+							return (
 								<Typography align='left' className={classes.profileTextField} key={elem.key}>
-									{elem.name}: {props.state.data[elem.key]}
+									{elem.name}: {user[elem.key]}
 								</Typography>
-							) : null
+							)
 						})}
 					</Box>
 					<Box textAlign='left'>
 						<Typography className={classes.profileTextField}>
-							{'Gender'}: {props.state.data.gender}
+							{'Gender'}: {user.gender}
 						</Typography>
 						<Typography className={classes.profileTextField}>
-							{'Sexual preferences'}: {props.state.data.preferences}
+							{'Sexual preferences'}: {user.preferences}
 						</Typography>
 					</Box>
 				</Grid>
 			</Grid>
-			<Interests setProfile={null} profile={props.state.data} editable={false} />
+			<Interests setProfile={null} profile={user} editable={false} />
 			<Box textAlign='center'>
 				<Typography align='left'>{'Biography'}:</Typography>
-				<Typography align='left'>{props.state.data.biography}</Typography>
-				<Button onClick={() => props.setEditable(true)} variant='outlined' className={classes.marginSm}>
+				<Typography align='left'>{user.biography}</Typography>
+				<Button onClick={() => setEditable(true)} variant='outlined' className={classes.marginSm}>
 					{'Edit'}
 				</Button>
 			</Box>
 		</Card>
-	) : (
-		<div>Not editalbe</div>
 	)
 }
 

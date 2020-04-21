@@ -16,7 +16,7 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
-import { Action, State } from '../../reducers/RequestReducer'
+import { Action } from '../../reducers/RequestReducer'
 import UserReducer, { User } from '../../reducers/UserReducer'
 
 interface Props {

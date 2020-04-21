@@ -110,28 +110,24 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 
 const SignUp = withFormik<{}, FormValues>({
 	validationSchema: Yup.object().shape({
-		email: Yup.string()
-			.email('Should be a valid email adress')
-			.required('Required'),
+		email: Yup.string().email('Should be a valid email adress').required('Required'),
 		username: Yup.string().required('Required'),
 		firstName: Yup.string().required('Required'),
 		lastName: Yup.string().required('Required'),
-		password: Yup.string()
-			.required('Required')
-			.min(6, 'Must be 6 characters or less'),
+		password: Yup.string().required('Required').min(6, 'Must be 6 characters or less'),
 	}),
 
 	handleSubmit: (values: FormValues, props) => {
 		console.log(values)
 		axios
-			.post('/api/auth/register', {
+			.post('/auth/register', {
 				email: values.email,
 				username: values.username,
 				firstName: values.firstName,
 				lastName: values.lastName,
 				password: values.password,
 			})
-			.then(function(res) {
+			.then(function (res) {
 				if (res['data']['success'] === true) {
 					props.setStatus(true)
 				} else {
@@ -139,7 +135,7 @@ const SignUp = withFormik<{}, FormValues>({
 					props.setSubmitting(false)
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				if (!error.response) {
 					console.log('No Connection')
 					props.setSubmitting(false)

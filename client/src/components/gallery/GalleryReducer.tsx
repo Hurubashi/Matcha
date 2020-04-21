@@ -71,6 +71,7 @@ export const deleteImage = (id: number, dispatch: React.Dispatch<Action>) => {
 }
 
 export const setAvatar = (id: number, dispatch: React.Dispatch<Action>) => {
+	console.log('avatar id: ' + id)
 	axios
 		.put('/user/', { avatar: id })
 		.then(function (res) {
