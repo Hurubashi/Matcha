@@ -18,6 +18,7 @@ export type User = {
 
 class UserReducer extends RequesReduser<User> {
 	getUser(dispatch: React.Dispatch<Action<User>>) {
+		console.log('GET USER')
 		this.request(this.getReq(), dispatch)
 	}
 

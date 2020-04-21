@@ -1,14 +1,11 @@
-import React, { useReducer, useEffect } from 'react'
-
-import UserReducer from '../../reducers/UserReducer'
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import { UserContextConsumer } from '../../helpers/UserContextProvider'
 
 const UserPage: React.FC = () => {
-	// const [state, dispatch] = UserReducer.useReducer()
-
-	// useEffect(() => {
-	// 	UserReducer.getUser()
-	// }, [])
-	return <div></div>
+	const { user } = useParams()
+	console.log(user)
+	return <UserContextConsumer>{(ctx) => ctx && <div>{ctx.state.status}</div>}</UserContextConsumer>
 }
 
 export default UserPage

@@ -16,13 +16,13 @@ export default function App() {
 		<React.Fragment>
 			<Router>
 				<Switch>
-					<Route path='/' exact component={UserPage} />
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />
 					<PrivateRoute path='/profile' component={Profile} />
 					<PrivateRoute path='/search' component={Search} />
 					<PrivateRoute path='/gallery' component={Gallery} />
+					<PrivateRoute path='/:user' component={UserPage} />
 				</Switch>
 			</Router>
 		</React.Fragment>

@@ -11,16 +11,16 @@ import styles from './chatBoxStyles'
 import io from 'socket.io-client'
 const socket = io('http://localhost:5001')
 
-socket.on('error', function(err: any) {
+socket.on('error', function (err: any) {
 	console.log('received socket error:')
 	console.log(err)
 })
 
-socket.on('connect', function() {
-	console.log('successfuly connected!')
+socket.on('connect', function () {
+	console.log('socket successfuly connected!')
 })
 
-socket.on('message', function(data: any) {
+socket.on('message', function (data: any) {
 	console.log(data)
 })
 
@@ -63,7 +63,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 				variant='outlined'
 				rowsMax='4'
 				value={message.text}
-				onChange={e => setMessage({ text: e.target.value })}
+				onChange={(e) => setMessage({ text: e.target.value })}
 				InputProps={{
 					endAdornment: (
 						<IconButton className={classes.sendButton} onClick={sendMessage}>
