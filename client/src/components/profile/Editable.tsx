@@ -16,22 +16,21 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
-import { ProfileData, Action, saveProfile } from './ProfileReducer'
+import { Action, State } from '../../reducers/RequestReducer'
+import UserReducer, { User } from '../../reducers/UserReducer'
 
 interface Props {
-	dispatch: React.Dispatch<Action>
-	state: {
-		status: 'success'
-		data: ProfileData
-	}
+	dispatch: React.Dispatch<Action<User>>
+	user: User
 	setEditable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Editable: React.FC<Props> = (props: Props) => {
 	const classes = profileClasses()
-	const [profile, setProfile] = useState<ProfileData>({
-		...props.state.data,
-		interests: props.state.data.interests.slice(),
+	const { dispatch, user, setEditable } = props
+	const [profile, setProfile] = useState<User>({
+		...user,
+		interests: user.interests.slice(),
 	})
 
 	const changeProfileData = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +38,8 @@ const Editable: React.FC<Props> = (props: Props) => {
 	}
 
 	const closeEditing = () => {
-		props.dispatch({ type: 'success', results: props.state.data })
-		props.setEditable(false)
+		dispatch({ type: 'success', results: user })
+		setEditable(false)
 	}
 
 	return (
@@ -50,7 +49,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
 						<img
 							className={classes.profileAvatar}
-							src={props.state.data.avatarUrl ? props.state.data.avatarUrl : '/images/noavatar.png'}
+							src={profile.avatarUrl ? profile.avatarUrl : '/images/noavatar.png'}
 							alt='Your avatar'
 						/>
 						<Link to='/gallery'>
@@ -130,7 +129,10 @@ const Editable: React.FC<Props> = (props: Props) => {
 				<Button onClick={closeEditing} variant='outlined' className={classes.marginSm}>
 					{'Close'}
 				</Button>
-				<Button onClick={() => saveProfile(profile, props.dispatch)} variant='outlined' className={classes.marginSm}>
+				<Button
+					onClick={() => UserReducer.saveUser(profile, dispatch, () => setEditable(false))}
+					variant='outlined'
+					className={classes.marginSm}>
 					{'Save'}
 				</Button>
 			</Box>

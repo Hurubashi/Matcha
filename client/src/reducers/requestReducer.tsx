@@ -1,16 +1,12 @@
-import React, { Reducer } from 'react'
+import React from 'react'
 import axios, { AxiosRequestConfig } from 'axios'
 
-// const reqConfig: AxiosRequestConfig = {
-// 	url: '/image',
-// 	method: 'GET',
-// 	data: {},
-// }
-type State<T> = { status: 'loading' } | { status: 'error'; error: string } | { status: 'success'; data: T }
+export type State<T> = { status: 'loading' } | { status: 'error'; error: string } | { status: 'success'; data: T }
 
-type Action<T> = { type: 'request' } | { type: 'success'; results: T } | { type: 'failure'; error: string }
+export type Action<T> = { type: 'request' } | { type: 'success'; results: T } | { type: 'failure'; error: string }
 
-export class RequesReduser<T> {
+export default abstract class RequesReduser<T> {
+	abstract baseUrl: string
 	reducer = (state: State<T>, action: Action<T>): State<T> => {
 		switch (action.type) {
 			case 'request':
@@ -22,15 +18,50 @@ export class RequesReduser<T> {
 		}
 	}
 
-	request(reqConfig: AxiosRequestConfig, dispatch: React.Dispatch<Action<T>>) {
+	protected request(
+		reqConfig: AxiosRequestConfig,
+		dispatch: React.Dispatch<Action<T>>,
+		successCb: () => void = () => {},
+		errorCb: () => void = () => {},
+	) {
 		axios(reqConfig)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					dispatch({ type: 'success', results: res['data']['data'] })
+					successCb()
+				} else {
+					dispatch({ type: 'failure', error: res['data']['message'] })
 				}
 			})
 			.catch(function (error) {
 				dispatch({ type: 'failure', error })
 			})
+	}
+
+	protected getReq(url: string = ''): AxiosRequestConfig {
+		return {
+			url: this.baseUrl + url,
+			method: 'GET',
+		}
+	}
+	protected postReq(data: any, url: string = ''): AxiosRequestConfig {
+		return {
+			url: this.baseUrl + url,
+			method: 'POST',
+			data: data,
+		}
+	}
+	protected putReq(data: any, url: string = ''): AxiosRequestConfig {
+		return {
+			url: this.baseUrl + url,
+			method: 'PUT',
+			data: data,
+		}
+	}
+	protected delReq(url: string = ''): AxiosRequestConfig {
+		return {
+			url: this.baseUrl + url,
+			method: 'DELETE',
+		}
 	}
 }

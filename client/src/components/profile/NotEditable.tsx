@@ -5,11 +5,12 @@ import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
 import { Link } from 'react-router-dom'
-import { State, Action } from './ProfileReducer'
+import { Action, State } from '../../reducers/RequestReducer'
+import { User } from '../../reducers/UserReducer'
 
 interface Props {
-	dispatch: React.Dispatch<Action>
-	state: State
+	dispatch: React.Dispatch<Action<User>>
+	state: State<User>
 	setEditable: React.Dispatch<React.SetStateAction<boolean>>
 }
 

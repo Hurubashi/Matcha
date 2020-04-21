@@ -3,11 +3,11 @@ import { Box, TextField, Button, Typography, Dialog, DialogContent, InputAdornme
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import profileClasses from './styles'
 
-import { ProfileData } from './ProfileReducer'
+import { User } from '../../reducers/UserReducer'
 
 interface Props {
-	setProfile: ((value: React.SetStateAction<ProfileData>) => void) | null
-	profile: ProfileData
+	setProfile: ((value: React.SetStateAction<User>) => void) | null
+	profile: User
 	editable: boolean
 }
 
