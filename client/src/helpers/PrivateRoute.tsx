@@ -13,9 +13,13 @@ interface Props {
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	const [state, dispatch] = React.useReducer(UserReducer.reducer, { status: 'loading' })
 
+	React.useEffect(() => {
+		UserReducer.getUser(dispatch)
+	}, [])
+
 	return isUser() ? (
 		<React.Fragment>
-			<UserContextProvider value={[state, dispatch]}>
+			<UserContextProvider value={{ state, dispatch }}>
 				<PrimaryAppBar />
 				<Route path={props.path} component={props.component} />
 			</UserContextProvider>
