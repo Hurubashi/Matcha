@@ -22,7 +22,7 @@ function getPalette(name: Palette): PaletteOptions {
 		case 'dark':
 			return {
 				primary: {
-					main: '#e92d41',
+					main: '#FE5D26',
 				},
 				secondary: {
 					main: '#19857b',
@@ -40,6 +40,8 @@ function getPalette(name: Palette): PaletteOptions {
 			}
 	}
 }
+
+// nice grey #f5f5f5
 
 const useTheme = (palette: Palette) => (): Theme => {
 	console.log('THEME: ' + palette)
@@ -59,7 +61,7 @@ const useTheme = (palette: Palette) => (): Theme => {
 				},
 				outlined: {
 					color: '#fff',
-					backgroundColor: '#e92d41',
+					backgroundColor: '#FE5D26',
 				},
 				root: {
 					color: '#fff',
@@ -76,11 +78,11 @@ const useTheme = (palette: Palette) => (): Theme => {
 			MuiChip: {
 				root: {
 					color: '#fff',
-					backgroundColor: '#e92d41',
+					backgroundColor: '#FE5D26',
 				},
 				outlined: {
 					color: '#fff',
-					backgroundColor: '#e92d41',
+					backgroundColor: '#FE5D26',
 				},
 			},
 			MuiPaper: {
