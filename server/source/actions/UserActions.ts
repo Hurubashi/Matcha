@@ -63,10 +63,23 @@ export default class UserActions {
 		}
 	}
 
+	static async getUserByUsername(usernmae: string): Promise<[User, null] | [null, ResInfo]> {
+		let user
+		try {
+			user = await userModel.getWhere({ username: usernmae })
+		} finally {
+			if (user && userModel.isInstance(user)) {
+				return [user, null]
+			} else {
+				return [null, ResManager.serverError()]
+			}
+		}
+	}
+
 	static async getUserFromRequest(req: Request): Promise<[User, null] | [null, ResInfo]> {
 		let user: [User, null] | [null, ResInfo]
-		if (req.params.id) {
-			user = await UserActions.getUserById(Number(req.params.id))
+		if (req.params.usernmae) {
+			user = await UserActions.getUserByUsername(req.params.username)
 		} else {
 			user = await UserActions.getUserFromCookeis(req)
 		}

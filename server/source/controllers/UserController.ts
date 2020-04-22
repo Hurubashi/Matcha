@@ -10,7 +10,7 @@ const userModel = new UserModel()
 export default class UserController {
 	/**
 	 * @desc        Get user
-	 * @route       GET /api/user/:id
+	 * @route       GET /api/user/:username
 	 * @access      Public
 	 */
 

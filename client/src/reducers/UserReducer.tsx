@@ -17,9 +17,9 @@ export type User = {
 }
 
 class UserReducer extends RequesReduser<User> {
-	getUser(dispatch: React.Dispatch<Action<User>>) {
+	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
 		console.log('GET USER')
-		this.request(this.getReq(), dispatch)
+		this.request(this.getReq(url), dispatch)
 	}
 
 	saveUser(data: User, dispatch: React.Dispatch<Action<User>>, onSuccess: () => void) {
