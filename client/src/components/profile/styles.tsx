@@ -5,6 +5,9 @@ const styles = makeStyles((theme: Theme) =>
 		marginSm: {
 			margin: `${theme.spacing(0.1)}em`,
 		},
+		paddingSm: {
+			padding: `${theme.spacing(0.1)}em`,
+		},
 		profileAvatar: {
 			width: `${theme.spacing(3)}em`,
 			height: `${theme.spacing(3)}em`,
@@ -16,7 +19,7 @@ const styles = makeStyles((theme: Theme) =>
 			display: 'block',
 			margin: 'auto',
 			position: 'relative',
-			border: `1px solid ${theme.palette.primary.main}`,
+			// border: `1px solid ${theme.palette.primary.main}`,
 			cursor: 'pointer',
 		},
 		visibleAvatarChange: {
@@ -33,7 +36,7 @@ const styles = makeStyles((theme: Theme) =>
 			},
 			lineHeight: `${theme.spacing(0.5)}em`,
 			display: 'flex',
-			backgroundColor: '#33140c',
+			backgroundColor: theme.palette.background.default,
 			color: 'white',
 			opacity: 0.5,
 			visibility: 'hidden',

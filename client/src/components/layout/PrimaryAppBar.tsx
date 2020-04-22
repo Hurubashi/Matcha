@@ -16,14 +16,7 @@ import {
 	Fab,
 } from '@material-ui/core/'
 
-import {
-	Menu as MenuIcon,
-	Search as SearchIcon,
-	AccountCircle,
-	Mail as MailIcon,
-	// Notifications as NotificationsIcon,
-	// MoreVert as MoreIcon,
-} from '@material-ui/icons/'
+import { Menu as MenuIcon, Search as SearchIcon, AccountCircle, Mail as MailIcon } from '@material-ui/icons/'
 
 import axios from 'axios'
 import { Link as Redirect } from 'react-router-dom'

@@ -11,9 +11,19 @@ import UserPage from '../userpage'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import PrivateRoute from '../../helpers/PrivateRoute'
 
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider } from '@material-ui/core/styles'
+
+import useTheme, { Palette } from '../../theme'
+
 export default function App() {
+	const colorTheme: Palette = 'dark'
+
+	const theme = React.useMemo(useTheme(colorTheme), [colorTheme])
+
 	return (
-		<React.Fragment>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
 			<Router>
 				<Switch>
 					<GuestRoute path='/login' component={SingIn} />
@@ -25,6 +35,6 @@ export default function App() {
 					<PrivateRoute path='/:user' component={UserPage} />
 				</Switch>
 			</Router>
-		</React.Fragment>
+		</ThemeProvider>
 	)
 }

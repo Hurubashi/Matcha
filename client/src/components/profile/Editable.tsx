@@ -119,7 +119,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				<TextField
 					fullWidth={true}
 					id='outlined-multiline-static'
-					label='Biography'
+					label='About'
 					multiline
 					rows='8'
 					variant='outlined'
