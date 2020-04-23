@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Avatar } from '@material-ui/core/'
+import { Box, Typography, Avatar, ButtonBase } from '@material-ui/core/'
 import styles from './chatsListStyles'
 
 import io from 'socket.io-client'
@@ -18,6 +18,37 @@ socket.on('message', function (data: any) {
 	console.log(data)
 })
 
+type MsgStatus = 'sended' | 'readed' | 'unreaded'
+interface ChatItemInfo {
+	avatar: string
+	name: string
+	lastMsgTime: string
+	msgText: string
+	msgStatus: MsgStatus
+}
+const chats: ChatItemInfo[] = [
+	{
+		avatar: '/images/av3.jpg',
+		name: 'Vasya',
+		lastMsgTime: '8 min ago',
+		msgText: 'how are u?',
+		msgStatus: 'readed',
+	},
+	{
+		avatar: '/images/av1.jpg',
+		name: 'Nikolay',
+		lastMsgTime: '1 day ago',
+		msgText: 'kittens should rule ower humans',
+		msgStatus: 'sended',
+	},
+	{
+		avatar: '/images/av2.jpg',
+		name: 'Nina',
+		lastMsgTime: '2 day ago',
+		msgText: 'Byla ya i 2 gruzina',
+		msgStatus: 'unreaded',
+	},
+]
 const Chat: React.FC = () => {
 	const cl = styles()
 	const [message, setMessage] = React.useState({
@@ -29,20 +60,24 @@ const Chat: React.FC = () => {
 
 	return (
 		<Box className={cl.chatsList}>
-			<Box style={{ minHeight: '64px', marginBottom: '1.5em', display: 'flex' }}>
+			<Box className={cl.chatListHeader}>
 				<Typography variant='h5' style={{ alignSelf: 'center' }}>
 					Messages
 				</Typography>
 			</Box>
 			<Box>
-				<Box className={cl.chatItem}>
-					<Avatar className={cl.chatItemAvatar} alt='Vasya' src='/images/av3.jpg' />
-					<Box>
-						<Typography className={cl.chatItemName}>Vasya</Typography>
-						<Typography className={cl.chatItemTime}>8 minutes ago</Typography>
-						<Typography className={cl.chatItemMessage}>how are you?</Typography>
-					</Box>
-				</Box>
+				{chats.map((elem) => {
+					return (
+						<ButtonBase className={cl.chatItem}>
+							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={elem.avatar} />
+							<Box>
+								<Typography className={cl.chatName}>{elem.name}</Typography>
+								<Typography className={cl.chatTime}>{elem.lastMsgTime}</Typography>
+								<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
+							</Box>
+						</ButtonBase>
+					)
+				})}
 			</Box>
 		</Box>
 	)
