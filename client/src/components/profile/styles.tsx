@@ -45,7 +45,7 @@ const styles = makeStyles((theme: Theme) =>
 		profileTextField: {
 			marginBottom: '0.7em',
 			paddingBottom: '0.4em',
-			borderBottom: '1px ridge',
+			borderBottom: '1px solid #28272c',
 		},
 		profileCard: {
 			padding: '1em',

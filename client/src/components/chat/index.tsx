@@ -1,12 +1,6 @@
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import Box from '@material-ui/core/Box'
-import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import { Close } from '@material-ui/icons'
-import SendIcon from '@material-ui/icons/Send'
-import styles from './chatBoxStyles'
+import { Box, Typography, Avatar } from '@material-ui/core/'
+import styles from './chatsListStyles'
 
 import io from 'socket.io-client'
 const socket = io('http://localhost:5001')
@@ -24,14 +18,8 @@ socket.on('message', function (data: any) {
 	console.log(data)
 })
 
-const useStyles = styles
-
-interface Props {
-	closeChat: () => void
-}
-
-const ChatBox: React.FC<Props> = (props: Props) => {
-	const classes = useStyles()
+const Chat: React.FC = () => {
+	const cl = styles()
 	const [message, setMessage] = React.useState({
 		text: '',
 	})
@@ -40,40 +28,24 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 	}
 
 	return (
-		<Card className={classes.root} variant='outlined'>
-			<Box className={classes.close}>
-				<IconButton aria-label='settings' size='small' onClick={props.closeChat}>
-					<Close fontSize='small' />
-				</IconButton>
+		<Box className={cl.chatsList}>
+			<Box style={{ minHeight: '64px', marginBottom: '1.5em', display: 'flex' }}>
+				<Typography variant='h5' style={{ alignSelf: 'center' }}>
+					Messages
+				</Typography>
 			</Box>
-
-			<Box color='text.primary' className={classes.messageBox}>
-				<div className={`${classes.message} ${classes.leftMessage}`}>
-					<Typography className={classes.messageContent}>I agree that your message is awesome!</Typography>
-				</div>
-				<div className={`${classes.message} ${classes.rightMessage}`}>
-					<Typography className={classes.messageContent}>I agree that your message is awesome!</Typography>
-				</div>
+			<Box>
+				<Box className={cl.chatItem}>
+					<Avatar className={cl.chatItemAvatar} alt='Vasya' src='/images/av3.jpg' />
+					<Box>
+						<Typography className={cl.chatItemName}>Vasya</Typography>
+						<Typography className={cl.chatItemTime}>8 minutes ago</Typography>
+						<Typography className={cl.chatItemMessage}>how are you?</Typography>
+					</Box>
+				</Box>
 			</Box>
-
-			<TextField
-				placeholder='Enter your message'
-				className={classes.messageInput}
-				multiline={true}
-				variant='outlined'
-				rowsMax='4'
-				value={message.text}
-				onChange={(e) => setMessage({ text: e.target.value })}
-				InputProps={{
-					endAdornment: (
-						<IconButton className={classes.sendButton} onClick={sendMessage}>
-							<SendIcon />
-						</IconButton>
-					),
-				}}
-			/>
-		</Card>
+		</Box>
 	)
 }
 
-export default ChatBox
+export default Chat

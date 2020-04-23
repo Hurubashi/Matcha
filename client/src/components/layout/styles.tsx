@@ -8,32 +8,7 @@ const styles = makeStyles((theme: Theme) =>
 		appBar: {
 			backgroundColor: theme.palette.background.default,
 			boxShadow: 'none',
-		},
-		title: {
-			display: 'none',
-			[theme.breakpoints.up('sm')]: {
-				display: 'block',
-			},
-			fontFamily: 'Dancing Script',
-			fontSize: '34px',
-		},
-		sectionDesktop: {
-			display: 'none',
-			[theme.breakpoints.up('md')]: {
-				display: 'flex',
-			},
-		},
-		sectionMobile: {
-			display: 'flex',
-			[theme.breakpoints.up('md')]: {
-				display: 'none',
-			},
-		},
-		chatButton: {
-			position: 'fixed',
-			right: '1em',
-			bottom: '4em',
-			zIndex: 2,
+			marginBottom: '1.5em',
 		},
 		iconButton: {
 			borderRadius: '0.1em',

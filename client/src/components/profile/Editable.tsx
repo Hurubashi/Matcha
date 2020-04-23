@@ -7,7 +7,6 @@ import {
 	FormLabel,
 	FormControlLabel,
 	TextField,
-	Card,
 	Button,
 	Grid,
 } from '@material-ui/core'
@@ -43,7 +42,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 	}
 
 	return (
-		<Card className={classes.profileCard}>
+		<Box className={classes.profileCard}>
 			<Grid container>
 				<Grid item xs={12} md={6}>
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
@@ -136,7 +135,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					{'Save'}
 				</Button>
 			</Box>
-		</Card>
+		</Box>
 	)
 }
 

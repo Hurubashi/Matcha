@@ -15,6 +15,18 @@ const styles = makeStyles((theme: Theme) =>
 			backgroundPosition: 'center 40%',
 			marginTop: '2em',
 		},
+		sectionDesktop: {
+			display: 'none',
+			[theme.breakpoints.up('md')]: {
+				display: 'flex',
+			},
+		},
+		sectionMobile: {
+			display: 'flex',
+			[theme.breakpoints.up('md')]: {
+				display: 'none',
+			},
+		},
 	}),
 )
 

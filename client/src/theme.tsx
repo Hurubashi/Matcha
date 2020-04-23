@@ -97,6 +97,12 @@ const useTheme = (palette: Palette) => (): Theme => {
 					borderColor: '#fff',
 				},
 			},
+			MuiTypography: {
+				h3: {
+					fontFamily: 'Dancing Script',
+					fontSize: '34px',
+				},
+			},
 		},
 	})
 }

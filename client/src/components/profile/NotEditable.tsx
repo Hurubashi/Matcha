@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Card, Button, Typography, Grid } from '@material-ui/core'
+import { Box, Button, Typography, Grid } from '@material-ui/core'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
@@ -17,7 +17,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 	const classes = profileClasses()
 
 	return (
-		<Card className={classes.profileCard}>
+		<Box className={classes.profileCard}>
 			<Grid container>
 				<Grid item xs={12} md={6}>
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
@@ -63,7 +63,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 					{'Edit'}
 				</Button>
 			</Box>
-		</Card>
+		</Box>
 	)
 }
 
