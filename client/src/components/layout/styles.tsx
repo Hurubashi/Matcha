@@ -5,9 +5,6 @@ const styles = makeStyles((theme: Theme) =>
 		grow: {
 			flexGrow: 1,
 		},
-		toolbar: {
-			alignItems: 'flex-start',
-		},
 		appBar: {
 			backgroundColor: theme.palette.background.default,
 			boxShadow: 'none',
@@ -39,7 +36,7 @@ const styles = makeStyles((theme: Theme) =>
 			zIndex: 2,
 		},
 		iconButton: {
-			borderRadius: 0,
+			borderRadius: '0.1em',
 		},
 		link: {
 			textDecoration: 'none',

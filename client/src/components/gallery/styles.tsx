@@ -96,7 +96,7 @@ const styles = makeStyles((theme: Theme) =>
 			},
 		},
 		iconButton: {
-			height: 'fit-content',
+			height: '3em',
 			position: 'absolute',
 			right: '1em',
 			bottom: '1em',

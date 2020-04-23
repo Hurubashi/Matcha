@@ -54,6 +54,13 @@ const useTheme = (palette: Palette) => (): Theme => {
 			fontSize: 13,
 		},
 		overrides: {
+			MuiIconButton: {
+				root: {
+					'&:hover': {
+						backgroundColor: 'rgba(255, 255, 255, 0.19)',
+					},
+				},
+			},
 			MuiButton: {
 				contained: {
 					background: 'linear-gradient(45deg, #FE5D26 30%, #FF8E53 90%)',
@@ -66,7 +73,7 @@ const useTheme = (palette: Palette) => (): Theme => {
 				root: {
 					color: '#fff',
 					'&:hover': {
-						backgroundColor: '#e17575',
+						backgroundColor: '#c42f28',
 					},
 				},
 			},
