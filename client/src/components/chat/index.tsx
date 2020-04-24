@@ -1,5 +1,8 @@
 import React from 'react'
 import { Box, Typography, Avatar, ButtonBase } from '@material-ui/core/'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+
 import styles from './chatsListStyles'
 
 import io from 'socket.io-client'
@@ -70,10 +73,13 @@ const Chat: React.FC = () => {
 					return (
 						<ButtonBase className={cl.chatItem}>
 							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={elem.avatar} />
-							<Box>
+							<Box style={{ overflow: 'hidden' }}>
 								<Typography className={cl.chatName}>{elem.name}</Typography>
 								<Typography className={cl.chatTime}>{elem.lastMsgTime}</Typography>
-								<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
+								<Box style={{ display: 'flex' }}>
+									<ArrowBackIcon fontSize='small' />
+									<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
+								</Box>
 							</Box>
 						</ButtonBase>
 					)
