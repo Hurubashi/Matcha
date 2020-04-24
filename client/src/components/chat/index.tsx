@@ -35,7 +35,7 @@ const chats: ChatItemInfo[] = [
 		name: 'Vasya',
 		lastMsgTime: '8 min ago',
 		msgText: 'how are u?',
-		msgStatus: 'readed',
+		msgStatus: 'unreaded',
 	},
 	{
 		avatar: '/images/av1.jpg',
@@ -49,7 +49,7 @@ const chats: ChatItemInfo[] = [
 		name: 'Nina',
 		lastMsgTime: '2 day ago',
 		msgText: 'Byla ya i 2 gruzina',
-		msgStatus: 'unreaded',
+		msgStatus: 'readed',
 	},
 ]
 const Chat: React.FC = () => {
@@ -77,7 +77,8 @@ const Chat: React.FC = () => {
 								<Typography className={cl.chatName}>{elem.name}</Typography>
 								<Typography className={cl.chatTime}>{elem.lastMsgTime}</Typography>
 								<Box style={{ display: 'flex' }}>
-									<ArrowBackIcon fontSize='small' />
+									{elem.msgStatus == 'readed' && <ArrowBackIcon fontSize='small' />}
+									{elem.msgStatus == 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />}
 									<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
 								</Box>
 							</Box>

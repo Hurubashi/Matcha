@@ -18,7 +18,13 @@ const styles = makeStyles((theme: Theme) =>
 		},
 		chatName: { fontSize: '1rem' },
 		chatTime: { color: '#94929c', fontSize: '0.7rem' },
-		chatMessage: { fontSize: '0.8rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+		chatMessage: {
+			fontSize: '0.8rem',
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+			whiteSpace: 'nowrap',
+			marginLeft: '0.2em',
+		},
 	}),
 )
 

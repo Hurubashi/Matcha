@@ -26,7 +26,7 @@ const PrimaryAppBar: React.FC = () => {
 			route: '/gallery',
 		},
 		{
-			name: 'Profile',
+			name: 'My Profile',
 			route: '/profile',
 		},
 	]
