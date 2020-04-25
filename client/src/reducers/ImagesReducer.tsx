@@ -21,7 +21,7 @@ class ImagesReducer extends RequesReduser<Image[]> {
 	}
 
 	deleteImage = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
-		this.request(this.delReq(`${id}`), dispatch)
+		this.request(this.delReq(`/${id}`), dispatch)
 	}
 
 	setAvatar = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {

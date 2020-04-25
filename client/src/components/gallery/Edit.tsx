@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
+import { Action } from '../../reducers/RequestReducer'
 import ImagesReducer, { Image } from '../../reducers/ImagesReducer'
 import galleryMakeStyles from './styles'
 
