@@ -1,14 +1,12 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
-import { Action } from './GalleryReducer'
+import ImagesReducer, { Image } from '../../reducers/ImagesReducer'
 import galleryMakeStyles from './styles'
 
 interface Props {
 	id: number
-	deleteImage: (id: number, dispatch: React.Dispatch<Action>) => void
-	setAvatar: (id: number, dispatch: React.Dispatch<Action>) => void
-	dispatch: React.Dispatch<Action>
+	dispatch: React.Dispatch<Action<Image[]>>
 }
 
 const Edit: React.FC<Props> = (props: Props) => {
@@ -38,8 +36,8 @@ const Edit: React.FC<Props> = (props: Props) => {
 			keepMounted
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<MenuItem onClick={() => props.setAvatar(props.id, props.dispatch)}>Set as Avatar</MenuItem>
-			<MenuItem onClick={() => props.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
+			<MenuItem onClick={() => ImagesReducer.setAvatar(props.id, props.dispatch)}>Set as Avatar</MenuItem>
+			<MenuItem onClick={() => ImagesReducer.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
 		</Menu>
 	)
 

@@ -3,17 +3,16 @@ import { Container, Card, Tooltip, Button, Typography, Input } from '@material-u
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 
-import reducer, { fetchImages, uploadImage, deleteImage, setAvatar } from './GalleryReducer'
+import ImagesReducer from '../../reducers/ImagesReducer'
 import Edit from './Edit'
 import galleryMakeStyles from './styles'
 
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
-	const [state, dispatch] = useReducer(reducer, { status: 'empty' })
+	const [state, dispatch] = useReducer(ImagesReducer.reducer, { status: 'loading' })
 
 	useEffect(() => {
-		dispatch({ type: 'request' })
-		fetchImages(dispatch)
+		ImagesReducer.getImages(dispatch)
 	}, [])
 
 	return (
@@ -26,7 +25,7 @@ const Gallery: React.FC = () => {
 							<Input
 								type='file'
 								style={{ display: 'none' }}
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) => uploadImage(event, dispatch)}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => ImagesReducer.uploadImage(event, dispatch)}
 							/>
 							<AddCircleOutlineIcon color='primary' fontSize='large' />
 						</Button>
@@ -42,7 +41,7 @@ const Gallery: React.FC = () => {
 								}}
 							/>
 							<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-							<Edit id={image.id} deleteImage={deleteImage} setAvatar={setAvatar} dispatch={dispatch} />
+							<Edit id={image.id} dispatch={dispatch} />
 							<Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
 								<ThumbUpAltIcon />
 								<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>

@@ -22,15 +22,15 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 	return isUser() ? (
 		<React.Fragment>
 			<UserContextProvider value={{ state, dispatch }}>
-				<Container>
-					<Card style={{ border: '1px solid bisque', marginTop: '1em', padding: '1em' }}>
+				<Container style={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}>
+					<Card style={{ border: '1px solid bisque', padding: '1em' }}>
 						<Grid container>
 							<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
 								<Chat />
 							</Grid>
 							<Grid item xs={9}>
 								<PrimaryAppBar />
-								<Box m={2} style={{ height: '80vh', overflowY: 'scroll' }}>
+								<Box m={2} style={{ minHeight: 'calc(100vh - 12em)', overflowY: 'scroll' }}>
 									<Route path={props.path} component={props.component} />
 								</Box>
 							</Grid>

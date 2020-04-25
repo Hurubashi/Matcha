@@ -77,8 +77,8 @@ const Chat: React.FC = () => {
 								<Typography className={cl.chatName}>{elem.name}</Typography>
 								<Typography className={cl.chatTime}>{elem.lastMsgTime}</Typography>
 								<Box style={{ display: 'flex' }}>
-									{elem.msgStatus == 'readed' && <ArrowBackIcon fontSize='small' />}
-									{elem.msgStatus == 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />}
+									{elem.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
+									{elem.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />}
 									<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
 								</Box>
 							</Box>
