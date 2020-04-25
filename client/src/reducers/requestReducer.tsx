@@ -1,5 +1,5 @@
 import React from 'react'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export type State<T> = { status: 'loading' } | { status: 'error'; error: string } | { status: 'success'; data: T }
 
@@ -21,50 +21,61 @@ export default abstract class RequesReduser<T> {
 				return { status: 'error', error: action.error }
 		}
 	}
-	protected request(
-		reqConfig: AxiosRequestConfig,
-		dispatch: React.Dispatch<Action<T>>,
-		successCb: () => void = () => {},
-		errorCb: () => void = () => {},
-	) {
+	protected requestDefault(reqConfig: AxiosRequestConfig, dispatch: React.Dispatch<Action<T>>) {
 		axios(reqConfig)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					dispatch({ type: 'success', results: res['data']['data'] })
-					successCb()
 				} else {
 					dispatch({ type: 'failure', error: res['data']['message'] })
-					errorCb()
 				}
 			})
 			.catch(function (error) {
-				errorCb()
+				dispatch({ type: 'failure', error: error.message })
 			})
 	}
 
-	protected getReq(url: string = ''): AxiosRequestConfig {
+	protected request(
+		reqConfig: AxiosRequestConfig,
+		successCb: (res: AxiosResponse<any>) => void = () => {},
+		errorCb: (res: AxiosResponse<any>) => void = () => {},
+	) {
+		axios(reqConfig)
+			.then(function (res) {
+				if (res['data']['success'] === true) {
+					successCb(res)
+				} else {
+					errorCb(res)
+				}
+			})
+			.catch(function (error) {
+				errorCb(error)
+			})
+	}
+
+	protected getReq(url?: string): AxiosRequestConfig {
 		return {
-			url: this.baseUrl + url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'GET',
 		}
 	}
 	protected postReq(data: any, url: string = ''): AxiosRequestConfig {
 		return {
-			url: this.baseUrl + url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'POST',
 			data: data,
 		}
 	}
 	protected putReq(data: any, url: string = ''): AxiosRequestConfig {
 		return {
-			url: this.baseUrl + url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'PUT',
 			data: data,
 		}
 	}
 	protected delReq(url: string = ''): AxiosRequestConfig {
 		return {
-			url: this.baseUrl + url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'DELETE',
 		}
 	}

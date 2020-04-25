@@ -18,12 +18,20 @@ export type User = {
 
 class UserReducer extends RequesReduser<User> {
 	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
-		console.log('GET USER')
-		this.request(this.getReq(url), dispatch)
+		this.requestDefault(this.getReq(`/user/${url}`), dispatch)
 	}
 
 	saveUser(data: User, dispatch: React.Dispatch<Action<User>>, onSuccess: () => void) {
-		this.request(this.putReq(data), dispatch, onSuccess)
+		this.request(
+			this.putReq(data),
+			(res) => {
+				dispatch({ type: 'success', results: res['data']['data'] })
+				onSuccess()
+			},
+			(res) => {
+				dispatch({ type: 'failure', error: res['data']['message'] })
+			},
+		)
 	}
 }
 

@@ -8,7 +8,7 @@ export type Image = {
 
 class ImagesReducer extends RequesReduser<Image[]> {
 	getImages(dispatch: React.Dispatch<Action<Image[]>>, url?: string) {
-		this.request(this.getReq(url), dispatch)
+		this.requestDefault(this.getReq(), dispatch)
 	}
 
 	uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch: React.Dispatch<Action<Image[]>>) => {
@@ -16,16 +16,41 @@ class ImagesReducer extends RequesReduser<Image[]> {
 		if (elem.files) {
 			const fd = new FormData()
 			fd.append('image', elem.files[0])
-			this.request(this.postReq(fd), dispatch)
+
+			this.request(
+				this.postReq(fd),
+				() => {
+					this.getImages(dispatch)
+				},
+				(res) => {
+					dispatch({ type: 'failure', error: res['data']['message'] })
+				},
+			)
 		}
 	}
 
 	deleteImage = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
-		this.request(this.delReq(`/${id}`), dispatch)
+		this.request(
+			this.delReq(`/image/${id}`),
+			() => {
+				this.getImages(dispatch)
+			},
+			(res) => {
+				dispatch({ type: 'failure', error: res['data']['message'] })
+			},
+		)
 	}
 
 	setAvatar = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
-		this.request(this.putReq({ avatar: id }), dispatch)
+		this.request(
+			this.putReq({ avatar: id }, '/user'),
+			() => {
+				this.getImages(dispatch)
+			},
+			(res) => {
+				dispatch({ type: 'failure', error: res['data']['message'] })
+			},
+		)
 	}
 }
 
