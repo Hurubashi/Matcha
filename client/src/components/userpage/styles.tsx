@@ -9,6 +9,7 @@ const styles = makeStyles((theme: Theme) =>
 			justifyContent: 'space-around',
 			overflow: 'hidden',
 			backgroundColor: theme.palette.background.paper,
+			marginTop: '1em',
 		},
 		gridList: {
 			flexWrap: 'nowrap',

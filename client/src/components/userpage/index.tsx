@@ -41,16 +41,15 @@ const UserPage: React.FC = () => {
 						<Grid item xs={6}>
 							<CardMedia image='/images/av1.jpg' style={{ paddingTop: '150%' }} />
 						</Grid>
-						<Grid item xs={6} style={{ paddingLeft: '5em' }}>
+						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
 							<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
-								{/* {ctx.state.status} */}
 								{userState.data.firstName}, 28
 							</Typography>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
 								<LocationOnIcon /> 5 miles away
 							</Typography>
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
-								Interests
+								Looking for
 							</Typography>
 							{userState.data.interests.map((data) => {
 								return <Chip key={data} label={data} className={profileStyles.chip} />
@@ -61,18 +60,15 @@ const UserPage: React.FC = () => {
 							<Typography>
 								{userState.data.biography}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend eros
 								sed est mollis scelerisque. Morbi et viverra tortor. Integer lacus orci, sodales id est vitae, hendrerit
-								rhoncus nunc. Sed non porttitor mi. In ornare est eu commodo scelerisque. Nunc eu efficitur nulla.
-								Praesent rutrum iaculis rhoncus. Cras ante mi, aliquam in tristique nec, facilisis sit amet mi. Nam et
-								condimentum enim. Proin aliquet sem eget elit bibendum, sed facilisis eros elementum. Pellentesque quis
-								lacus a massa sollicitudin auctor. Phasellus vel pulvinar orci. Ut consequat ullamcorper pulvinar.
+								rhoncus nunc. Sed non porttitor mi. In ornare est eu commodo scelerisque.
 							</Typography>
 							{imagesState.status === 'success' && (
 								<div className={classes.imagesList}>
-									<GridList className={classes.gridList} cols={2.5}>
+									<GridList className={classes.gridList} cols={3}>
 										{imagesState.data.map((img) => (
-											<GridListTile key={img.id}>
+											<GridListTile key={img.id} style={{ height: '10em' }}>
 												<img src={img.image} alt={'sss'} />
-												<GridListTileBar
+												{/* <GridListTileBar
 													title={'some titile'}
 													classes={{
 														root: classes.titleBar,
@@ -83,12 +79,47 @@ const UserPage: React.FC = () => {
 															<StarBorderIcon className={classes.title} />
 														</IconButton>
 													}
-												/>
+												/> */}
 											</GridListTile>
 										))}
 									</GridList>
+									<Grid container>
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											<Typography style={{ color: '#908f96', fontSize: '0.8rem', textTransform: 'uppercase' }}>
+												Height and weight
+											</Typography>
+										</Grid>
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											<Typography> 67kg / 185sm</Typography>
+										</Grid>
+
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											<Typography style={{ color: '#908f96', fontSize: '0.8rem', textTransform: 'uppercase' }}>
+												Relationship
+											</Typography>
+										</Grid>
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											<Typography>It's complicated</Typography>
+										</Grid>
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											<Typography style={{ color: '#908f96', fontSize: '0.8rem', textTransform: 'uppercase' }}>
+												Interests
+											</Typography>
+										</Grid>
+										<Grid item xs={6} style={{ marginTop: '1em' }}>
+											{userState.data.interests.map((data) => {
+												return <span style={{ marginRight: '0.2em' }}>#{data}</span>
+											})}
+										</Grid>
+									</Grid>
 								</div>
 							)}
+							{/* <Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
+								Interests
+							</Typography>
+							{userState.data.interests.map((data) => {
+								return <Chip key={data} label={data} className={profileStyles.chip} />
+							})} */}
 						</Grid>
 					</Grid>
 				)
