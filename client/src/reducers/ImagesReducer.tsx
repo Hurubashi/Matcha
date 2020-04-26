@@ -22,8 +22,8 @@ class ImagesReducer extends RequesReduser<Image[]> {
 				() => {
 					this.getImages(dispatch)
 				},
-				(res) => {
-					dispatch({ type: 'failure', error: res['data']['message'] })
+				(err) => {
+					dispatch({ type: 'failure', error: err })
 				},
 			)
 		}
@@ -35,8 +35,8 @@ class ImagesReducer extends RequesReduser<Image[]> {
 			() => {
 				this.getImages(dispatch)
 			},
-			(res) => {
-				dispatch({ type: 'failure', error: res['data']['message'] })
+			(err) => {
+				dispatch({ type: 'failure', error: err })
 			},
 		)
 	}
@@ -47,8 +47,8 @@ class ImagesReducer extends RequesReduser<Image[]> {
 			() => {
 				this.getImages(dispatch)
 			},
-			(res) => {
-				dispatch({ type: 'failure', error: res['data']['message'] })
+			(err) => {
+				dispatch({ type: 'failure', error: err })
 			},
 		)
 	}

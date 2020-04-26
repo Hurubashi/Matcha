@@ -28,8 +28,8 @@ class UserReducer extends RequesReduser<User> {
 				dispatch({ type: 'success', results: res['data']['data'] })
 				onSuccess()
 			},
-			(res) => {
-				dispatch({ type: 'failure', error: res['data']['message'] })
+			(err) => {
+				dispatch({ type: 'failure', error: err })
 			},
 		)
 	}

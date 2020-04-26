@@ -38,18 +38,18 @@ export default abstract class RequesReduser<T> {
 	protected request(
 		reqConfig: AxiosRequestConfig,
 		successCb: (res: AxiosResponse<any>) => void = () => {},
-		errorCb: (res: AxiosResponse<any>) => void = () => {},
+		errorCb: (res: string) => void = () => {},
 	) {
 		axios(reqConfig)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
 					successCb(res)
 				} else {
-					errorCb(res)
+					errorCb(res['data']['message'])
 				}
 			})
 			.catch(function (error) {
-				errorCb(error)
+				errorCb(error.message)
 			})
 	}
 
