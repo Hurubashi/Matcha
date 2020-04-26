@@ -1,6 +1,7 @@
 import Joi, { string } from 'joi'
 import Model from './Model'
 import { Interest, InterestModel } from './Interest'
+import { LookingFor, LookingForModel } from './LookingFor'
 
 export interface User {
 	id: number
@@ -100,6 +101,16 @@ export class UserModel extends Model<User> {
 			await interestModel.create({ userId: userId, name: name })
 		})
 		const res = await interestModel.getWhere({ userId: userId }, ['name'])
+		return res
+	}
+
+	async setLookingFor(userId: Number, lookingFor: [string]) {
+		const lookingForModel = new LookingForModel()
+
+		lookingFor.forEach(async (name) => {
+			await lookingForModel.create({ userId: userId, name: name })
+		})
+		const res = await lookingForModel.getWhere({ userId: userId }, ['name'])
 		return res
 	}
 }

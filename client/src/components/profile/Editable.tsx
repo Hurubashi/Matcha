@@ -113,6 +113,8 @@ const Editable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
+			{/* <Interests setProfile={setProfile} profile={profile} editable={true} /> */}
+
 			<Interests setProfile={setProfile} profile={profile} editable={true} />
 			<Box textAlign='center'>
 				<TextField

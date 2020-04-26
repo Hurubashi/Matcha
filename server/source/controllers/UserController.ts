@@ -42,6 +42,7 @@ export default class UserController {
 			try {
 				await userModel.updateWhere({ id: user.id }, userAccessibleData)
 				await UserActions.setInterests(Number(user.id), req.body.interests)
+				await UserActions.setLookingFor(Number(user.id), req.body.lookingFor)
 				const [updateUser, updateErr] = await UserActions.getUserById(user.id)
 				if (updateUser) {
 					const updatedProfile = await UserActions.getProfileData(updateUser)

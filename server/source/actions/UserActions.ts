@@ -2,11 +2,13 @@ import { Request } from 'express'
 import jwt from 'jsonwebtoken'
 import { User, UserModel } from '../models/User'
 import { InterestModel } from '../models/Interest'
+import { LookingFor } from '../models/LookingFor'
 import ResManager, { ResInfo } from '../util/ResManager'
 import { imageModel } from '../models/Image'
 
 const userModel = new UserModel()
 const interestModel = new InterestModel()
+const lookingForModel = new LookingFor()
 
 export default class UserActions {
 	static async getInterests(userId: number): Promise<string[]> {
@@ -23,6 +25,16 @@ export default class UserActions {
 		try {
 			await interestModel.delete({ userId: userId })
 			await userModel.setInterests(userId, interestsList)
+		} catch (err) {
+			return ResManager.serverError()
+		}
+	}
+
+	static async setLookingFor(userId: number, interestsList: [string]): Promise<void | ResInfo> {
+		let userModel = new UserModel()
+		try {
+			await lookingForModel.delete({ userId: userId })
+			await userModel.setLookingFor(userId, interestsList)
 		} catch (err) {
 			return ResManager.serverError()
 		}
