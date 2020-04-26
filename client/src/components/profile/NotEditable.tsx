@@ -4,6 +4,7 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
+import LookingFor from './LookingFor'
 import { Link } from 'react-router-dom'
 import { User } from '../../reducers/UserReducer'
 
@@ -53,6 +54,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
+			<LookingFor setProfile={null} profile={user} editable={false} />
 			<Interests setProfile={null} profile={user} editable={false} />
 			<Box textAlign='center'>
 				<Typography align='left'>{'About'}:</Typography>

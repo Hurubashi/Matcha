@@ -15,6 +15,7 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
 import Interests from './Interests'
+import LookingFor from './LookingFor'
 import { Action } from '../../reducers/RequestReducer'
 import UserReducer, { User } from '../../reducers/UserReducer'
 
@@ -113,8 +114,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
-			{/* <Interests setProfile={setProfile} profile={profile} editable={true} /> */}
-
+			<LookingFor setProfile={setProfile} profile={profile} editable={true} />
 			<Interests setProfile={setProfile} profile={profile} editable={true} />
 			<Box textAlign='center'>
 				<TextField

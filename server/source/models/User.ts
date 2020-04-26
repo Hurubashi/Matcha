@@ -104,6 +104,12 @@ export class UserModel extends Model<User> {
 		return res
 	}
 
+	async getLookingFor(userId: Number): Promise<Interest[]> {
+		const lookingForModel = new LookingForModel()
+		const res = await lookingForModel.getWhere({ userId: userId }, ['name'])
+		return res
+	}
+
 	async setLookingFor(userId: Number, lookingFor: [string]) {
 		const lookingForModel = new LookingForModel()
 

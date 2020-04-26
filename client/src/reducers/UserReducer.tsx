@@ -12,6 +12,7 @@ export type User = {
 	preferences: Preferences
 	avatarUrl: string | undefined
 	avatar: string | undefined
+	lookingFor: string[]
 	interests: string[]
 	biography: string
 }
