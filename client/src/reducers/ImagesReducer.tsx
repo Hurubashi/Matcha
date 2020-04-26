@@ -16,7 +16,7 @@ class ImagesReducer extends RequesReduser<Image[]> {
 		if (elem.files) {
 			const fd = new FormData()
 			fd.append('image', elem.files[0])
-
+			console.log('upload image')
 			this.request(
 				this.postReq(fd),
 				() => {

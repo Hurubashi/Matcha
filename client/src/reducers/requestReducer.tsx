@@ -59,21 +59,24 @@ export default abstract class RequesReduser<T> {
 			method: 'GET',
 		}
 	}
-	protected postReq(data: any, url: string = ''): AxiosRequestConfig {
+	protected postReq(data: any, url?: string): AxiosRequestConfig {
+		console.log('post req')
+		console.log(url)
+		console.log(this.baseUrl)
 		return {
 			url: url === undefined ? this.baseUrl : url,
 			method: 'POST',
 			data: data,
 		}
 	}
-	protected putReq(data: any, url: string = ''): AxiosRequestConfig {
+	protected putReq(data: any, url?: string): AxiosRequestConfig {
 		return {
 			url: url === undefined ? this.baseUrl : url,
 			method: 'PUT',
 			data: data,
 		}
 	}
-	protected delReq(url: string = ''): AxiosRequestConfig {
+	protected delReq(url?: string): AxiosRequestConfig {
 		return {
 			url: url === undefined ? this.baseUrl : url,
 			method: 'DELETE',
