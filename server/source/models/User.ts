@@ -11,7 +11,7 @@ export interface User {
 	lastName: string
 	password: string
 	gender: 'male' | 'female' | '' | undefined
-	preferences: 'male' | 'female' | 'male and female' | '' | undefined
+	preferences: 'male' | 'female' | 'both' | '' | undefined
 	avatar: number | undefined
 	biography: string | undefined
 	isVerified: boolean

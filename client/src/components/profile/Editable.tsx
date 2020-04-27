@@ -98,7 +98,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 								row
 								value={profile.preferences}
 								onChange={changeProfileData('preferences')}>
-								{['male', 'female', 'male and female'].map((elem) => {
+								{['male', 'female', 'both'].map((elem) => {
 									return (
 										<FormControlLabel
 											key={'pref' + elem}

@@ -43,7 +43,7 @@ const UserPage: React.FC = () => {
 						</Grid>
 						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
 							<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
-								{userState.data.firstName}, 28
+								{userState.data.firstName}
 							</Typography>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
 								<LocationOnIcon /> 5 miles away
@@ -51,17 +51,13 @@ const UserPage: React.FC = () => {
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
 								Looking for
 							</Typography>
-							{userState.data.interests.map((data) => {
+							{userState.data.lookingFor.map((data) => {
 								return <Chip key={data} label={data} className={profileStyles.chip} />
 							})}
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
 								About
 							</Typography>
-							<Typography>
-								{userState.data.biography}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend eros
-								sed est mollis scelerisque. Morbi et viverra tortor. Integer lacus orci, sodales id est vitae, hendrerit
-								rhoncus nunc. Sed non porttitor mi. In ornare est eu commodo scelerisque.
-							</Typography>
+							<Typography>{userState.data.biography}</Typography>
 							{imagesState.status === 'success' && (
 								<div className={classes.imagesList}>
 									<GridList className={classes.gridList} cols={3}>
@@ -84,15 +80,6 @@ const UserPage: React.FC = () => {
 										))}
 									</GridList>
 									<Grid container>
-										<Grid item xs={6} style={{ marginTop: '1em' }}>
-											<Typography style={{ color: '#908f96', fontSize: '0.8rem', textTransform: 'uppercase' }}>
-												Height and weight
-											</Typography>
-										</Grid>
-										<Grid item xs={6} style={{ marginTop: '1em' }}>
-											<Typography> 67kg / 185sm</Typography>
-										</Grid>
-
 										<Grid item xs={6} style={{ marginTop: '1em' }}>
 											<Typography style={{ color: '#908f96', fontSize: '0.8rem', textTransform: 'uppercase' }}>
 												Relationship
