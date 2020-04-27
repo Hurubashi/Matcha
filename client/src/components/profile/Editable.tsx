@@ -49,30 +49,10 @@ const Editable: React.FC<Props> = (props: Props) => {
 	}
 
 	const changeNumericData = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-		var re = new RegExp('/^[0-9]/')
-		// const onlyNums = event.target.value.replace(/[^0-9]/g, '')
+		var re = new RegExp(/(^[-+]?\d*\.?\d*$)/g)
 		if (re.test(event.target.value)) setProfile({ ...profile, [prop]: event.target.value })
-		// } else if (onlyNums.length === 10) {
-		// 	const number = onlyNums.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
-		// 	setProfile({ ...profile, [prop]: number })
-		// }
 	}
 
-	const TextMaskCustom = (props: TextMaskCustomProps) => {
-		const { inputRef, ...other } = props
-
-		return (
-			<MaskedInput
-				{...other}
-				ref={(ref: any) => {
-					inputRef(ref ? ref.inputElement : null)
-				}}
-				mask={[/[0-180]/]}
-				// placeholderChar={'\u2000'}
-				showMask
-			/>
-		)
-	}
 	return (
 		<Box className={classes.profileCard}>
 			<Grid container>
@@ -155,9 +135,6 @@ const Editable: React.FC<Props> = (props: Props) => {
 						value={profile['lat']}
 						fullWidth={true}
 						margin='dense'
-						// InputProps={{
-						// 	inputComponent: TextMaskCustom as any,
-						// }}
 					/>
 				</Grid>
 				<Grid xs={4}>
