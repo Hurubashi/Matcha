@@ -63,7 +63,7 @@ const UserPage: React.FC = () => {
 									<GridList className={classes.gridList} cols={3}>
 										{imagesState.data.map((img) => (
 											<GridListTile key={img.id} style={{ height: '10em' }}>
-												<img src={img.image} alt={'sss'} />
+												<img src={img.image} alt={''} />
 												{/* <GridListTileBar
 													title={'some titile'}
 													classes={{
@@ -94,8 +94,12 @@ const UserPage: React.FC = () => {
 											</Typography>
 										</Grid>
 										<Grid item xs={6} style={{ marginTop: '1em' }}>
-											{userState.data.interests.map((data) => {
-												return <span style={{ marginRight: '0.2em' }}>#{data}</span>
+											{userState.data.interests.map((data, idx) => {
+												return (
+													<span key={idx} style={{ marginRight: '0.2em' }}>
+														#{data}
+													</span>
+												)
 											})}
 										</Grid>
 									</Grid>

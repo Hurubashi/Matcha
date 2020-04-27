@@ -35,9 +35,9 @@ const PrimaryAppBar: React.FC = () => {
 			<Toolbar>
 				<Typography variant='h3'>Matcha</Typography>
 				<div className={classes.grow} />
-				{menu.map((elem) => {
+				{menu.map((elem, idx) => {
 					return (
-						<IconButton className={classes.iconButton} color='inherit'>
+						<IconButton className={classes.iconButton} color='inherit' key={idx}>
 							<Link to={elem.route} className={classes.link}>
 								{elem.name}
 							</Link>

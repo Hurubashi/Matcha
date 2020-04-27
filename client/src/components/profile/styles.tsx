@@ -14,6 +14,7 @@ const styles = makeStyles((theme: Theme) =>
 			[theme.breakpoints.down('xs')]: {
 				width: `${theme.spacing(2.2)}em`,
 				height: `${theme.spacing(2.2)}em`,
+				margin: 'none',
 			},
 			borderRadius: '50%',
 			display: 'block',

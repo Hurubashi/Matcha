@@ -15,6 +15,8 @@ export type User = {
 	lookingFor: string[]
 	interests: string[]
 	biography: string
+	lat: number
+	lon: number
 }
 
 class UserReducer extends RequesReduser<User> {
@@ -33,6 +35,37 @@ class UserReducer extends RequesReduser<User> {
 				dispatch({ type: 'failure', error: err })
 			},
 		)
+	}
+
+	getLocation(dispatch: React.Dispatch<Action<User>>, onSuccess: (lat: number, lon: number) => void) {
+		const success = (position: Position) => {
+			const latitude = position.coords.latitude
+			const longitude = position.coords.longitude
+
+			//   `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+			console.log(`Latitude: ${latitude} °, Longitude: ${longitude} °`)
+			this.request(
+				this.putReq({ lat: latitude, lon: longitude }),
+				(res) => {
+					onSuccess(latitude, longitude)
+				},
+				(err) => {
+					dispatch({ type: 'failure', error: err })
+				},
+			)
+		}
+
+		const error = (positionError: PositionError) => {
+			console.log('PositionError:' + positionError.message)
+			console.log('Unable to retrieve your location')
+		}
+
+		if (!navigator.geolocation) {
+			console.log('Geolocation is not supported by your browser')
+		} else {
+			//   status.textContent = 'Locating…';
+			console.log(navigator.geolocation.getCurrentPosition(success, error))
+		}
 	}
 }
 

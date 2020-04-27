@@ -9,8 +9,10 @@ import {
 	TextField,
 	Button,
 	Grid,
+	Typography,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import MaskedInput from 'react-text-mask'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'
@@ -23,6 +25,10 @@ interface Props {
 	dispatch: React.Dispatch<Action<User>>
 	user: User
 	setEditable: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface TextMaskCustomProps {
+	inputRef: (ref: HTMLInputElement | null) => void
 }
 
 const Editable: React.FC<Props> = (props: Props) => {
@@ -42,6 +48,31 @@ const Editable: React.FC<Props> = (props: Props) => {
 		setEditable(false)
 	}
 
+	const changeNumericData = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+		var re = new RegExp('/^[0-9]/')
+		// const onlyNums = event.target.value.replace(/[^0-9]/g, '')
+		if (re.test(event.target.value)) setProfile({ ...profile, [prop]: event.target.value })
+		// } else if (onlyNums.length === 10) {
+		// 	const number = onlyNums.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
+		// 	setProfile({ ...profile, [prop]: number })
+		// }
+	}
+
+	const TextMaskCustom = (props: TextMaskCustomProps) => {
+		const { inputRef, ...other } = props
+
+		return (
+			<MaskedInput
+				{...other}
+				ref={(ref: any) => {
+					inputRef(ref ? ref.inputElement : null)
+				}}
+				mask={[/[0-180]/]}
+				// placeholderChar={'\u2000'}
+				showMask
+			/>
+		)
+	}
 	return (
 		<Box className={classes.profileCard}>
 			<Grid container>
@@ -112,6 +143,42 @@ const Editable: React.FC<Props> = (props: Props) => {
 							</RadioGroup>
 						</FormControl>
 					</Box>
+				</Grid>
+			</Grid>
+			<Typography>Location</Typography>
+
+			<Grid container>
+				<Grid xs={4}>
+					<TextField
+						label={'Latitude'}
+						onChange={changeNumericData('lat')}
+						value={profile['lat']}
+						fullWidth={true}
+						margin='dense'
+						// InputProps={{
+						// 	inputComponent: TextMaskCustom as any,
+						// }}
+					/>
+				</Grid>
+				<Grid xs={4}>
+					<TextField
+						label={'Longitude'}
+						onChange={changeNumericData('lon')}
+						value={profile['lon']}
+						fullWidth={true}
+						margin='dense'
+						type='number'
+					/>
+				</Grid>
+				<Grid xs={4}>
+					<Button
+						onClick={() =>
+							UserReducer.getLocation(dispatch, (lat, lon) => setProfile({ ...profile, lat: lat, lon: lon }))
+						}
+						variant='outlined'
+						style={{ margin: 'auto', paddingLeft: '1.5em' }}>
+						Detect
+					</Button>
 				</Grid>
 			</Grid>
 			<LookingFor setProfile={setProfile} profile={profile} editable={true} />

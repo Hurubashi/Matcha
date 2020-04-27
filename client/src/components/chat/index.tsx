@@ -69,9 +69,9 @@ const Chat: React.FC = () => {
 				</Typography>
 			</Box>
 			<Box>
-				{chats.map((elem) => {
+				{chats.map((elem, idx) => {
 					return (
-						<ButtonBase className={cl.chatItem}>
+						<ButtonBase className={cl.chatItem} key={idx}>
 							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={elem.avatar} />
 							<Box style={{ overflow: 'hidden' }}>
 								<Typography className={cl.chatName}>{elem.name}</Typography>
