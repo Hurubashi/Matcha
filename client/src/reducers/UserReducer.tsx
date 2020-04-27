@@ -1,7 +1,7 @@
 import RequesReduser, { Action } from './RequestReducer'
 
 type Gender = 'male' | 'female' | ''
-type Preferences = 'male' | 'female' | 'both' | ''
+type Preferences = 'male' | 'female' | 'male and female'
 
 export type User = {
 	username: string
