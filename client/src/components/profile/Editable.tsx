@@ -128,7 +128,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 			<Typography>Location</Typography>
 
 			<Grid container>
-				<Grid xs={4}>
+				<Grid xs={4} item>
 					<TextField
 						label={'Latitude'}
 						onChange={changeNumericData('lat')}
@@ -137,17 +137,16 @@ const Editable: React.FC<Props> = (props: Props) => {
 						margin='dense'
 					/>
 				</Grid>
-				<Grid xs={4}>
+				<Grid xs={4} item>
 					<TextField
 						label={'Longitude'}
 						onChange={changeNumericData('lon')}
 						value={profile['lon']}
 						fullWidth={true}
 						margin='dense'
-						type='number'
 					/>
 				</Grid>
-				<Grid xs={4}>
+				<Grid xs={4} item>
 					<Button
 						onClick={() =>
 							UserReducer.getLocation(dispatch, (lat, lon) => setProfile({ ...profile, lat: lat, lon: lon }))

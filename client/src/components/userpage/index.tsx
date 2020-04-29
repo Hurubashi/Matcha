@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import {
-	Box,
 	Grid,
 	Chip,
 	Typography,
@@ -35,7 +34,7 @@ const UserPage: React.FC = () => {
 	return (
 		<UserContextConsumer>
 			{(ctx) =>
-				ctx &&
+				ctx?.state.status === 'success' &&
 				userState.status === 'success' && (
 					<Grid container style={{ height: 'inherit', padding: '2em' }}>
 						<Grid item xs={6}>
@@ -46,7 +45,14 @@ const UserPage: React.FC = () => {
 								{userState.data.firstName}
 							</Typography>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
-								<LocationOnIcon /> 5 miles away
+								<LocationOnIcon />{' '}
+								{UserReducer.getDistanse(
+									ctx.state.data.lat,
+									ctx.state.data.lon,
+									userState.data.lat,
+									userState.data.lon,
+								)}{' '}
+								meters away
 							</Typography>
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
 								Looking for
@@ -64,7 +70,7 @@ const UserPage: React.FC = () => {
 										{imagesState.data.map((img) => (
 											<GridListTile key={img.id} style={{ height: '10em' }}>
 												<img src={img.image} alt={''} />
-												{/* <GridListTileBar
+												<GridListTileBar
 													title={'some titile'}
 													classes={{
 														root: classes.titleBar,
@@ -75,7 +81,7 @@ const UserPage: React.FC = () => {
 															<StarBorderIcon className={classes.title} />
 														</IconButton>
 													}
-												/> */}
+												/>
 											</GridListTile>
 										))}
 									</GridList>
@@ -105,12 +111,6 @@ const UserPage: React.FC = () => {
 									</Grid>
 								</div>
 							)}
-							{/* <Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
-								Interests
-							</Typography>
-							{userState.data.interests.map((data) => {
-								return <Chip key={data} label={data} className={profileStyles.chip} />
-							})} */}
 						</Grid>
 					</Grid>
 				)

@@ -54,6 +54,12 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
+			<Typography align='left' className={classes.profileTextField}>
+				Latitude: {user.lat}
+			</Typography>
+			<Typography align='left' className={classes.profileTextField}>
+				Longitude: {user.lon}
+			</Typography>
 			<LookingFor setProfile={null} profile={user} editable={false} />
 			<Interests setProfile={null} profile={user} editable={false} />
 			<Box textAlign='center'>
