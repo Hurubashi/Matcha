@@ -133,10 +133,11 @@ export default class UserActions {
 	}
 
 	static async search(req: Request, user: User) {
-		const lookingFor = req.params.lookingfor
-		const interest = req.params.interest
-		const range = Number(req.params.range)
+		const lookingFor = req.query.lookingfor ? req.query.lookingfor : ''
+		const interest = req.query.interest ? req.query.interest : ''
+		const range = Number(req.query.range) ? Number(req.query.range) : 0
 
+		console.log(lookingFor, interest, range)
 		const results = await db.raw(
 			`SELECT user.id, username, (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) as DISTANCE  FROM user
 			left join lookingFor lF on user.id = lF.userId

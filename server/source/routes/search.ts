@@ -5,6 +5,6 @@ import upload from '../middleware/upload'
 
 const router = express.Router()
 
-router.get('/:lookingfor/:interest/:range', protect, ImageController.searchUsers)
+router.get('/', protect, ImageController.searchUsers)
 
 export default router
