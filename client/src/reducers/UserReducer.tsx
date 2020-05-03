@@ -10,7 +10,12 @@ export type User = {
 	lastName: string
 	gender: Gender
 	preferences: Preferences
-	avatarUrl: string | undefined
+	avatarUrl:
+		| {
+				thumbnail: string
+				normal: string
+		  }
+		| undefined
 	avatar: string | undefined
 	lookingFor: string[]
 	interests: string[]
@@ -20,6 +25,7 @@ export type User = {
 }
 
 class UserReducer extends RequesReduser<User> {
+	baseUrl = '/user'
 	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
 		this.requestDefault(this.getReq(`/user/${url}`), dispatch)
 	}
@@ -79,9 +85,9 @@ class UserReducer extends RequesReduser<User> {
 		const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
-		const d = R * c // in metres
+		const d = Math.round(((R * c) / 1000 + Number.EPSILON) * 100) / 100 // in km
 		return d
 	}
 }
 
-export default new UserReducer('/user')
+export default UserReducer

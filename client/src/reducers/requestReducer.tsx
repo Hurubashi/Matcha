@@ -6,10 +6,7 @@ export type State<T> = { status: 'loading' } | { status: 'error'; error: string 
 export type Action<T> = { type: 'request' } | { type: 'success'; results: T } | { type: 'failure'; error: string }
 
 export default abstract class RequesReduser<T> {
-	baseUrl: string
-	constructor(baseUrl: string) {
-		this.baseUrl = baseUrl
-	}
+	abstract baseUrl: string
 
 	reducer = (state: State<T>, action: Action<T>): State<T> => {
 		switch (action.type) {
@@ -25,6 +22,7 @@ export default abstract class RequesReduser<T> {
 		axios(reqConfig)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
+					console.log(res['data']['data'])
 					dispatch({ type: 'success', results: res['data']['data'] })
 				} else {
 					dispatch({ type: 'failure', error: res['data']['message'] })

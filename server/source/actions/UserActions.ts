@@ -6,6 +6,10 @@ import { LookingForModel } from '../models/LookingFor'
 import ResManager, { ResInfo } from '../util/ResManager'
 import { imageModel } from '../models/Image'
 
+import knex from 'knex'
+import { knexConfig } from '../config'
+let db = knex(knexConfig)
+
 const userModel = new UserModel()
 const interestModel = new InterestModel()
 const lookingForModel = new LookingForModel()
@@ -84,10 +88,10 @@ export default class UserActions {
 		}
 	}
 
-	static async getUserByUsername(usernmae: string): Promise<[User, null] | [null, ResInfo]> {
+	static async getUserByUsername(username: string): Promise<[User, null] | [null, ResInfo]> {
 		let user
 		try {
-			user = await userModel.getWhere({ username: usernmae })
+			user = (await userModel.getWhere({ username: username }))[0]
 		} finally {
 			if (user && userModel.isInstance(user)) {
 				return [user, null]
@@ -99,7 +103,9 @@ export default class UserActions {
 
 	static async getUserFromRequest(req: Request): Promise<[User, null] | [null, ResInfo]> {
 		let user: [User, null] | [null, ResInfo]
-		if (req.params.usernmae) {
+		if (req.params.username && req.params.username !== 'undefined') {
+			console.log(req.params.username)
+			console.log('by username')
 			user = await UserActions.getUserByUsername(req.params.username)
 		} else {
 			user = await UserActions.getUserFromCookeis(req)
@@ -114,11 +120,28 @@ export default class UserActions {
 		if (user.avatar) {
 			const image = await imageModel.getWhere({ id: user.avatar })
 			if (image[0]) {
-				userAccessibleData['avatarUrl'] = `http://localhost:5000/public/uploads/${user.id}/${image[0].image}`
+				userAccessibleData['avatarUrl'] = {
+					normal: `http://localhost:5000/public/uploads/normal/${image[0].image}`,
+					thumbnail: `http://localhost:5000/public/uploads/thumbnail/${image[0].image}`,
+				}
 			}
 		}
 		userAccessibleData['interests'] = interests
 		userAccessibleData['lookingFor'] = lookingFor
+		console.log(userAccessibleData)
 		return userAccessibleData
+	}
+
+	static async search(lookingFor: string, interest: string, range: number) {
+		const results = await db.raw(
+			`SELECT user.id, username,ROUND((ST_Distance_Sphere(point(50.4529095, 30.5143065), point(user.lat, user.lon), 6371000)) / 1000, 2) as DISTANCE  FROM user
+			left join lookingFor lF on user.id = lF.userId
+			left join interest i on user.id = i.userId
+			where (ST_Distance_Sphere(point(50.4529095, 30.5143065), point(user.lat, user.lon), 6371000)) > ${range}
+			and lF.name like '${lookingFor}%'
+			and i.name like '${interest}%'`,
+		)
+
+		return results
 	}
 }

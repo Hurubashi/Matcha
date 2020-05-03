@@ -7,16 +7,18 @@ import { UserContextProvider } from './UserContextProvider'
 import Chat from '../components/chat/index'
 import { Grid, Card, Container, Box } from '@material-ui/core'
 
+const userReducer = new UserReducer()
+
 interface Props {
 	path: string
 	component: React.FC
 }
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
-	const [state, dispatch] = React.useReducer(UserReducer.reducer, { status: 'loading' })
+	const [state, dispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
 
 	React.useEffect(() => {
-		UserReducer.getUser(dispatch)
+		userReducer.getUser(dispatch)
 	}, [])
 
 	return isUser() ? (

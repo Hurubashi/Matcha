@@ -6,12 +6,14 @@ import ImagesReducer from '../../reducers/ImagesReducer'
 import Edit from './Edit'
 import galleryMakeStyles from './styles'
 
+const imagesReducer = new ImagesReducer()
+
 const Gallery: React.FC = () => {
 	const classes = galleryMakeStyles()
-	const [state, dispatch] = useReducer(ImagesReducer.reducer, { status: 'loading' })
+	const [state, dispatch] = useReducer(imagesReducer.reducer, { status: 'loading' })
 
 	useEffect(() => {
-		ImagesReducer.getImages(dispatch)
+		imagesReducer.getImages(dispatch)
 	}, [])
 
 	return (
@@ -25,7 +27,7 @@ const Gallery: React.FC = () => {
 								<Input
 									type='file'
 									style={{ display: 'none' }}
-									onChange={(event: React.ChangeEvent<HTMLInputElement>) => ImagesReducer.uploadImage(event, dispatch)}
+									onChange={(event: React.ChangeEvent<HTMLInputElement>) => imagesReducer.uploadImage(event, dispatch)}
 								/>
 								<AddCircleOutlineIcon color='primary' fontSize='large' />
 							</Button>

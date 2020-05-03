@@ -5,6 +5,8 @@ import { Action } from '../../reducers/RequestReducer'
 import ImagesReducer, { Image } from '../../reducers/ImagesReducer'
 import galleryMakeStyles from './styles'
 
+const imagesReducer = new ImagesReducer()
+
 interface Props {
 	id: number
 	dispatch: React.Dispatch<Action<Image[]>>
@@ -37,8 +39,8 @@ const Edit: React.FC<Props> = (props: Props) => {
 			keepMounted
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<MenuItem onClick={() => ImagesReducer.setAvatar(props.id, props.dispatch)}>Set as Avatar</MenuItem>
-			<MenuItem onClick={() => ImagesReducer.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
+			<MenuItem onClick={() => imagesReducer.setAvatar(props.id, props.dispatch)}>Set as Avatar</MenuItem>
+			<MenuItem onClick={() => imagesReducer.deleteImage(props.id, props.dispatch)}>Remove</MenuItem>
 		</Menu>
 	)
 

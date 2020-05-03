@@ -19,16 +19,19 @@ import ImagesReducer from '../../reducers/ImagesReducer'
 import makeProfileStyles from '../profile/styles'
 import makeStyles from './styles'
 
+const userReducer = new UserReducer()
+const imagesReducer = new ImagesReducer()
+
 const UserPage: React.FC = () => {
 	const { user } = useParams()
-	const [userState, userDispatch] = React.useReducer(UserReducer.reducer, { status: 'loading' })
-	const [imagesState, imagesrDispatch] = React.useReducer(ImagesReducer.reducer, { status: 'loading' })
+	const [userState, userDispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
+	const [imagesState, imagesDispatch] = React.useReducer(imagesReducer.reducer, { status: 'loading' })
 
 	const classes = makeStyles()
 	const profileStyles = makeProfileStyles()
 	useEffect(() => {
-		UserReducer.getUser(userDispatch, '/' + user)
-		ImagesReducer.getImages(imagesrDispatch)
+		userReducer.getUser(userDispatch, user)
+		imagesReducer.getImages(imagesDispatch)
 	}, [user])
 
 	return (
@@ -38,7 +41,10 @@ const UserPage: React.FC = () => {
 				userState.status === 'success' && (
 					<Grid container style={{ height: 'inherit', padding: '2em' }}>
 						<Grid item xs={6}>
-							<CardMedia image='/images/av1.jpg' style={{ paddingTop: '150%' }} />
+							<CardMedia
+								image={userState.data.avatarUrl ? userState.data.avatarUrl.normal : '/images/noavatar.png'}
+								style={{ paddingTop: '150%' }}
+							/>
 						</Grid>
 						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
 							<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
@@ -46,13 +52,13 @@ const UserPage: React.FC = () => {
 							</Typography>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
 								<LocationOnIcon />{' '}
-								{UserReducer.getDistanse(
+								{userReducer.getDistanse(
 									ctx.state.data.lat,
 									ctx.state.data.lon,
 									userState.data.lat,
 									userState.data.lon,
 								)}{' '}
-								meters away
+								km away
 							</Typography>
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
 								Looking for

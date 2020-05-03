@@ -21,6 +21,8 @@ import LookingFor from './LookingFor'
 import { Action } from '../../reducers/RequestReducer'
 import UserReducer, { User } from '../../reducers/UserReducer'
 
+const userReducer = new UserReducer()
+
 interface Props {
 	dispatch: React.Dispatch<Action<User>>
 	user: User
@@ -60,7 +62,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
 						<img
 							className={classes.profileAvatar}
-							src={profile.avatarUrl ? profile.avatarUrl : '/images/noavatar.png'}
+							src={profile.avatarUrl ? profile.avatarUrl.normal : '/images/noavatar.png'}
 							alt='Your avatar'
 						/>
 						<Link to='/gallery'>
@@ -149,7 +151,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				<Grid xs={4} item>
 					<Button
 						onClick={() =>
-							UserReducer.getLocation(dispatch, (lat, lon) => setProfile({ ...profile, lat: lat, lon: lon }))
+							userReducer.getLocation(dispatch, (lat, lon) => setProfile({ ...profile, lat: lat, lon: lon }))
 						}
 						variant='outlined'
 						style={{ margin: 'auto', paddingLeft: '1.5em' }}>
@@ -175,7 +177,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 				</Button>
 				<Button
 					onClick={() =>
-						UserReducer.saveUser({ ...profile, interests: profile.interests }, dispatch, () => setEditable(false))
+						userReducer.saveUser({ ...profile, interests: profile.interests }, dispatch, () => setEditable(false))
 					}
 					variant='outlined'
 					className={classes.marginSm}>
