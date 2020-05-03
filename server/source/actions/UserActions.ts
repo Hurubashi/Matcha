@@ -128,7 +128,6 @@ export default class UserActions {
 		}
 		userAccessibleData['interests'] = interests
 		userAccessibleData['lookingFor'] = lookingFor
-		console.log(userAccessibleData)
 		return userAccessibleData
 	}
 
@@ -141,7 +140,7 @@ export default class UserActions {
 
 		console.log(lookingFor, interest, range)
 		const results = await db.raw(
-			`SELECT distinct user.id, username, 
+			`SELECT distinct user.*, 
 			(ST_Distance_Sphere(point(${user.lon}, ${user.lat}),
 			point(user.lon, user.lat), 6371000)) as DISTANCE  FROM user
 			left join lookingFor lF on user.id = lF.userId
@@ -152,7 +151,13 @@ export default class UserActions {
 			limit ${perPage * (page - 1)}, ${perPage}
 			`,
 		)
-
-		return results
+		let users: any[] = []
+		for (const elem of results[0]) {
+			const profile = await this.getProfileData(elem)
+			users.push(profile)
+		}
+		console.log('!!!users:')
+		console.log(users)
+		return users
 	}
 }

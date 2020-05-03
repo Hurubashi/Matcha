@@ -20,7 +20,7 @@ export default class SearchController {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
 			let results = await UserActions.search(req, user)
-			return res.status(200).json(results[0])
+			return res.status(200).json(results)
 		}
 		return res.sendStatus(500)
 	}
