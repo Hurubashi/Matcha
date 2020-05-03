@@ -15,10 +15,13 @@ export default class SearchController {
 	 */
 
 	public static async searchUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		let results = await UserActions.search(req.params.lookingfor, req.params.interest, Number(req.params.range))
-		console.log(req.params.lookingfor)
-		console.log(req.params.interest)
-		console.log(req.params.range)
-		return res.status(200).json(results[0])
+		const [user, err] = await UserActions.getUserFromCookeis(req)
+		if (err) {
+			return res.status(err.code).json(err.resBody)
+		} else if (user) {
+			let results = await UserActions.search(req, user)
+			return res.status(200).json(results[0])
+		}
+		return res.sendStatus(500)
 	}
 }

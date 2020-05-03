@@ -132,12 +132,16 @@ export default class UserActions {
 		return userAccessibleData
 	}
 
-	static async search(lookingFor: string, interest: string, range: number) {
+	static async search(req: Request, user: User) {
+		const lookingFor = req.params.lookingfor
+		const interest = req.params.interest
+		const range = Number(req.params.range)
+
 		const results = await db.raw(
-			`SELECT user.id, username,ROUND((ST_Distance_Sphere(point(50.4529095, 30.5143065), point(user.lat, user.lon), 6371000)) / 1000, 2) as DISTANCE  FROM user
+			`SELECT user.id, username, (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) as DISTANCE  FROM user
 			left join lookingFor lF on user.id = lF.userId
 			left join interest i on user.id = i.userId
-			where (ST_Distance_Sphere(point(50.4529095, 30.5143065), point(user.lat, user.lon), 6371000)) > ${range}
+			where (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) > ${range}
 			and lF.name like '${lookingFor}%'
 			and i.name like '${interest}%'`,
 		)
