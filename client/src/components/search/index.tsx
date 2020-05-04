@@ -27,15 +27,20 @@ const Search: React.FC = () => {
 
 	const [searchState, searchDispatch] = React.useReducer(searchReducer.reducer, { status: 'loading' })
 	const scrollEl = useRef<HTMLDivElement>(null)
-	const pagesToshow = 1
-
 	const params = new URLSearchParams(window.location.search)
 
+	const [lookingFor, setLookingFor] = React.useState(params.get('lookingfor'))
+	const [interest, setInterest] = React.useState(params.get('interest'))
+
+	const pagesToshow = 1
+
 	useEffect(() => {
+		console.log('location')
+		console.log(window.location.search)
 		scrollEl.current?.addEventListener('scroll', loadMore)
 		searchReducer.searchUsers(searchDispatch, params.toString())
 		return () => scrollEl.current?.removeEventListener('scroll', loadMore)
-	}, [window.location.search])
+	}, [])
 
 	const loadMore = () => {
 		if (scrollEl.current) {
@@ -45,6 +50,24 @@ const Search: React.FC = () => {
 				console.log('load more')
 			}
 		}
+	}
+
+	function changeLocation() {
+		if (lookingFor) {
+			params.set('lookingfor', lookingFor)
+		} else {
+			params.delete('lookingfor')
+		}
+		if (interest) {
+			params.set('interest', interest)
+		} else {
+			params.delete('interest')
+		}
+		console.log(window.location.protocol + window.location.host + '/search?' + params.toString())
+
+		window.history.pushState({}, '', '/search?' + params.toString())
+		searchReducer.searchUsers(searchDispatch, params.toString())
+		// window.location.search = params.toString()
 	}
 
 	function valuetext(value: number) {
@@ -79,22 +102,31 @@ const Search: React.FC = () => {
 								max={500}
 							/>
 						</Grid>
-
 						<Grid item xs={4}>
 							<Typography id='discrete-slider' gutterBottom>
 								LookingFor
 							</Typography>
-							<TextField type='text' fullWidth={true} />
+							<TextField
+								type='text'
+								fullWidth={true}
+								value={lookingFor}
+								onChange={(e) => setLookingFor(e.currentTarget.value)}
+							/>
 						</Grid>
 						<Grid item xs={4}>
 							<Typography id='discrete-slider' gutterBottom>
 								Interest
 							</Typography>
-							<TextField type='text' fullWidth={true} />
+							<TextField
+								type='text'
+								fullWidth={true}
+								value={interest}
+								onChange={(e) => setInterest(e.currentTarget.value)}
+							/>
 						</Grid>
 					</Grid>
 					<ExpansionPanelActions>
-						<Button size='small' variant='outlined'>
+						<Button size='small' variant='outlined' onClick={changeLocation}>
 							Search
 						</Button>
 					</ExpansionPanelActions>
@@ -110,11 +142,9 @@ const Search: React.FC = () => {
 									backgroundImage: `url(${user.avatarUrl ? user.avatarUrl?.thumbnail : '/images/noavatar.png'})`,
 								}}
 							/>
-							{/* <span className={classes.imageBackdrop} /> */}
 							<span className={classes.imageButton}>
 								<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
 									{user.firstName + ' ' + user.lastName}
-									{/* <span className={classes.imageMarked} /> */}
 								</Typography>
 							</span>
 						</ButtonBase>
