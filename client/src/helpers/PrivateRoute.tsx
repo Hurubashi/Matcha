@@ -32,9 +32,7 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 							</Grid>
 							<Grid item xs={9}>
 								<PrimaryAppBar />
-								<Box m={2} style={{ minHeight: 'calc(100vh - 12em)', overflowY: 'scroll' }}>
-									<Route path={props.path} component={props.component} />
-								</Box>
+								<Route path={props.path} component={props.component} />
 							</Grid>
 						</Grid>
 					</Card>

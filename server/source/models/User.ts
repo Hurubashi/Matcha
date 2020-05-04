@@ -39,6 +39,7 @@ export class UserModel extends Model<User> {
 		'avatar',
 		'lat',
 		'lon',
+		'distance',
 	]
 
 	validate(obj: Object): Error | null {

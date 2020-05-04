@@ -1,143 +1,74 @@
-import React from 'react'
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
+import React, { useEffect, useRef } from 'react'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
 import { Box, Container } from '@material-ui/core'
 
-// import styles from '../../styles'
+import SearchReducer from '../../reducers/SearchReducer'
 
-const images = [
-	{
-		url: '/images/av1.jpg',
-		title: 'User',
-		width: '33.3%',
-	},
-	{
-		url: '/images/av2.jpg',
-		title: 'User',
-		width: '33.3%',
-	},
-	{
-		url: '/images/av3.jpg',
-		title: 'User',
-		width: '33.3%',
-	},
-	{
-		url: '/images/av1.jpg',
-		title: 'User',
-		width: '33.3%',
-	},
-	{
-		url: '/images/av2.jpg',
-		title: 'User',
-		width: '33.3%',
-	},
-]
+import mainStyles from '../../styles'
+import styles from './styles'
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			display: 'flex',
-			flexWrap: 'wrap',
-			width: '100%',
-		},
-		image: {
-			position: 'relative',
-			height: 200,
-			border: '4px double #946556',
-			[theme.breakpoints.down('xs')]: {
-				width: '100% !important', // Overrides inline-style
-				height: 100,
-			},
-			'&:hover, &$focusVisible': {
-				zIndex: 1,
-				'& $imageBackdrop': {
-					opacity: 0.15,
-				},
-				// '& $imageMarked': {
-				// 	opacity: 0,
-				// },
-			},
-		},
-		focusVisible: {},
-		imageButton: {
-			position: 'absolute',
-			// left: 0,
-			right: 0,
-			top: 0,
-			bottom: 0,
-			display: 'flex',
-			// alignItems: 'center',
-			// justifyContent: 'center',
-			color: theme.palette.common.white,
-		},
-		imageSrc: {
-			position: 'absolute',
-			left: 0,
-			right: 0,
-			top: 0,
-			bottom: 0,
-			backgroundSize: 'cover',
-			backgroundPosition: 'center 40%',
-		},
-		imageBackdrop: {
-			position: 'absolute',
-			left: 0,
-			right: 0,
-			top: 0,
-			bottom: 0,
-			backgroundColor: theme.palette.common.black,
-			opacity: 0.4,
-			transition: theme.transitions.create('opacity'),
-		},
-		imageTitle: {
-			position: 'relative',
-			padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
-		},
-		// imageMarked: {
-		// 	height: 3,
-		// 	width: 18,
-		// 	backgroundColor: theme.palette.common.white,
-		// 	position: 'absolute',
-		// 	bottom: -2,
-		// 	left: 'calc(50% - 9px)',
-		// 	transition: theme.transitions.create('opacity'),
-		// },
-	}),
-)
+const searchReducer = new SearchReducer()
 
 const Search: React.FC = () => {
-	const classes = useStyles()
+	const classes = styles()
+	const mainClasses = mainStyles()
+
+	const [searchState, searchDispatch] = React.useReducer(searchReducer.reducer, { status: 'loading' })
+	const scrollEl = useRef<HTMLDivElement>(null)
+
+	const params = new URLSearchParams(window.location.search)
+
+	useEffect(() => {
+		console.log(params.get('range'))
+		params.set('range', '200')
+		console.log(scrollEl.current)
+		scrollEl.current?.addEventListener('scroll', loadMore)
+
+		searchReducer.searchUsers(searchDispatch, params.toString())
+		// console.log((window.location.search = params.toString()))w
+		return () => scrollEl.current?.removeEventListener('scroll', loadMore)
+	}, [window.location.search])
+
+	const loadMore = () => {
+		if (scrollEl.current) {
+			const scrollHeight = scrollEl.current.scrollHeight
+			const scrollTop = scrollEl.current.scrollTop + scrollEl.current.offsetHeight
+			if (scrollEl.current.scrollHeight === scrollTop) {
+				console.log('load more')
+			}
+		}
+
+		// if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight) {
+		// 	// Do load more content here!
+		// }
+	}
 
 	return (
-		<Container>
-			<Box className={classes.root}>
-				{images.map((image, idx) => (
-					<ButtonBase
-						focusRipple
-						key={idx}
-						className={classes.image}
-						focusVisibleClassName={classes.focusVisible}
-						style={{
-							width: image.width,
-						}}>
-						<span
-							className={classes.imageSrc}
-							style={{
-								backgroundImage: `url(${image.url})`,
-							}}
-						/>
-						<span className={classes.imageBackdrop} />
-						<span className={classes.imageButton}>
-							<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
-								{image.title}
-								{/* <span className={classes.imageMarked} /> */}
-							</Typography>
-						</span>
-					</ButtonBase>
-				))}
+		// <Container>
+		<div ref={scrollEl} className={mainClasses.rightScrollingContainer}>
+			<Box className={`${classes.root}`}>
+				{searchState.status === 'success' &&
+					searchState.data.map((user, idx) => (
+						<ButtonBase focusRipple key={idx} className={classes.image} focusVisibleClassName={classes.focusVisible}>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${user.avatarUrl ? user.avatarUrl?.thumbnail : '/images/noavatar.png'})`,
+								}}
+							/>
+							{/* <span className={classes.imageBackdrop} /> */}
+							<span className={classes.imageButton}>
+								<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
+									{user.firstName + ' ' + user.lastName}
+									{/* <span className={classes.imageMarked} /> */}
+								</Typography>
+							</span>
+						</ButtonBase>
+					))}
 			</Box>
-		</Container>
+		</div>
+		// </Container>
 	)
 }
 

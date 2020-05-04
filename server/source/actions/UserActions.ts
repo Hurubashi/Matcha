@@ -136,19 +136,19 @@ export default class UserActions {
 		const interest = req.query.interest ? req.query.interest : ''
 		const range = Number(req.query.range) ? Number(req.query.range) : 0
 		const page = req.query.page ? req.query.page : 1
-		const perPage = 20
+		const limit = page ? `limit ${18 * (page - 1)}, ${18}` : ''
 
 		console.log(lookingFor, interest, range)
 		const results = await db.raw(
 			`SELECT distinct user.*, 
 			(ST_Distance_Sphere(point(${user.lon}, ${user.lat}),
-			point(user.lon, user.lat), 6371000)) as DISTANCE  FROM user
+			point(user.lon, user.lat), 6371000)) as distance  FROM user
 			left join lookingFor lF on user.id = lF.userId
 			left join interest i on user.id = i.userId
 			where (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) > ${range}
 			and lF.name like '${lookingFor}%'
 			and i.name like '${interest}%'
-			limit ${perPage * (page - 1)}, ${perPage}
+			${limit}
 			`,
 		)
 		let users: any[] = []
@@ -156,8 +156,6 @@ export default class UserActions {
 			const profile = await this.getProfileData(elem)
 			users.push(profile)
 		}
-		console.log('!!!users:')
-		console.log(users)
 		return users
 	}
 }
