@@ -31,6 +31,7 @@ const Search: React.FC = () => {
 
 	const [lookingFor, setLookingFor] = React.useState(params.get('lookingfor'))
 	const [interest, setInterest] = React.useState(params.get('interest'))
+	const [distance, setDistance] = React.useState(Number(params.get('distance')) || 10)
 
 	const pagesToshow = 1
 
@@ -63,17 +64,21 @@ const Search: React.FC = () => {
 		} else {
 			params.delete('interest')
 		}
-		console.log(window.location.protocol + window.location.host + '/search?' + params.toString())
-
+		if (distance) {
+			params.set('distance', distance.toString())
+		} else {
+			params.delete('distance')
+		}
 		window.history.pushState({}, '', '/search?' + params.toString())
 		searchReducer.searchUsers(searchDispatch, params.toString())
-		// window.location.search = params.toString()
 	}
 
 	function valuetext(value: number) {
 		return `${value}km`
 	}
-
+	const changeDist = (num: number) => {
+		setDistance(num)
+	}
 	return (
 		// <Container>
 		<div ref={scrollEl} className={mainClasses.rightScrollingContainer}>
@@ -92,14 +97,13 @@ const Search: React.FC = () => {
 								Distance
 							</Typography>
 							<Slider
-								defaultValue={100}
+								value={distance}
 								getAriaValueText={valuetext}
 								aria-labelledby='discrete-slider'
 								valueLabelDisplay='auto'
-								step={100}
-								marks
-								min={100}
-								max={500}
+								onChange={(e, val) => changeDist(Number(val))}
+								min={10}
+								max={1000}
 							/>
 						</Grid>
 						<Grid item xs={4}>

@@ -134,18 +134,18 @@ export default class UserActions {
 	static async search(req: Request, user: User) {
 		const lookingFor = req.query.lookingfor ? req.query.lookingfor : ''
 		const interest = req.query.interest ? req.query.interest : ''
-		const range = Number(req.query.range) ? Number(req.query.range) : 0
+		const distance = Number(req.query.distance) ? Number(req.query.distance) * 1000 : 100000000
 		const page = req.query.page ? req.query.page : 1
 		const limit = page ? `limit ${18 * (page - 1)}, ${18}` : ''
 
-		console.log(lookingFor, interest, range)
+		console.log(lookingFor, interest, distance)
 		const results = await db.raw(
 			`SELECT distinct user.*, 
 			(ST_Distance_Sphere(point(${user.lon}, ${user.lat}),
 			point(user.lon, user.lat), 6371000)) as distance  FROM user
 			left join lookingFor lF on user.id = lF.userId
 			left join interest i on user.id = i.userId
-			where (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) > ${range}
+			where (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) <= ${distance}
 			and lF.name like '${lookingFor}%'
 			and i.name like '${interest}%'
 			${limit}
