@@ -6,6 +6,7 @@ const styles = makeStyles((theme: Theme) =>
 			display: 'flex',
 			flexWrap: 'wrap',
 			width: '100%',
+			marginTop: 0,
 		},
 		image: {
 			position: 'relative',
@@ -42,6 +43,16 @@ const styles = makeStyles((theme: Theme) =>
 			position: 'relative',
 			padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(1) + 6}px`,
 			fontWeight: 'bold',
+		},
+		searchFiltersContainer: {
+			position: 'sticky',
+			top: 0,
+			left: 0,
+			right: 0,
+			backgroundColor: theme.palette.background.default,
+			// padding: '0.5em',
+			// height: '5em',
+			zIndex: 1,
 		},
 	}),
 )

@@ -25,7 +25,7 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 		<React.Fragment>
 			<UserContextProvider value={{ state, dispatch }}>
 				<Container style={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}>
-					<Card style={{ border: '1px solid bisque', padding: '1em' }}>
+					<Card style={{ border: '1px solid bisque', paddingLeft: '1em' }}>
 						<Grid container>
 							<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
 								<Chat />

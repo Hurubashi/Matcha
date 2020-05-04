@@ -1,8 +1,19 @@
 import React, { useEffect, useRef } from 'react'
-import ButtonBase from '@material-ui/core/ButtonBase'
-import Typography from '@material-ui/core/Typography'
-import { Box, Container } from '@material-ui/core'
-
+import {
+	Box,
+	ButtonBase,
+	Typography,
+	Slider,
+	Grid,
+	ExpansionPanel,
+	ExpansionPanelSummary,
+	ExpansionPanelDetails,
+	Divider,
+	ExpansionPanelActions,
+	Button,
+	TextField,
+} from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import SearchReducer from '../../reducers/SearchReducer'
 
 import mainStyles from '../../styles'
@@ -16,17 +27,13 @@ const Search: React.FC = () => {
 
 	const [searchState, searchDispatch] = React.useReducer(searchReducer.reducer, { status: 'loading' })
 	const scrollEl = useRef<HTMLDivElement>(null)
+	const pagesToshow = 1
 
 	const params = new URLSearchParams(window.location.search)
 
 	useEffect(() => {
-		console.log(params.get('range'))
-		params.set('range', '200')
-		console.log(scrollEl.current)
 		scrollEl.current?.addEventListener('scroll', loadMore)
-
 		searchReducer.searchUsers(searchDispatch, params.toString())
-		// console.log((window.location.search = params.toString()))w
 		return () => scrollEl.current?.removeEventListener('scroll', loadMore)
 	}, [window.location.search])
 
@@ -34,19 +41,65 @@ const Search: React.FC = () => {
 		if (scrollEl.current) {
 			const scrollHeight = scrollEl.current.scrollHeight
 			const scrollTop = scrollEl.current.scrollTop + scrollEl.current.offsetHeight
-			if (scrollEl.current.scrollHeight === scrollTop) {
+			if (scrollHeight === scrollTop) {
 				console.log('load more')
 			}
 		}
+	}
 
-		// if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight) {
-		// 	// Do load more content here!
-		// }
+	function valuetext(value: number) {
+		return `${value}km`
 	}
 
 	return (
 		// <Container>
 		<div ref={scrollEl} className={mainClasses.rightScrollingContainer}>
+			<ExpansionPanel className={classes.searchFiltersContainer}>
+				<ExpansionPanelSummary
+					expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+					aria-controls='panel1a-content'
+					id='panel1a-header'
+					style={{ flexDirection: 'initial' }}>
+					<Typography style={{ width: '100%', textAlign: 'right' }}>Search options</Typography>
+				</ExpansionPanelSummary>
+				<ExpansionPanelDetails>
+					<Grid container spacing={2}>
+						<Grid item xs={4}>
+							<Typography id='discrete-slider' gutterBottom>
+								Distance
+							</Typography>
+							<Slider
+								defaultValue={100}
+								getAriaValueText={valuetext}
+								aria-labelledby='discrete-slider'
+								valueLabelDisplay='auto'
+								step={100}
+								marks
+								min={100}
+								max={500}
+							/>
+						</Grid>
+
+						<Grid item xs={4}>
+							<Typography id='discrete-slider' gutterBottom>
+								LookingFor
+							</Typography>
+							<TextField type='text' fullWidth={true} />
+						</Grid>
+						<Grid item xs={4}>
+							<Typography id='discrete-slider' gutterBottom>
+								Interest
+							</Typography>
+							<TextField type='text' fullWidth={true} />
+						</Grid>
+					</Grid>
+					<ExpansionPanelActions>
+						<Button size='small' variant='outlined'>
+							Search
+						</Button>
+					</ExpansionPanelActions>
+				</ExpansionPanelDetails>
+			</ExpansionPanel>
 			<Box className={`${classes.root}`}>
 				{searchState.status === 'success' &&
 					searchState.data.map((user, idx) => (

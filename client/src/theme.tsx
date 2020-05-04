@@ -68,12 +68,13 @@ const useTheme = (palette: Palette) => (): Theme => {
 				},
 				outlined: {
 					color: '#fff',
-					backgroundColor: '#FE5D26',
+					backgroundColor: '#1a191e',
+					borderColor: '#fff',
 				},
 				root: {
 					color: '#fff',
 					'&:hover': {
-						backgroundColor: '#c42f28',
+						backgroundColor: '#49484a',
 					},
 				},
 			},
