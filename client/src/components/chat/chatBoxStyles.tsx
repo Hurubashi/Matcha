@@ -1,32 +1,28 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
-const chatBoxWidth = '55vw'
-
 const styles = makeStyles((theme: Theme) =>
 	createStyles({
 		chatBox: {
-			position: 'fixed',
-			right: '5px',
-			bottom: '5px',
-			width: chatBoxWidth,
-			height: '50vh',
-			minWidth: 320,
-			minHeight: 320,
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
 			zIndex: 2,
-			display: 'grid',
 		},
 		messageBox: {
 			overflowY: 'scroll',
 			paddingLeft: 20,
 			paddingRight: 20,
-			minHeight: '31vh',
+			height: 'calc(100% - 13em)',
 		},
 		close: {
-			padding: 5,
-			height: 40,
-			marginBottom: 10,
-			textAlign: 'end',
-			borderBottom: '1px solid #c4c4c480',
+			display: 'flex',
+			padding: '0.8em',
+			borderTop: '1px solid #c4c4c480',
+			'& p': {
+				padding: 'inherit',
+			},
 		},
 		message: {
 			position: 'relative',
@@ -38,24 +34,23 @@ const styles = makeStyles((theme: Theme) =>
 		},
 		leftMessage: {
 			marginRight: '20px',
-			backgroundColor: '#e7f5fd',
+			backgroundColor: '#24232a',
 		},
 		rightMessage: {
 			marginLeft: '20px',
-			backgroundColor: '#fe5d261a',
+			backgroundColor: '#e92d41',
 		},
 		messageContent: {
 			padding: '0',
 			margin: '0',
 		},
 		messageInput: {
-			position: 'relative',
+			position: 'absolute',
+			left: 0,
+			right: 0,
+			bottom: 0,
 			padding: 10,
-			minWidth: `calc(${chatBoxWidth} - 3vw)`,
 			font: "400 .9em 'Open Sans', sans-serif",
-		},
-		sendButton: {
-			padding: 0,
 		},
 	}),
 )

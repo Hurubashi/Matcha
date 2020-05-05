@@ -4,8 +4,10 @@ import { isUser } from './getJwt'
 import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 import UserReducer from '../reducers/UserReducer'
 import { UserContextProvider } from './UserContextProvider'
-import Chat from '../components/chat/index'
-import { Grid, Card, Container, Box } from '@material-ui/core'
+import ChatList from '../components/chat/index'
+import Chat from '../components/chat/ChatBox'
+import { Grid, Card, Container } from '@material-ui/core'
+import mainStyles from '../styles'
 
 const userReducer = new UserReducer()
 
@@ -16,7 +18,8 @@ interface Props {
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	const [state, dispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
-
+	const [chat, chatDispatch] = React.useState<boolean>(false)
+	const mainClasses = mainStyles()
 	React.useEffect(() => {
 		userReducer.getUser(dispatch)
 	}, [])
@@ -28,11 +31,14 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 					<Card style={{ border: '1px solid bisque', paddingLeft: '1em' }}>
 						<Grid container>
 							<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
-								<Chat />
+								<ChatList />
 							</Grid>
 							<Grid item xs={9}>
 								<PrimaryAppBar />
-								<Route path={props.path} component={props.component} />
+								<div className={mainClasses.rightScrollingContainer}>
+									{/* <Route path={props.path} component={props.component} /> */}
+									<Chat />
+								</div>
 							</Grid>
 						</Grid>
 					</Card>

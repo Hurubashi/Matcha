@@ -56,9 +56,15 @@ const useTheme = (palette: Palette) => (): Theme => {
 		overrides: {
 			MuiIconButton: {
 				root: {
+					color: '#fff',
 					'&:hover': {
 						backgroundColor: 'rgba(255, 255, 255, 0.19)',
 					},
+				},
+			},
+			MuiOutlinedInput: {
+				notchedOutline: {
+					borderColor: 'bisque',
 				},
 			},
 			MuiButton: {

@@ -39,7 +39,7 @@ const Search: React.FC = () => {
 		console.log('location')
 		console.log(window.location.search)
 		scrollEl.current?.addEventListener('scroll', loadMore)
-		searchReducer.searchUsers(searchDispatch, params.toString())
+		searchReducer.searchUsers(searchDispatch, window.location.search)
 		return () => scrollEl.current?.removeEventListener('scroll', loadMore)
 	}, [])
 
@@ -70,7 +70,7 @@ const Search: React.FC = () => {
 			params.delete('distance')
 		}
 		window.history.pushState({}, '', '/search?' + params.toString())
-		searchReducer.searchUsers(searchDispatch, params.toString())
+		searchReducer.searchUsers(searchDispatch, window.location.search)
 	}
 
 	function valuetext(value: number) {
@@ -81,7 +81,7 @@ const Search: React.FC = () => {
 	}
 	return (
 		// <Container>
-		<div ref={scrollEl} className={mainClasses.rightScrollingContainer}>
+		<div ref={scrollEl}>
 			<ExpansionPanel className={classes.searchFiltersContainer}>
 				<ExpansionPanelSummary
 					expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}

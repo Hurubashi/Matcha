@@ -4,7 +4,10 @@ import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import Avatar from '@material-ui/core/Avatar'
 import SendIcon from '@material-ui/icons/Send'
+import CloseIcon from '@material-ui/icons/Close'
+
 import styles from './chatBoxStyles'
 
 import io from 'socket.io-client'
@@ -33,7 +36,15 @@ const ChatBox: React.FC = () => {
 	}
 
 	return (
-		<Card className={classes.chatBox} variant='outlined'>
+		<Card className={classes.chatBox}>
+			<Box className={classes.close}>
+				<Avatar></Avatar>
+				<Typography>James Bond</Typography>
+				<div style={{ flexGrow: 1 }}></div>
+				<IconButton aria-label='settings'>
+					<CloseIcon fontSize='default' />
+				</IconButton>
+			</Box>
 			<Box color='text.primary' className={classes.messageBox}>
 				<div className={`${classes.message} ${classes.leftMessage}`}>
 					<Typography className={classes.messageContent}>I agree that your message is awesome!</Typography>
@@ -53,7 +64,7 @@ const ChatBox: React.FC = () => {
 				onChange={(e) => setMessage({ text: e.target.value })}
 				InputProps={{
 					endAdornment: (
-						<IconButton className={classes.sendButton} onClick={sendMessage}>
+						<IconButton onClick={sendMessage}>
 							<SendIcon />
 						</IconButton>
 					),
