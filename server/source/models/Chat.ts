@@ -3,14 +3,20 @@ import Model from './Model'
 export interface Chat {
 	id: number
 	firstUser: number
-	secondUser: string
+	secondUser: number
 	isOpenFist: boolean
 	isOpenSecond: boolean
 }
 
-export class MessageModel extends Model<Chat> {
+class ChatModel extends Model<Chat> {
 	tableName: string = 'chat'
 	indexRow: string = 'id'
 	customSqlErrors: Object = {}
 	accessibleColumns = []
+
+	async getMyChats(myId: number): Promise<Chat[]> {
+		return this.db.select('*').where('firstUser', myId).andWhere('secondUser', myId).from(this.tableName)
+	}
 }
+
+export const chatModel = new ChatModel()
