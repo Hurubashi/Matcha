@@ -10,13 +10,12 @@ export type User = {
 	lastName: string
 	gender: Gender
 	preferences: Preferences
-	avatarUrl:
+	avatar:
 		| {
 				thumbnail: string
 				normal: string
 		  }
 		| undefined
-	avatar: string | undefined
 	lookingFor: string[]
 	interests: string[]
 	biography: string

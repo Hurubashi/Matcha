@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'
-import { User, UserModel } from '../models/User'
+import { User, PublicProfile, UserModel } from '../models/User'
 import { InterestModel } from '../models/Interest'
 import { LookingForModel } from '../models/LookingFor'
 import ResManager, { ResInfo } from '../util/ResManager'
@@ -113,22 +113,22 @@ export default class UserActions {
 		return user
 	}
 
-	static async getProfileData(user: User) {
-		const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
+	static async getProfileData(user: User): Promise<PublicProfile> {
+		// const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
 		const interests = await UserActions.getInterests(Number(user.id))
 		const lookingFor = await UserActions.getLookingFor(Number(user.id))
+		let avatar
 		if (user.avatar) {
 			const image = await imageModel.getWhere({ id: user.avatar })
-			if (image[0]) {
-				userAccessibleData['avatarUrl'] = {
-					normal: `http://localhost:5000/public/uploads/normal/${image[0].image}`,
-					thumbnail: `http://localhost:5000/public/uploads/thumbnail/${image[0].image}`,
-				}
+			const normal = `http://localhost:5000/public/uploads/normal/${image[0].image}`
+			const thumbnail = `http://localhost:5000/public/uploads/thumbnail/${image[0].image}`
+			avatar = {
+				normal: normal,
+				thumbnail: thumbnail,
 			}
 		}
-		userAccessibleData['interests'] = interests
-		userAccessibleData['lookingFor'] = lookingFor
-		return userAccessibleData
+		const profile: PublicProfile = { ...user, interests: interests, lookingfor: lookingFor, avatar: avatar }
+		return profile
 	}
 
 	static async search(req: Request, user: User) {

@@ -9,7 +9,7 @@ import fs from 'fs'
 export default class ImageController {
 	/**
 	 * @desc        Get user images
-	 * @route       GET /api/image/:id
+	 * @route       GET /image/:id
 	 * @access      public
 	 */
 
@@ -35,7 +35,7 @@ export default class ImageController {
 
 	/**
 	 * @desc        Post user image
-	 * @route       POST /api/image/
+	 * @route       POST /image/
 	 * @access      public
 	 */
 
@@ -60,7 +60,7 @@ export default class ImageController {
 
 	/**
 	 * @desc        Delete user image
-	 * @route       DELETE /api/image/:id
+	 * @route       DELETE /image/:id
 	 * @access      public
 	 */
 

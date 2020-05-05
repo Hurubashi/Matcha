@@ -143,7 +143,7 @@ const Search: React.FC = () => {
 							<span
 								className={classes.imageSrc}
 								style={{
-									backgroundImage: `url(${user.avatarUrl ? user.avatarUrl?.thumbnail : '/images/noavatar.png'})`,
+									backgroundImage: `url(${user.avatar ? user.avatar?.thumbnail : '/images/noavatar.png'})`,
 								}}
 							/>
 							<span className={classes.imageButton}>

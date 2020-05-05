@@ -42,7 +42,7 @@ const UserPage: React.FC = () => {
 					<Grid container style={{ height: 'inherit', padding: '2em' }}>
 						<Grid item xs={6}>
 							<CardMedia
-								image={userState.data.avatarUrl ? userState.data.avatarUrl.normal : '/images/noavatar.png'}
+								image={userState.data.avatar ? userState.data.avatar.normal : '/images/noavatar.png'}
 								style={{ paddingTop: '150%' }}
 							/>
 						</Grid>

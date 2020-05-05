@@ -24,7 +24,7 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
 						<img
 							className={classes.profileAvatar}
-							src={user.avatarUrl ? user.avatarUrl.normal : '/images/noavatar.png'}
+							src={user.avatar ? user.avatar.normal : '/images/noavatar.png'}
 							alt='Your avatar'
 						/>
 						<Link to='/gallery'>

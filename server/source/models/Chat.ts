@@ -4,7 +4,7 @@ export interface Chat {
 	id: number
 	firstUser: number
 	secondUser: number
-	isOpenFist: boolean
+	isOpenFirst: boolean
 	isOpenSecond: boolean
 }
 
@@ -15,7 +15,11 @@ class ChatModel extends Model<Chat> {
 	accessibleColumns = []
 
 	async getMyChats(myId: number): Promise<Chat[]> {
-		return this.db.select('*').where('firstUser', myId).andWhere('secondUser', myId).from(this.tableName)
+		return this.db
+			.select('*')
+			.where({ firstUser: myId, isOpenFirst: true })
+			.orWhere({ secondUser: myId, isOpenSecond: true })
+			.from(this.tableName)
 	}
 }
 

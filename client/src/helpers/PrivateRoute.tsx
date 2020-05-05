@@ -36,8 +36,8 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 							<Grid item xs={9}>
 								<PrimaryAppBar />
 								<div className={mainClasses.rightScrollingContainer}>
-									{/* <Route path={props.path} component={props.component} /> */}
-									<Chat />
+									<Route path={props.path} component={props.component} />
+									{/* <Chat /> */}
 								</div>
 							</Grid>
 						</Grid>

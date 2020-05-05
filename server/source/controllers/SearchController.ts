@@ -10,7 +10,7 @@ const userModel = new UserModel()
 export default class SearchController {
 	/**
 	 * @desc        Get user
-	 * @route       GET /api/user/:username
+	 * @route       GET /user/:username
 	 * @access      Public
 	 */
 

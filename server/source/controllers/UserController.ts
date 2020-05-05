@@ -10,7 +10,7 @@ const userModel = new UserModel()
 export default class UserController {
 	/**
 	 * @desc        Get user
-	 * @route       GET /api/user/:username
+	 * @route       GET /user/:username
 	 * @access      Public
 	 */
 
@@ -28,7 +28,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Update me
-	 * @route       PUT /api/user
+	 * @route       PUT /user
 	 * @access      Private
 	 */
 
@@ -57,7 +57,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Delete me
-	 * @route       DELETE /api/user
+	 * @route       DELETE /user
 	 * @access      Private
 	 */
 
@@ -69,7 +69,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Get user interests
-	 * @route       GET /api/user/:id/interests
+	 * @route       GET /user/:id/interests
 	 * @access      Public
 	 */
 
@@ -80,7 +80,7 @@ export default class UserController {
 
 	/**
 	 * @desc        Set user interests
-	 * @route       POST /api/user/:id/interests
+	 * @route       POST /user/:id/interests
 	 * @access      Public
 	 */
 

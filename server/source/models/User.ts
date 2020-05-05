@@ -15,8 +15,30 @@ export interface User {
 	avatar: number | undefined
 	biography: string | undefined
 	isVerified: boolean
-	lat: number
-	lon: number
+	lat: number | undefined
+	lon: number | undefined
+}
+
+export interface PublicProfile {
+	id: number
+	email: string
+	username: string
+	firstName: string
+	lastName: string
+	gender: 'male' | 'female' | '' | undefined
+	preferences: 'male' | 'female' | 'male and female'
+	avatar:
+		| {
+				normal: string
+				thumbnail: string
+		  }
+		| undefined
+	biography: string | undefined
+	interests: string[]
+	lookingfor: string[]
+	lat: number | undefined
+	lon: number | undefined
+	distance?: number
 }
 
 export class UserModel extends Model<User> {
