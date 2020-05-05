@@ -1,5 +1,16 @@
-import { User } from './user'
+import Model from './Model'
 
-export class Message {
-	constructor(private from: User, private content: string) {}
+export interface Message {
+	id: number
+	chatId: number
+	senderId: number
+	message: string
+	time: Date
+}
+
+export class MessageModel extends Model<Message> {
+	tableName: string = 'message'
+	indexRow: string = 'id'
+	customSqlErrors: Object = {}
+	accessibleColumns = []
 }
