@@ -38,7 +38,7 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 								{!chat && <PrimaryAppBar />}
 								{chat ? (
 									<div>
-										<ChatBox chat={chat} />
+										<ChatBox chat={chat} setChat={setChat} />
 									</div>
 								) : (
 									<div>

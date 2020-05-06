@@ -19,10 +19,8 @@ const styles = makeStyles((theme: Theme) =>
 		close: {
 			display: 'flex',
 			padding: '0.8em',
-			borderTop: '1px solid #c4c4c480',
-			'& p': {
-				padding: 'inherit',
-			},
+			borderBottom: '1px solid #c4c4c480',
+			marginBottom: '1em',
 		},
 		message: {
 			position: 'relative',

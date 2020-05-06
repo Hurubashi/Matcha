@@ -30,11 +30,12 @@ socket.on('message', function (data: any) {
 
 interface Props {
 	chat: Chat
+	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
 }
 
 const ChatBox: React.FC<Props> = (props: Props) => {
 	const classes = styles()
-	const { chat } = props
+	const { chat, setChat } = props
 	const [message, setMessage] = React.useState({
 		text: '',
 	})
@@ -45,22 +46,24 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 	const [messageState, messageDispatch] = React.useReducer(messageReducer.reducer, { status: 'loading' })
 
 	React.useEffect(() => {
-		messageReducer.getMessages(messageDispatch, props.chat.id)
-	}, [])
+		messageReducer.getMessages(messageDispatch, chat.id)
+	}, [chat])
 	return (
 		<Card className={classes.chatBox}>
 			<Box className={classes.close}>
-				<Avatar src={chat.interlocutorAvatar} />
-				<Typography variant='h6'>{chat.interlocutorName}</Typography>
+				<Avatar src={chat.interlocutorAvatar} style={{ width: '3em', height: '3em' }} />
+				<Typography variant='h6' style={{ padding: '0.5em' }}>
+					{chat.interlocutorName}
+				</Typography>
 				<div style={{ flexGrow: 1 }}></div>
-				<IconButton>
+				<IconButton style={{ width: '2em', height: '2em' }} onClick={() => setChat(null)}>
 					<CloseIcon fontSize='default' />
 				</IconButton>
 			</Box>
 			<Box color='text.primary' className={classes.messageBox}>
 				{messageState.status === 'success' &&
 					messageState.data.map((elem) => {
-						const msgStyle = chat.interlocutorId === elem.id ? classes.leftMessage : classes.rightMessage
+						const msgStyle = chat.interlocutorId === elem.senderId ? classes.leftMessage : classes.rightMessage
 						return (
 							<div className={`${classes.message} ${msgStyle}`}>
 								<Typography className={classes.messageContent}>{elem.message}</Typography>
