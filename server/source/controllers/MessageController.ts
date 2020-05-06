@@ -16,7 +16,7 @@ export default class MessageController {
 		const chat = await chatModel.getOne(req.params.id)
 		if (!(chat instanceof Error)) {
 			if (chat.firstUser === user?.id || chat.secondUser === user?.id) {
-				const messages = messageModel.getWhere({ chatId: chat.id })
+				const messages = await messageModel.getWhere({ chatId: chat.id })
 				return res.status(200).json(ResManager.success(messages))
 			} else {
 				return res.sendStatus(401)
