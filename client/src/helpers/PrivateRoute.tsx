@@ -5,7 +5,7 @@ import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 import UserReducer from '../reducers/UserReducer'
 import { UserContextProvider } from './UserContextProvider'
 import ChatList from '../components/chat/index'
-import Chat from '../components/chat/ChatBox'
+import Chat from '../components/chat/ChatList'
 import { Grid, Card, Container } from '@material-ui/core'
 import mainStyles from '../styles'
 
@@ -18,7 +18,7 @@ interface Props {
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	const [state, dispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
-	const [chat, chatDispatch] = React.useState<boolean>(false)
+	const [chatId, chatIdDispatch] = React.useState<number | null>(null)
 	const mainClasses = mainStyles()
 	React.useEffect(() => {
 		userReducer.getUser(dispatch)
@@ -37,7 +37,8 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 								<PrimaryAppBar />
 								<div className={mainClasses.rightScrollingContainer}>
 									<Route path={props.path} component={props.component} />
-									{/* <Chat /> */}
+
+									{chatId && <Chat chatId={chatId} />}
 								</div>
 							</Grid>
 						</Grid>

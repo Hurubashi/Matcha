@@ -29,7 +29,6 @@ export default class ImageController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
-			console.log('useId:' + user.id)
 			const chats: Chat[] = await chatModel.getMyChats(user.id)
 			let chatResp: ChatResponce[] = []
 			for (const chat of chats) {
@@ -52,7 +51,7 @@ export default class ImageController {
 
 	/**
 	 * @desc        Post chat
-	 * @route       POST /chat/
+	 * @route       POST /chat
 	 * @access      public
 	 */
 

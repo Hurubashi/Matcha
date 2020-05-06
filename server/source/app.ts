@@ -8,6 +8,7 @@ import image from './routes/image'
 import imagethumbsup from './routes/imagethumbup'
 import search from './routes/search'
 import chat from './routes/chat'
+import message from './routes/message'
 import ResManager from './util/ResManager'
 
 import cookieParser from 'cookie-parser'
@@ -73,6 +74,7 @@ new ChatServer()
 
 // });
 
+app.use('/message', message)
 app.use('/chat', chat)
 app.use('/search', search)
 app.use('/user', users)

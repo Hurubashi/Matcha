@@ -26,7 +26,11 @@ socket.on('message', function (data: any) {
 	console.log(data)
 })
 
-const ChatBox: React.FC = () => {
+interface Props {
+	chatId: number
+}
+
+const ChatBox: React.FC<Props> = (props: Props) => {
 	const classes = styles()
 	const [message, setMessage] = React.useState({
 		text: '',

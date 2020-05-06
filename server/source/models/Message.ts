@@ -8,9 +8,11 @@ export interface Message {
 	time: Date
 }
 
-export class MessageModel extends Model<Message> {
+class MessageModel extends Model<Message> {
 	tableName: string = 'message'
 	indexRow: string = 'id'
 	customSqlErrors: Object = {}
 	accessibleColumns = []
 }
+
+export const messageModel = new MessageModel()
