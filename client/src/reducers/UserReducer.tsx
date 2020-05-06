@@ -10,7 +10,7 @@ export type User = {
 	lastName: string
 	gender: Gender
 	preferences: Preferences
-	avatar:
+	avatar?:
 		| {
 				thumbnail: string
 				normal: string

@@ -127,7 +127,7 @@ export default class UserActions {
 				thumbnail: thumbnail,
 			}
 		}
-		const profile: PublicProfile = { ...user, interests: interests, lookingfor: lookingFor, avatar: avatar }
+		const profile: PublicProfile = { ...user, interests: interests, lookingFor: lookingFor, avatar: avatar }
 		return profile
 	}
 

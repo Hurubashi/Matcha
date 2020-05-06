@@ -1,11 +1,18 @@
 import RequesReduser, { Action } from './RequestReducer'
 
+type MsgStatus = 'sended' | 'readed' | 'unreaded'
+
 export type Chat = {
 	id: number
-	firstUser: number
-	secondUser: string
-	isOpenFist: boolean
-	isOpenSecond: boolean
+	interlocutorId: number
+	interlocutorName: string
+	interlocutorAvatar?: string
+	lastMsg?:
+		| {
+				text: string
+				time: Date
+		  }
+		| undefined
 }
 
 class ChatListReducer extends RequesReduser<Chat[]> {

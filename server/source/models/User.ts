@@ -35,7 +35,7 @@ export interface PublicProfile {
 		| undefined
 	biography: string | undefined
 	interests: string[]
-	lookingfor: string[]
+	lookingFor: string[]
 	lat: number | undefined
 	lon: number | undefined
 	distance?: number

@@ -2,9 +2,19 @@ import { Request, Response, NextFunction } from 'express'
 import { Chat, chatModel } from '../models/Chat'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
+import { PublicProfile } from '../models/User'
 
 interface ChatResponce {
+	id: number
+	interlocutorId: number
 	interlocutorName: string
+	interlocutorAvatar?: string
+	lastMsg?:
+		| {
+				lastMsg: string
+				lastMsgTime: Date
+		  }
+		| undefined
 }
 
 export default class ImageController {
@@ -20,18 +30,22 @@ export default class ImageController {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
 			console.log('useId:' + user.id)
-			let chats: Chat[]
-			chats = await chatModel.getMyChats(user.id)
-			let data: ChatResponce[]
+			const chats: Chat[] = await chatModel.getMyChats(user.id)
+			let chatResp: ChatResponce[] = []
 			for (const chat of chats) {
-				// const conterpartyId = chat.firstUser === user.id ? chat.secondUser : chat.firstUser
-				// const [interlocutor, err] = await UserActions.getUserById(user.id)
-				// if(interlocutor){
-				//     let profile = UserActions.getProfileData(interlocutor)
-				//     profile.
-				// }
+				const conterpartyId = chat.firstUser === user.id ? chat.secondUser : chat.firstUser
+				const [interlocutor, err] = await UserActions.getUserById(conterpartyId)
+				if (interlocutor) {
+					let profile = await UserActions.getProfileData(interlocutor)
+					chatResp.push({
+						id: chat.id,
+						interlocutorId: conterpartyId,
+						interlocutorName: profile.firstName + ' ' + profile.lastName,
+						interlocutorAvatar: profile.avatar?.thumbnail,
+					})
+				}
 			}
-			return res.status(200).json(ResManager.success(chats))
+			return res.status(200).json(ResManager.success(chatResp))
 		}
 		return res.sendStatus(500)
 	}

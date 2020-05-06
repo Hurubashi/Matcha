@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Typography, Avatar, ButtonBase } from '@material-ui/core/'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-
+import ChatListReducer from '../../reducers/ChatListReducer'
 import styles from './chatsListStyles'
 
 import io from 'socket.io-client'
@@ -20,48 +20,24 @@ socket.on('connect', function () {
 socket.on('message', function (data: any) {
 	console.log(data)
 })
-
-type MsgStatus = 'sended' | 'readed' | 'unreaded'
-interface ChatItemInfo {
-	avatar: string
-	name: string
-	lastMsgTime: string
-	msgText: string
-	msgStatus: MsgStatus
+const sendMessage = (message: string) => {
+	socket.emit('message', message)
 }
-const chats: ChatItemInfo[] = [
-	{
-		avatar: '/images/av3.jpg',
-		name: 'Vasya',
-		lastMsgTime: '8 min ago',
-		msgText: 'how are u?',
-		msgStatus: 'unreaded',
-	},
-	{
-		avatar: '/images/av1.jpg',
-		name: 'Nikolay',
-		lastMsgTime: '1 day ago',
-		msgText: 'kittens should rule ower humans',
-		msgStatus: 'sended',
-	},
-	{
-		avatar: '/images/av2.jpg',
-		name: 'Nina',
-		lastMsgTime: '2 day ago',
-		msgText: 'Byla ya i 2 gruzina',
-		msgStatus: 'readed',
-	},
-]
-const Chat: React.FC = () => {
+
+const ChatList: React.FC = () => {
+	const chatListReducer = new ChatListReducer()
 	const cl = styles()
 	const [message, setMessage] = React.useState({
 		text: '',
 	})
-	const sendMessage = () => {
-		socket.emit('message', message.text)
-	}
 
-	return (
+	const [chatListState, chatListDispatch] = React.useReducer(chatListReducer.reducer, { status: 'loading' })
+
+	React.useEffect(() => {
+		chatListReducer.getImages(chatListDispatch)
+	}, [])
+
+	return chatListState.status === 'success' ? (
 		<Box className={cl.chatsList}>
 			<Box className={cl.chatListHeader}>
 				<Typography variant='h5' style={{ alignSelf: 'center' }}>
@@ -69,17 +45,17 @@ const Chat: React.FC = () => {
 				</Typography>
 			</Box>
 			<Box>
-				{chats.map((elem, idx) => {
+				{chatListState.data.map((chat, idx) => {
 					return (
 						<ButtonBase className={cl.chatItem} key={idx}>
-							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={elem.avatar} />
+							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
 							<Box style={{ overflow: 'hidden' }}>
-								<Typography className={cl.chatName}>{elem.name}</Typography>
-								<Typography className={cl.chatTime}>{elem.lastMsgTime}</Typography>
+								<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
+								<Typography className={cl.chatTime}>{chat.lastMsg?.time}</Typography>
 								<Box style={{ display: 'flex' }}>
-									{elem.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
-									{elem.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />}
-									<Typography className={cl.chatMessage}>{elem.msgText}</Typography>
+									{/* {chat.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
+										{chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
+									<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
 								</Box>
 							</Box>
 						</ButtonBase>
@@ -87,7 +63,9 @@ const Chat: React.FC = () => {
 				})}
 			</Box>
 		</Box>
+	) : (
+		<div>loading...</div>
 	)
 }
 
-export default Chat
+export default ChatList

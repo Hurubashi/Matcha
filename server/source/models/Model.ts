@@ -1,13 +1,12 @@
 import knex from 'knex'
 import { knexConfig } from '../config'
+const db = knex(knexConfig)
 
 interface KeyValue {
 	[key: string]: any
 }
 
 export default abstract class Model<T> {
-	db = knex(knexConfig)
-
 	abstract tableName: string
 	abstract indexRow: string
 	abstract customSqlErrors: Object
@@ -19,8 +18,8 @@ export default abstract class Model<T> {
 
 	async create(src: Object): Promise<T | Error> {
 		try {
-			let id = await this.db(this.tableName).insert(src)
-			let obj = await this.db<T>(this.tableName).where('id', id[0]).first()
+			let id = await db(this.tableName).insert(src)
+			let obj = await db<T>(this.tableName).where('id', id[0]).first()
 			if (this.isInstance(obj)) return obj
 			else throw Error(`Cannot create ${this.tableName} with ${src}`)
 		} catch (e) {
@@ -29,11 +28,11 @@ export default abstract class Model<T> {
 	}
 
 	async getAll(): Promise<T[]> {
-		return this.db<T>(this.tableName).select('*').from(this.tableName)
+		return db<T>(this.tableName).select('*').from(this.tableName)
 	}
 
 	async getWhere(params: Object, columns?: [String] | undefined): Promise<T[]> {
-		const res = await this.db<T>(this.tableName)
+		const res = await db<T>(this.tableName)
 			.select(columns ? columns : '*')
 			.where(params)
 			.from(this.tableName)
@@ -42,7 +41,7 @@ export default abstract class Model<T> {
 
 	async getOne(index: number | string): Promise<T | Error> {
 		try {
-			let result = await this.db<T>(this.tableName).where(this.indexRow, index).first()
+			let result = await db<T>(this.tableName).where(this.indexRow, index).first()
 			if (this.isInstance(result)) {
 				return result
 			} else {
@@ -55,7 +54,7 @@ export default abstract class Model<T> {
 
 	async getOneWith(field: string, value: string): Promise<T | Error> {
 		try {
-			let result = await this.db<T>(this.tableName).where(field, value).first()
+			let result = await db<T>(this.tableName).where(field, value).first()
 			if (result && this.isInstance(result)) {
 				return result
 			} else {
@@ -68,14 +67,14 @@ export default abstract class Model<T> {
 
 	async updateWhere(where: Object, update: Object): Promise<void | Error> {
 		try {
-			await this.db(this.tableName).where(where).update(update)
+			await db(this.tableName).where(where).update(update)
 		} catch (e) {
 			throw this.errorMsg(e.sqlMessage)
 		}
 	}
 
 	async delete(where: Object) {
-		return this.db(this.tableName).where(where).delete()
+		return db(this.tableName).where(where).delete()
 	}
 
 	fillAccessibleColumns(args: any): KeyValue {
