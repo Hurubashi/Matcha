@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Typography, Avatar, ButtonBase } from '@material-ui/core/'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import ChatListReducer from '../../reducers/ChatListReducer'
+import ChatListReducer, { Chat } from '../../reducers/ChatListReducer'
 import styles from './chatsListStyles'
 
 import io from 'socket.io-client'
@@ -24,7 +24,11 @@ const sendMessage = (message: string) => {
 	socket.emit('message', message)
 }
 
-const ChatList: React.FC = () => {
+interface Props {
+	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
+}
+
+const ChatList: React.FC<Props> = (props: Props) => {
 	const chatListReducer = new ChatListReducer()
 	const cl = styles()
 	const [message, setMessage] = React.useState({
@@ -47,7 +51,7 @@ const ChatList: React.FC = () => {
 			<Box>
 				{chatListState.data.map((chat, idx) => {
 					return (
-						<ButtonBase className={cl.chatItem} key={idx}>
+						<ButtonBase className={cl.chatItem} key={idx} onClick={() => props.setChat(chat)}>
 							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
 							<Box style={{ overflow: 'hidden' }}>
 								<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>

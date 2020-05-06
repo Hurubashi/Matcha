@@ -3,9 +3,10 @@ import { Redirect, Route } from 'react-router-dom'
 import { isUser } from './getJwt'
 import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 import UserReducer from '../reducers/UserReducer'
+import { Chat } from '../reducers/ChatListReducer'
 import { UserContextProvider } from './UserContextProvider'
 import ChatList from '../components/chat/index'
-import Chat from '../components/chat/ChatList'
+import ChatBox from '../components/chat/ChatBox'
 import { Grid, Card, Container } from '@material-ui/core'
 import mainStyles from '../styles'
 
@@ -18,7 +19,7 @@ interface Props {
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
 	const [state, dispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
-	const [chatId, chatIdDispatch] = React.useState<number | null>(null)
+	const [chat, setChat] = React.useState<Chat | null>(null)
 	const mainClasses = mainStyles()
 	React.useEffect(() => {
 		userReducer.getUser(dispatch)
@@ -29,17 +30,21 @@ const PrivateRoute: React.FC<Props> = (props: Props) => {
 			<UserContextProvider value={{ state, dispatch }}>
 				<Container style={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}>
 					<Card style={{ border: '1px solid bisque', paddingLeft: '1em' }}>
-						<Grid container>
+						<Grid container style={{ height: 'calc(100vh - 2em)' }}>
 							<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
-								<ChatList />
+								<ChatList setChat={setChat} />
 							</Grid>
-							<Grid item xs={9}>
-								<PrimaryAppBar />
-								<div className={mainClasses.rightScrollingContainer}>
-									<Route path={props.path} component={props.component} />
-
-									{chatId && <Chat chatId={chatId} />}
-								</div>
+							<Grid item xs={9} className={mainClasses.rightScrollingContainer}>
+								{!chat && <PrimaryAppBar />}
+								{chat ? (
+									<div>
+										<ChatBox chat={chat} />
+									</div>
+								) : (
+									<div>
+										<Route path={props.path} component={props.component} />
+									</div>
+								)}
 							</Grid>
 						</Grid>
 					</Card>

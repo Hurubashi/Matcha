@@ -28,8 +28,6 @@ const styles = makeStyles((theme: Theme) =>
 			},
 		},
 		rightScrollingContainer: {
-			minHeight: 'calc(100vh - 8.5em)',
-			maxHeight: 'calc(100vh - 8.5em)',
 			overflowY: 'scroll',
 			scrollbarWidth: 'none',
 			position: 'relative',
