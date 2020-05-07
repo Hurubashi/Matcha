@@ -25,12 +25,18 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 	// const sendMessage = () => {
 	// 	socket.emit('message', message.text)
 	// }
+	const messagesEndRef = React.useRef<HTMLDivElement>(null)
 
 	const messageReducer = new MessagesReducer()
 	const [messageState, messageDispatch] = React.useReducer(messageReducer.reducer, { status: 'loading' })
 
+	const scrollToBottom = () => {
+		if (messagesEndRef && messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+		}
+	}
 	React.useEffect(() => {
-		messageReducer.getMessages(messageDispatch, chat.id)
+		messageReducer.getMessages(messageDispatch, chat.id, scrollToBottom)
 	}, [chat])
 	return (
 		<SocketContextConsumer>
@@ -39,10 +45,12 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 				ctx &&
 				ctx.socket.socket.on('message', function (data: any) {
 					messageDispatch({ type: 'success', results: data })
+					scrollToBottom()
 				}) &&
 				ctx.socket.socket.on('messageSent', function (data: any) {
 					setMessage('')
 					messageDispatch({ type: 'success', results: data })
+					scrollToBottom()
 				}) && (
 					<Card className={classes.chatBox}>
 						<Box className={classes.close}>
@@ -65,6 +73,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 										</div>
 									)
 								})}
+							<div ref={messagesEndRef} />
 						</Box>
 
 						<TextField
