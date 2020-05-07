@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import SearchReducer from '../../reducers/SearchReducer'
+import { Link } from 'react-router-dom'
 
 import mainStyles from '../../styles'
 import styles from './styles'
@@ -140,17 +141,19 @@ const Search: React.FC = () => {
 				{searchState.status === 'success' &&
 					searchState.data.map((user, idx) => (
 						<ButtonBase focusRipple key={idx} className={classes.image} focusVisibleClassName={classes.focusVisible}>
-							<span
-								className={classes.imageSrc}
-								style={{
-									backgroundImage: `url(${user.avatar ? user.avatar?.thumbnail : '/images/noavatar.png'})`,
-								}}
-							/>
-							<span className={classes.imageButton}>
-								<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
-									{user.firstName + ' ' + user.lastName}
-								</Typography>
-							</span>
+							<Link to={user.username}>
+								<span
+									className={classes.imageSrc}
+									style={{
+										backgroundImage: `url(${user.avatar ? user.avatar?.thumbnail : '/images/noavatar.png'})`,
+									}}
+								/>
+								<span className={classes.imageButton}>
+									<Typography component='span' variant='subtitle1' color='inherit' className={classes.imageTitle}>
+										{user.firstName + ' ' + user.lastName}
+									</Typography>
+								</span>
+							</Link>
 						</ButtonBase>
 					))}
 			</Box>
