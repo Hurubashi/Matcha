@@ -28,9 +28,8 @@ const styles = makeStyles((theme: Theme) =>
 			},
 		},
 		rightScrollingContainer: {
-			overflowY: 'scroll',
-			scrollbarWidth: 'none',
-			position: 'relative',
+			height: 'inherit',
+			overflow: 'hidden',
 		},
 	}),
 )

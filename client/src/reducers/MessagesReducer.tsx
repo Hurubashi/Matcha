@@ -1,11 +1,11 @@
 import RequesReduser, { Action } from './RequestReducer'
 
 export type Message = {
-	id: number
+	id?: number
 	chatId: number
-	senderId: number
+	senderId?: number
 	message: string
-	time: Date
+	time?: Date
 }
 
 class MessageReducer extends RequesReduser<Message[]> {

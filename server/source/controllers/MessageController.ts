@@ -3,6 +3,7 @@ import { Chat, chatModel } from '../models/Chat'
 import { Message, messageModel } from '../models/Message'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
+import ChatActions from '../actions/ChatActions'
 
 export default class MessageController {
 	/**
@@ -33,12 +34,11 @@ export default class MessageController {
 
 	public static async postChatMessage(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const [user, err] = await UserActions.getUserFromCookeis(req)
-		const chat = await chatModel.getOne(req.body.chatId)
-		if (!(chat instanceof Error)) {
-			if (chat.firstUser === user?.id || chat.secondUser === user?.id) {
-				const message = await messageModel.create({ chatId: chat.id, senderId: user.id, message: req.body.message })
+		if (user) {
+			const [message, err] = await ChatActions.postMessage(req.body.chatId, user.id, req.body.text)
+			if (message) {
 				if (message! instanceof Error) return res.status(200).json(ResManager.success(message))
-			} else {
+			} else if (err) {
 				return res.sendStatus(401)
 			}
 		}

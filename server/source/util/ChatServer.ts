@@ -1,10 +1,11 @@
 import express from 'express'
 import * as http from 'http'
 // import cors from "cors"
-import { Message } from '../models/Message'
+import { Message, messageModel } from '../models/Message'
 import { User } from '../models/User'
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
+import ChatActions from '../actions/ChatActions'
 
 export class ChatServer {
 	public static readonly PORT: number = 8080
@@ -12,6 +13,8 @@ export class ChatServer {
 	private server: http.Server
 	private io: SocketIO.Server
 	private port: string | number
+
+	ids: string[] = []
 
 	constructor() {
 		this.app = express()
@@ -27,14 +30,14 @@ export class ChatServer {
 			console.log('Running ChatServer on port %s', this.port)
 		})
 
-		this.io.on('connect', (socket: any) => {
+		this.io.on('connect', (socket: SocketIO.Socket) => {
 			console.log('Connected client on port %s.', this.port)
-
 			if (socket.handshake.headers.cookie) {
 				var cookies = cookie.parse(socket.handshake.headers.cookie)
 				var decoded = jwt.decode(cookies['jwt'])
 				if (decoded && typeof decoded !== 'string') {
-					// console.log(decoded.id)
+					console.log('connected userId: ' + decoded.id)
+					this.ids[decoded.id] = socket.id
 				}
 			}
 
@@ -42,12 +45,38 @@ export class ChatServer {
 				console.log('Client disconnected')
 			})
 
-			socket.on('message', function(message: any) {
-				console.log('[server](message): %s', JSON.stringify(message))
-				var time = new Date().toLocaleTimeString()
+			socket.on('message', async (message: any) => {
+				// console.log('[server](message): %s', JSON.stringify(message))
+				// var time = new Date().toLocaleTimeString()
 				// Уведомляем клиента, что его сообщение успешно дошло до сервера
-				socket.json.send({ event: 'messageSent', text: message, time: time })
+				if (socket.handshake.headers.cookie) {
+					var cookies = cookie.parse(socket.handshake.headers.cookie)
+					var decoded = jwt.decode(cookies['jwt'])
+					if (decoded && typeof decoded !== 'string') {
+						console.log('senderId: ' + decoded.id)
+						// socket.id = decoded.id
+						console.log(JSON.stringify(message))
+						await this.sendPrivateMessage(message.chatId, decoded.id, message.receiverId, message.text)
+					}
+				}
 			})
 		})
+
+		this.io.on('message', (message: any) => {
+			console.log('[server](message): %s', JSON.stringify(message))
+		})
+	}
+
+	async sendPrivateMessage(chatId: number, senderId: number, receiverId: number, text: string) {
+		console.log('tring to send to: ' + this.ids[receiverId])
+
+		const [message, err] = await ChatActions.postMessage(chatId, senderId, text)
+		if (message) {
+			console.log(message)
+			const messages = await messageModel.getWhere({ chatId: chatId })
+
+			this.io.to(this.ids[senderId]).emit('messageSent', messages)
+			this.io.to(this.ids[receiverId]).emit('message', messages)
+		}
 	}
 }

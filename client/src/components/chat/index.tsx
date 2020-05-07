@@ -5,25 +5,6 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import ChatListReducer, { Chat } from '../../reducers/ChatListReducer'
 import styles from './chatsListStyles'
 
-import io from 'socket.io-client'
-const socket = io('http://localhost:5001')
-
-socket.on('error', function (err: any) {
-	console.log('received socket error:')
-	console.log(err)
-})
-
-socket.on('connect', function () {
-	console.log('socket successfuly connected!')
-})
-
-socket.on('message', function (data: any) {
-	console.log(data)
-})
-const sendMessage = (message: string) => {
-	socket.emit('message', message)
-}
-
 interface Props {
 	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
 }
@@ -31,9 +12,6 @@ interface Props {
 const ChatList: React.FC<Props> = (props: Props) => {
 	const chatListReducer = new ChatListReducer()
 	const cl = styles()
-	const [message, setMessage] = React.useState({
-		text: '',
-	})
 
 	const [chatListState, chatListDispatch] = React.useReducer(chatListReducer.reducer, { status: 'loading' })
 

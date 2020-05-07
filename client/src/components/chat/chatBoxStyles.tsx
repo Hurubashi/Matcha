@@ -14,13 +14,13 @@ const styles = makeStyles((theme: Theme) =>
 			overflowY: 'scroll',
 			paddingLeft: 20,
 			paddingRight: 20,
-			height: 'calc(100% - 13em)',
+			height: 'calc(100% - 14em)',
 		},
 		close: {
 			display: 'flex',
 			padding: '0.8em',
 			borderBottom: '1px solid #c4c4c480',
-			marginBottom: '1em',
+			marginBottom: '0.5em',
 		},
 		message: {
 			position: 'relative',
