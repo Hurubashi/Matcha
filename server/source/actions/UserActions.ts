@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'
-import { User, PublicProfile, UserModel } from '../models/User'
+import { User, PublicProfile, userModel } from '../models/User'
 import { InterestModel } from '../models/Interest'
 import { LookingForModel } from '../models/LookingFor'
 import ResManager, { ResInfo } from '../util/ResManager'
@@ -10,7 +10,6 @@ import knex from 'knex'
 import { knexConfig } from '../config'
 let db = knex(knexConfig)
 
-const userModel = new UserModel()
 const interestModel = new InterestModel()
 const lookingForModel = new LookingForModel()
 
@@ -34,7 +33,6 @@ export default class UserActions {
 	}
 
 	static async setInterests(userId: number, interestsList: [string]): Promise<void | ResInfo> {
-		let userModel = new UserModel()
 		try {
 			await interestModel.delete({ userId: userId })
 			await userModel.setInterests(userId, interestsList)
@@ -44,7 +42,6 @@ export default class UserActions {
 	}
 
 	static async setLookingFor(userId: number, interestsList: [string]): Promise<void | ResInfo> {
-		let userModel = new UserModel()
 		try {
 			await lookingForModel.delete({ userId: userId })
 			await userModel.setLookingFor(userId, interestsList)

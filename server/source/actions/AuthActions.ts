@@ -1,11 +1,10 @@
 import { Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { User, UserModel } from '../models/User'
+import { User, userModel } from '../models/User'
 import { UserSession, UserSessionModel } from '../models/UserSession'
 import uuidv1 from 'uuid/v1'
 import ResManager, { ResInfo } from '../util/ResManager'
 
-const userModel = new UserModel()
 const userSessionModel = new UserSessionModel()
 
 export default class AuthActions {

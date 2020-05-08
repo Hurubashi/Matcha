@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
-import { User, UserModel } from '../models/User'
+import { User, userModel } from '../models/User'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import { ResInfo } from '../util/ResManager'
 import { imageModel } from '../models/Image'
-
-const userModel = new UserModel()
 
 export default class SearchController {
 	/**

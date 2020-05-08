@@ -62,7 +62,7 @@ const Editable: React.FC<Props> = (props: Props) => {
 					<div className={`${classes.profileAvatar} ${classes.visibleAvatarChange}`}>
 						<img
 							className={classes.profileAvatar}
-							src={profile.avatar ? profile.avatar.normal : '/images/noavatar.png'}
+							src={profile.avatar ? profile.avatar.normal : `/images/noavatar${profile.gender}.jpg`}
 							alt='Your avatar'
 						/>
 						<Link to='/gallery'>

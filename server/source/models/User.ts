@@ -41,7 +41,7 @@ export interface PublicProfile {
 	distance?: number
 }
 
-export class UserModel extends Model<User> {
+class UserModel extends Model<User> {
 	tableName: string = 'user'
 	indexRow: string = 'id'
 	customSqlErrors: Object = {
@@ -144,3 +144,5 @@ export class UserModel extends Model<User> {
 		return res
 	}
 }
+
+export const userModel = new UserModel()

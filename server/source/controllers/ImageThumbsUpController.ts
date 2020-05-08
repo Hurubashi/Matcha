@@ -1,13 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { User, UserModel } from '../models/User'
+import { User, userModel } from '../models/User'
 import { Image, imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import fs from 'fs'
 import { ResInfo } from '../util/ResManager'
 import { ImageThumbUp } from '../models/ImageThumbsUp'
-
-const userModel = new UserModel()
 
 export default class ImageThumbsUpController {
 	/**

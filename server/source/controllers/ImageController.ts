@@ -6,6 +6,7 @@ import imageminMozjpeg from 'imagemin-mozjpeg'
 import multer from 'multer'
 import fs from 'fs'
 
+import { userModel } from '../models/User'
 import { Image, imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
@@ -101,6 +102,9 @@ export default class ImageController {
 		} else if (user) {
 			const image = await imageModel.getOne(req.params.id)
 			if (!(image instanceof Error)) {
+				if (image.id === user.id) {
+					await userModel.updateWhere({ id: user.id }, { avatar: null })
+				}
 				await imageModel.delete({ id: req.params.id })
 				fs.unlink(`public/uploads/normal/` + image.image, () => {})
 				fs.unlink(`public/uploads/thumbnail/` + image.image, () => {})

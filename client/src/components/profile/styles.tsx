@@ -9,11 +9,11 @@ const styles = makeStyles((theme: Theme) =>
 			padding: `${theme.spacing(0.1)}em`,
 		},
 		profileAvatar: {
-			width: `${theme.spacing(3)}em`,
-			height: `${theme.spacing(3)}em`,
+			width: `22em`,
+			height: `22em`,
 			[theme.breakpoints.down('xs')]: {
-				width: `${theme.spacing(2.2)}em`,
-				height: `${theme.spacing(2.2)}em`,
+				width: `16em`,
+				height: `16em`,
 				margin: 'none',
 			},
 			borderRadius: '50%',
@@ -31,9 +31,9 @@ const styles = makeStyles((theme: Theme) =>
 			},
 		},
 		profileAvatarChange: {
-			marginTop: `-${theme.spacing(3)}em`,
+			marginTop: `-22em`,
 			[theme.breakpoints.down('xs')]: {
-				marginTop: `-${theme.spacing(2.2)}em`,
+				marginTop: `-16em`,
 			},
 			lineHeight: `${theme.spacing(0.5)}em`,
 			display: 'flex',
@@ -41,6 +41,7 @@ const styles = makeStyles((theme: Theme) =>
 			color: 'white',
 			opacity: 0.5,
 			visibility: 'hidden',
+			marginBottom: '0.5em',
 		},
 		photoLibraryIcon: { fontSize: `${theme.spacing(0.5)}em`, margin: 'auto' },
 		profileTextField: {
