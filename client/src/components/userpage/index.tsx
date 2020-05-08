@@ -1,18 +1,8 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import {
-	Grid,
-	Chip,
-	Typography,
-	CardMedia,
-	GridList,
-	GridListTile,
-	GridListTileBar,
-	IconButton,
-} from '@material-ui/core'
+import { Grid, Chip, Typography, CardMedia, GridList, GridListTile, CardContent, IconButton } from '@material-ui/core'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
-import StarBorderIcon from '@material-ui/icons/StarBorder'
-
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import { UserContextConsumer } from '../../helpers/UserContextProvider'
 import UserReducer from '../../reducers/UserReducer'
 import ImagesReducer from '../../reducers/ImagesReducer'
@@ -45,13 +35,18 @@ const UserPage: React.FC = () => {
 								image={
 									userState.data.avatar ? userState.data.avatar.normal : `/images/noavatar${userState.data.gender}.jpg`
 								}
-								style={{ paddingTop: '150%' }}
-							/>
+								style={{ paddingTop: '150%' }}></CardMedia>
 						</Grid>
 						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
-							<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
-								{userState.data.firstName}
-							</Typography>
+							<div style={{ display: 'flex' }}>
+								<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
+									{userState.data.firstName}
+								</Typography>
+								<div style={{ flexGrow: 1 }}></div>
+								<IconButton style={{ marginTop: '-12px' }}>
+									<FavoriteBorderIcon style={{ width: '1.5em', height: '1.5em' }}></FavoriteBorderIcon>
+								</IconButton>
+							</div>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
 								<LocationOnIcon />{' '}
 								{userReducer.getDistanse(
