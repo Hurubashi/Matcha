@@ -81,7 +81,6 @@ const Search: React.FC = () => {
 		setDistance(num)
 	}
 	return (
-		// <Container>
 		<div ref={scrollEl}>
 			<ExpansionPanel className={classes.searchFiltersContainer}>
 				<ExpansionPanelSummary
@@ -158,7 +157,6 @@ const Search: React.FC = () => {
 					))}
 			</Box>
 		</div>
-		// </Container>
 	)
 }
 

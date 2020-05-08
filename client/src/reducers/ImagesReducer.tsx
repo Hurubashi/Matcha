@@ -2,8 +2,10 @@ import RequesReduser, { Action } from './RequestReducer'
 
 export type Image = {
 	id: number
-	image: string
-	likes: number
+	image: {
+		normal: string
+		thumbnail: string
+	}
 }
 
 class ImagesReducer extends RequesReduser<Image[]> {

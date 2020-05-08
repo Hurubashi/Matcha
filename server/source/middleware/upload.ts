@@ -1,28 +1,18 @@
-import UserActions from '../actions/UserActions'
-import ResManager from '../util/ResManager'
-import { UserModel } from '../models/User'
 import multer from 'multer'
 import fs from 'fs'
 
-const model = new UserModel()
-const allowedMimes = ['image/png', 'image/jpeg', 'image/gif']
+const allowedMimes = ['image/png', 'image/jpeg']
 
 var storage = multer.diskStorage({
 	destination: async function (req, file, cb) {
-		const [user, err] = await UserActions.getUserFromCookeis(req)
-
-		if (err) {
-			cb(Error('Session error'), '')
-		} else if (user) {
-			const dir = `public/uploads/${user.id}`
-			if (!fs.existsSync(dir)) {
-				fs.mkdirSync(dir)
-			}
-			if (allowedMimes.includes(file.mimetype)) {
-				cb(null, dir)
-			} else {
-				cb(new Error('Invalid file type. Only jpg, png and gif image files are allowed.'), '')
-			}
+		const dir = `public/uploads/normal`
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir)
+		}
+		if (allowedMimes.includes(file.mimetype)) {
+			cb(null, dir)
+		} else {
+			cb(new Error('Invalid file type. Only jpg, png and gif image files are allowed.'), '')
 		}
 	},
 	filename: function (req, file, cb) {

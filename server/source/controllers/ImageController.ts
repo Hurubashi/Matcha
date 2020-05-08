@@ -1,11 +1,23 @@
 import { Request, Response, NextFunction } from 'express'
+import imagemin, { buffer } from 'imagemin'
+import imageminJpegtran from 'imagemin-jpegtran'
+import imageminPngquant from 'imagemin-pngquant'
+import imageminMozjpeg from 'imagemin-mozjpeg'
+import multer from 'multer'
+import fs from 'fs'
+
 import { Image, imageModel } from '../models/Image'
 import ResManager from '../util/ResManager'
 import UserActions from '../actions/UserActions'
 import upload from '../middleware/upload'
-import multer from 'multer'
-import fs from 'fs'
 
+interface ResponceImage {
+	id: number
+	image: {
+		normal: string
+		thumbnail: string
+	}
+}
 export default class ImageController {
 	/**
 	 * @desc        Get user images
@@ -24,11 +36,18 @@ export default class ImageController {
 			} else {
 				images = await imageModel.getWhere({ userId: user.id })
 			}
-			images.forEach((element, idx) => {
-				images[idx].image = `http://localhost:5000/public/uploads/${user.id}/${element.image}`
-				delete images[idx].userId
+			const respondImages: ResponceImage[] = []
+			images.forEach((elem, idx) => {
+				const newResImg = {
+					id: elem.id,
+					image: {
+						normal: `http://localhost:5000/public/uploads/normal/${elem.image}`,
+						thumbnail: `http://localhost:5000/public/uploads/thumbnail/${elem.image}`,
+					},
+				}
+				respondImages.push(newResImg)
 			})
-			return res.status(200).json(ResManager.success(images, 'Images successfuly fetched'))
+			return res.status(200).json(ResManager.success(respondImages, 'Images successfuly fetched'))
 		}
 		return res.sendStatus(500)
 	}
@@ -53,6 +72,16 @@ export default class ImageController {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
 			await imageModel.create({ userId: user.id, image: req.file.filename })
+			const files = await imagemin([`public/uploads/normal/${req.file.filename}`], {
+				destination: 'public/uploads/thumbnail/',
+				plugins: [
+					imageminMozjpeg({ quality: 15 }),
+					imageminPngquant({
+						quality: [0.15, 0.2],
+					}),
+				],
+			})
+			console.log(files)
 			return res.status(201).json(ResManager.success({}, 'Image successfuly saved'))
 		}
 		return res.sendStatus(500)
@@ -70,8 +99,13 @@ export default class ImageController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
-			await imageModel.delete({ id: req.params.id })
-			return res.status(200).json(ResManager.success({}, 'Image successfuly saved'))
+			const image = await imageModel.getOne(req.params.id)
+			if (!(image instanceof Error)) {
+				await imageModel.delete({ id: req.params.id })
+				fs.unlink(`public/uploads/normal/` + image.image, () => {})
+				fs.unlink(`public/uploads/thumbnail/` + image.image, () => {})
+				return res.status(200).json(ResManager.success({}, 'Image successfuly removed'))
+			}
 		}
 		return res.sendStatus(500)
 	}

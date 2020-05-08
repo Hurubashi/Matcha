@@ -152,10 +152,13 @@ export default class UserActions {
 			`,
 		)
 		let users: any[] = []
+		console.log(lookingFor, interest)
+
 		for (const elem of results[0]) {
 			const profile = await this.getProfileData(elem)
 			users.push(profile)
 		}
+		// console.log(users)
 		return users
 	}
 }

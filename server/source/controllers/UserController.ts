@@ -37,6 +37,7 @@ export default class UserController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
+			console.log(req.body)
 			let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
 
 			try {

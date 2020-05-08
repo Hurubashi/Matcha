@@ -75,7 +75,7 @@ const UserPage: React.FC = () => {
 									<GridList className={classes.gridList} cols={3}>
 										{imagesState.data.map((img) => (
 											<GridListTile key={img.id} style={{ height: '10em' }}>
-												<img src={img.image} alt={''} />
+												<img src={img.image.thumbnail} alt={''} />
 												<GridListTileBar
 													title={'some titile'}
 													classes={{
