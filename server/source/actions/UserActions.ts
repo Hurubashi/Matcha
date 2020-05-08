@@ -132,13 +132,13 @@ export default class UserActions {
 	}
 
 	static async search(req: Request, user: User) {
-		const lookingFor = req.query.lookingfor ? req.query.lookingfor : ''
+		const lookingfor = req.query.lookingfor ? req.query.lookingfor : ''
 		const interest = req.query.interest ? req.query.interest : ''
 		const distance = Number(req.query.distance) ? Number(req.query.distance) * 1000 : 100000000
 		const page = req.query.page ? req.query.page : 1
 		const limit = page ? `limit ${18 * (page - 1)}, ${18}` : ''
 
-		console.log(lookingFor, interest, distance)
+		console.log(lookingfor, interest, distance)
 		const results = await db.raw(
 			`SELECT distinct user.*, 
 			(ST_Distance_Sphere(point(${user.lon}, ${user.lat}),
@@ -146,19 +146,16 @@ export default class UserActions {
 			left join lookingFor lF on user.id = lF.userId
 			left join interest i on user.id = i.userId
 			where (ST_Distance_Sphere(point(${user.lon}, ${user.lat}), point(user.lon, user.lat), 6371000)) <= ${distance}
-			and lF.name like '${lookingFor}%'
+			and lF.name like '${lookingfor}%'
 			and i.name like '${interest}%'
 			${limit}
 			`,
 		)
 		let users: any[] = []
-		console.log(lookingFor, interest)
-
 		for (const elem of results[0]) {
 			const profile = await this.getProfileData(elem)
 			users.push(profile)
 		}
-		// console.log(users)
 		return users
 	}
 }

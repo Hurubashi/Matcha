@@ -14,6 +14,10 @@ class ImagesReducer extends RequesReduser<Image[]> {
 		this.requestDefault(this.getReq(), dispatch)
 	}
 
+	getImagesForSpecificUser(dispatch: React.Dispatch<Action<Image[]>>, username?: string) {
+		this.requestDefault(this.getReq('/image/' + username), dispatch)
+	}
+
 	uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch: React.Dispatch<Action<Image[]>>) => {
 		const elem = event.target
 		if (elem.files) {

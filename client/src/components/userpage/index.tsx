@@ -31,7 +31,7 @@ const UserPage: React.FC = () => {
 	const profileStyles = makeProfileStyles()
 	useEffect(() => {
 		userReducer.getUser(userDispatch, user)
-		imagesReducer.getImages(imagesDispatch)
+		imagesReducer.getImagesForSpecificUser(imagesDispatch, user)
 	}, [user])
 
 	return (
@@ -76,18 +76,6 @@ const UserPage: React.FC = () => {
 										{imagesState.data.map((img) => (
 											<GridListTile key={img.id} style={{ height: '10em' }}>
 												<img src={img.image.thumbnail} alt={''} />
-												<GridListTileBar
-													title={'some titile'}
-													classes={{
-														root: classes.titleBar,
-														title: classes.title,
-													}}
-													actionIcon={
-														<IconButton aria-label={`star ${'some titile'}`}>
-															<StarBorderIcon className={classes.title} />
-														</IconButton>
-													}
-												/>
 											</GridListTile>
 										))}
 									</GridList>
