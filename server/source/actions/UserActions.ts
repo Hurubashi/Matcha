@@ -102,8 +102,6 @@ export default class UserActions {
 	static async getUserFromRequest(req: Request): Promise<[User, null] | [null, ResInfo]> {
 		let user: [User, null] | [null, ResInfo]
 		if (req.params.username && req.params.username !== 'undefined') {
-			console.log(req.params.username)
-			console.log('by username')
 			user = await UserActions.getUserByUsername(req.params.username)
 		} else {
 			user = await UserActions.getUserFromCookeis(req)
@@ -111,7 +109,7 @@ export default class UserActions {
 		return user
 	}
 
-	static async getProfileData(user: User, currentUSerId: number): Promise<PublicProfile> {
+	static async getProfileData(user: User, currentUserId: number): Promise<PublicProfile> {
 		// const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
 		const interests = await UserActions.getInterests(Number(user.id))
 		const lookingFor = await UserActions.getLookingFor(Number(user.id))
@@ -126,16 +124,18 @@ export default class UserActions {
 			}
 		}
 		let heartIsGiven: boolean = false
-		if (currentUSerId) {
-			const hearts = await heartModel.getWhere({ from: currentUSerId, to: user.id })
+		if (currentUserId) {
+			const hearts = await heartModel.getWhere({ from: currentUserId, to: user.id })
 			heartIsGiven = hearts.length > 0 ? true : false
 		}
+		const allUserHearts = await heartModel.getWhere({ to: currentUserId })
 		const profile: PublicProfile = {
 			...user,
 			interests: interests,
 			lookingFor: lookingFor,
 			avatar: avatar,
 			heartIsGiven: heartIsGiven,
+			heartsNumber: allUserHearts.length,
 		}
 		return profile
 	}

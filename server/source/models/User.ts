@@ -40,6 +40,7 @@ export interface PublicProfile {
 	lon: number | undefined
 	distance?: number
 	heartIsGiven: boolean
+	heartsNumber: number
 }
 
 class UserModel extends Model<User> {

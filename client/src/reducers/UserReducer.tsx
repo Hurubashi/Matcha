@@ -23,6 +23,7 @@ export type User = {
 	lat: number
 	lon: number
 	heartIsGiven: boolean
+	heartsNumber: number
 }
 
 class UserReducer extends RequesReduser<User> {

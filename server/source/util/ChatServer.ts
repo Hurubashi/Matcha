@@ -36,7 +36,6 @@ class ChatServer {
 				var cookies = cookie.parse(socket.handshake.headers.cookie)
 				var decoded = jwt.decode(cookies['jwt'])
 				if (decoded && typeof decoded !== 'string') {
-					console.log('connected userId: ' + decoded.id)
 					this.ids[decoded.id] = socket.id
 				}
 			}
