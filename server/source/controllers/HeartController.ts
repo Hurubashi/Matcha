@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
-import { User, userModel } from '../models/User'
-import { Image, imageModel } from '../models/Image'
+import { Chat, chatModel } from '../models/Chat'
 import ResManager from '../util/ResManager'
-import UserActions from '../actions/UserActions'
-import { ResInfo } from '../util/ResManager'
 import { Heart, heartModel } from '../models/Heart'
+import UserActions from '../actions/UserActions'
+import ChatActions from '../actions/ChatActions'
 
 import knex from 'knex'
 import { knexConfig } from '../config'
+import { chatServer } from '../util/ChatServer'
 let db = knex(knexConfig)
 
 export default class HeartController {
@@ -45,6 +45,7 @@ export default class HeartController {
 			}
 			const heart = await heartModel.create({ from: user.id, to: req.params.userId })
 			if (!(heart instanceof Error)) {
+				await ChatActions.openChatIfNeeded(user.id, Number(req.params.userId))
 				return res.status(200).json(ResManager.success(heart))
 			}
 		}
@@ -60,7 +61,12 @@ export default class HeartController {
 	public static async deleteHeart(req: Request, res: Response, next: NextFunction): Promise<Response> {
 		const [user, resInfo] = await UserActions.getUserFromCookeis(req)
 		if (user) {
-			heartModel.delete({ from: user.id, to: req.params.userId })
+			await heartModel.delete({ from: user.id, to: req.params.userId })
+
+			await chatModel.updateWhere({ firstUser: user.id, secondUser: req.params.userId }, { isOpen: false })
+			await chatModel.updateWhere({ firstUser: req.params.userId, secondUser: user.id }, { isOpen: false })
+			await chatServer.refreshChatListForUsers(user.id, Number(req.params.userId))
+
 			return res.status(200).json(ResManager.success({}))
 		}
 		return res.sendStatus(500)

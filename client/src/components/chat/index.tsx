@@ -4,6 +4,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import ChatListReducer, { Chat } from '../../reducers/ChatListReducer'
 import styles from './chatsListStyles'
+import { SocketContextConsumer } from '../../helpers/SocketContextProvider'
 
 interface Props {
 	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
@@ -16,35 +17,44 @@ const ChatList: React.FC<Props> = (props: Props) => {
 	const [chatListState, chatListDispatch] = React.useReducer(chatListReducer.reducer, { status: 'loading' })
 
 	React.useEffect(() => {
-		chatListReducer.getImages(chatListDispatch)
+		chatListReducer.getChats(chatListDispatch)
 	}, [])
 
 	return chatListState.status === 'success' ? (
-		<Box className={cl.chatsList}>
-			<Box className={cl.chatListHeader}>
-				<Typography variant='h5' style={{ alignSelf: 'center' }}>
-					Messages
-				</Typography>
-			</Box>
-			<Box>
-				{chatListState.data.map((chat, idx) => {
-					return (
-						<ButtonBase className={cl.chatItem} key={idx} onClick={() => props.setChat(chat)}>
-							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
-							<Box style={{ overflow: 'hidden' }}>
-								<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
-								<Typography className={cl.chatTime}>{chat.lastMsg?.time}</Typography>
-								<Box style={{ display: 'flex' }}>
-									{/* {chat.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
+		<SocketContextConsumer>
+			{(ctx) =>
+				ctx &&
+				ctx.socket.socket.on('chatlist', function (data: any) {
+					chatListReducer.getChats(chatListDispatch)
+				}) && (
+					<Box className={cl.chatsList}>
+						<Box className={cl.chatListHeader}>
+							<Typography variant='h5' style={{ alignSelf: 'center' }}>
+								Messages
+							</Typography>
+						</Box>
+						<Box>
+							{chatListState.data.map((chat, idx) => {
+								return (
+									<ButtonBase className={cl.chatItem} key={idx} onClick={() => props.setChat(chat)}>
+										<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
+										<Box style={{ overflow: 'hidden' }}>
+											<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
+											<Typography className={cl.chatTime}>{chat.lastMsg?.time}</Typography>
+											<Box style={{ display: 'flex' }}>
+												{/* {chat.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
 										{chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
-									<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
-								</Box>
-							</Box>
-						</ButtonBase>
-					)
-				})}
-			</Box>
-		</Box>
+												<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
+											</Box>
+										</Box>
+									</ButtonBase>
+								)
+							})}
+						</Box>
+					</Box>
+				)
+			}
+		</SocketContextConsumer>
 	) : (
 		<div>loading...</div>
 	)

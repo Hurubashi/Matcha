@@ -44,6 +44,7 @@ const UserPage: React.FC = () => {
 									{userState.data.firstName}
 								</Typography>
 								<div style={{ flexGrow: 1 }}></div>
+								33
 								<IconButton
 									style={{ marginTop: '-12px' }}
 									onClick={
@@ -56,7 +57,8 @@ const UserPage: React.FC = () => {
 											width: '1.5em',
 											height: '1.5em',
 											color: userState.data.heartIsGiven ? '#d73652' : '#fff',
-										}}></FavoriteBorderIcon>
+										}}
+									/>
 								</IconButton>
 							</div>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>

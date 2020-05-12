@@ -17,21 +17,9 @@ export type Chat = {
 
 class ChatListReducer extends RequesReduser<Chat[]> {
 	baseUrl = '/chat'
-	getImages(dispatch: React.Dispatch<Action<Chat[]>>, url?: string) {
+	getChats(dispatch: React.Dispatch<Action<Chat[]>>, url?: string) {
 		this.requestDefault(this.getReq(), dispatch)
 	}
-
-	// closeChat = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
-	// 	this.request(
-	// 		this.delReq(`/image/${id}`),
-	// 		() => {
-	// 			this.getImages(dispatch)
-	// 		},
-	// 		(err) => {
-	// 			dispatch({ type: 'failure', error: err })
-	// 		},
-	// 	)
-	// }
 }
 
 export default ChatListReducer

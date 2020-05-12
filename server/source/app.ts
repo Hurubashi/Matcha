@@ -41,10 +41,8 @@ app.use(function (error: Error, req: Request, res: Response, next: NextFunction)
 
 app.use('/public', express.static(__dirname.slice(0, __dirname.length - 4) + 'public'))
 
-import { ChatServer } from './util/ChatServer'
-
-new ChatServer()
-
+import { chatServer } from './util/ChatServer'
+chatServer
 // io.on("connection", function(socket: any) {
 //   console.log("a user connected");
 //   // whenever we receive a 'message' we log it out

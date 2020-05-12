@@ -58,9 +58,6 @@ export default abstract class RequesReduser<T> {
 		}
 	}
 	protected postReq(data: any, url?: string): AxiosRequestConfig {
-		console.log('post req')
-		console.log(url)
-		console.log(this.baseUrl)
 		return {
 			url: url === undefined ? this.baseUrl : url,
 			method: 'POST',

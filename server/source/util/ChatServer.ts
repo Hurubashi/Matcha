@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import ChatActions from '../actions/ChatActions'
 
-export class ChatServer {
+class ChatServer {
 	public static readonly PORT: number = 8080
 	private app: express.Application
 	private server: http.Server
@@ -79,4 +79,14 @@ export class ChatServer {
 			this.io.to(this.ids[receiverId]).emit('message', messages)
 		}
 	}
+
+	async refreshChatListForUsers(userId1: number, userId2: number) {
+		const chatResp1 = await ChatActions.getChats(userId1)
+		const chatResp2 = await ChatActions.getChats(userId2)
+
+		this.io.to(this.ids[userId1]).emit('chatlist', chatResp1)
+		this.io.to(this.ids[userId2]).emit('chatlist', chatResp2)
+	}
 }
+
+export const chatServer = new ChatServer()

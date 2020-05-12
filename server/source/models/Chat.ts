@@ -7,8 +7,20 @@ export interface Chat {
 	id: number
 	firstUser: number
 	secondUser: number
-	isOpenFirst: boolean
-	isOpenSecond: boolean
+	isOpen: boolean
+}
+
+export interface ChatResponce {
+	id: number
+	interlocutorId: number
+	interlocutorName: string
+	interlocutorAvatar?: string
+	lastMsg?:
+		| {
+				lastMsg: string
+				lastMsgTime: Date
+		  }
+		| undefined
 }
 
 class ChatModel extends Model<Chat> {
@@ -20,8 +32,8 @@ class ChatModel extends Model<Chat> {
 	async getMyChats(myId: number): Promise<Chat[]> {
 		return db
 			.select('*')
-			.where({ firstUser: myId, isOpenFirst: true })
-			.orWhere({ secondUser: myId, isOpenSecond: true })
+			.where({ firstUser: myId, isOpen: true })
+			.orWhere({ secondUser: myId, isOpen: true })
 			.from(this.tableName)
 	}
 }
