@@ -69,7 +69,7 @@ const UserPage: React.FC = () => {
 									userState.data.lat,
 									userState.data.lon,
 								)}
-								km away
+								{' km away'}
 							</Typography>
 							<Typography variant='h5' style={{ color: '#908f96', marginTop: '1em' }}>
 								Looking for

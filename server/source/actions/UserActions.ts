@@ -128,7 +128,7 @@ export default class UserActions {
 			const hearts = await heartModel.getWhere({ from: currentUserId, to: user.id })
 			heartIsGiven = hearts.length > 0 ? true : false
 		}
-		const allUserHearts = await heartModel.getWhere({ to: currentUserId })
+		const allUserHearts = await heartModel.getWhere({ to: user.id })
 		const profile: PublicProfile = {
 			...user,
 			interests: interests,
@@ -147,7 +147,6 @@ export default class UserActions {
 		const page = req.query.page ? req.query.page : 1
 		const limit = page ? `limit ${18 * (page - 1)}, ${18}` : ''
 
-		console.log(lookingfor, interest, distance)
 		const results = await db.raw(
 			`SELECT distinct user.*, 
 			(ST_Distance_Sphere(point(${user.lon}, ${user.lat}),

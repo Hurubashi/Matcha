@@ -5,6 +5,8 @@ import axios from 'axios'
 import appBarMakeStyles from './styles'
 import { Link } from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton'
+import { UserContextConsumer } from '../../helpers/UserContextProvider'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const PrimaryAppBar: React.FC = () => {
 	const classes = appBarMakeStyles()
@@ -26,26 +28,47 @@ const PrimaryAppBar: React.FC = () => {
 			route: '/gallery',
 		},
 		{
-			name: 'My Profile',
+			name: 'Settings',
 			route: '/profile',
 		},
 	]
 	return (
-		<AppBar position='static' className={classes.appBar}>
-			<Toolbar>
-				<Typography variant='h3'>Matcha</Typography>
-				<div className={classes.grow} />
-				{menu.map((elem, idx) => {
-					return (
-						<IconButton className={classes.iconButton} color='inherit' key={idx}>
-							<Link to={elem.route} className={classes.link}>
-								{elem.name}
+		<UserContextConsumer>
+			{(ctx) =>
+				ctx?.state.status === 'success' && (
+					<AppBar position='static' className={classes.appBar}>
+						<Toolbar>
+							<Typography variant='h3'>Matcha</Typography>
+							<div className={classes.grow} />
+							<Link to='/search' className={classes.link}>
+								<IconButton className={classes.iconButton} color='inherit'>
+									{'Search'}
+								</IconButton>
 							</Link>
-						</IconButton>
-					)
-				})}
-			</Toolbar>
-		</AppBar>
+							<Link to={ctx.state.data.username} className={classes.link}>
+								<IconButton className={classes.iconButton} color='inherit'>
+									{'My profile'}
+								</IconButton>
+							</Link>
+							<Link to='/profile' className={classes.link}>
+								<IconButton className={classes.iconButton} color='inherit'>
+									<SettingsIcon />
+								</IconButton>
+							</Link>
+							{/* {menu.map((elem, idx) => {
+								return (
+									<Link to={elem.route} className={classes.link}>
+										<IconButton className={classes.iconButton} color='inherit' key={idx}>
+											{elem.name}
+										</IconButton>
+									</Link>
+								)
+							})} */}
+						</Toolbar>
+					</AppBar>
+				)
+			}
+		</UserContextConsumer>
 	)
 }
 

@@ -80,6 +80,7 @@ class ChatServer {
 	}
 
 	async refreshChatListForUsers(userId1: number, userId2: number) {
+		console.log('chatlist refresh')
 		const chatResp1 = await ChatActions.getChats(userId1)
 		const chatResp2 = await ChatActions.getChats(userId2)
 

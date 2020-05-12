@@ -66,11 +66,11 @@ const Search: React.FC = () => {
 			params.delete('interest')
 		}
 		if (distance) {
-			params.set('distance', distance.toString())
+			params.set('distance', String(distance))
 		} else {
 			params.delete('distance')
 		}
-		window.history.pushState({}, '', '/search?' + params.toString())
+		window.history.pushState({}, '', '/search?&' + params.toString())
 		searchReducer.searchUsers(searchDispatch, window.location.search)
 	}
 
@@ -144,7 +144,9 @@ const Search: React.FC = () => {
 								<span
 									className={classes.imageSrc}
 									style={{
-										backgroundImage: `url(${user.avatar ? user.avatar?.thumbnail : `/images/noavatar${user.gender}.jpg`})`,
+										backgroundImage: `url(${
+											user.avatar ? user.avatar?.thumbnail : `/images/noavatar${user.gender}.jpg`
+										})`,
 									}}
 								/>
 								<span className={classes.imageButton}>

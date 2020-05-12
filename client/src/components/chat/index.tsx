@@ -17,6 +17,7 @@ const ChatList: React.FC<Props> = (props: Props) => {
 	const [chatListState, chatListDispatch] = React.useReducer(chatListReducer.reducer, { status: 'loading' })
 
 	React.useEffect(() => {
+		console.log('useEffect /chat')
 		chatListReducer.getChats(chatListDispatch)
 	}, [])
 
@@ -24,7 +25,9 @@ const ChatList: React.FC<Props> = (props: Props) => {
 		<SocketContextConsumer>
 			{(ctx) =>
 				ctx &&
-				ctx.socket.socket.on('chatlist', function (data: any) {
+				ctx.socket.socket.removeListener('chatlist') &&
+				ctx.socket.socket.on('chatlist', (data: any) => {
+					console.log('chatlist!!')
 					chatListReducer.getChats(chatListDispatch)
 				}) && (
 					<Box className={cl.chatsList}>
