@@ -35,7 +35,7 @@ export default class ImageController {
 				const conterpartyId = chat.firstUser === user.id ? chat.secondUser : chat.firstUser
 				const [interlocutor, err] = await UserActions.getUserById(conterpartyId)
 				if (interlocutor) {
-					let profile = await UserActions.getProfileData(interlocutor)
+					let profile = await UserActions.getProfileData(interlocutor, user.id)
 					chatResp.push({
 						id: chat.id,
 						interlocutorId: conterpartyId,

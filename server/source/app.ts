@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import users from './routes/user'
 import auth from './routes/auth'
 import image from './routes/image'
-import imagethumbsup from './routes/imagethumbup'
+import heart from './routes/heart'
 import search from './routes/search'
 import chat from './routes/chat'
 import message from './routes/message'
@@ -80,7 +80,7 @@ app.use('/search', search)
 app.use('/user', users)
 app.use('/auth', auth)
 app.use('/image', image)
-app.use('/imagethumbsup', imagethumbsup)
+app.use('/heart', heart)
 
 app.listen(process.env.APP_PORT, () => {
 	console.log(`Server is running on port ${process.env.APP_PORT}`)

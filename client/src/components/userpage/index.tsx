@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, Chip, Typography, CardMedia, GridList, GridListTile, CardContent, IconButton } from '@material-ui/core'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
@@ -6,19 +6,23 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import { UserContextConsumer } from '../../helpers/UserContextProvider'
 import UserReducer from '../../reducers/UserReducer'
 import ImagesReducer from '../../reducers/ImagesReducer'
+import HeartReducer from '../../reducers/HeartReducer'
 import makeProfileStyles from '../profile/styles'
 import makeStyles from './styles'
 
 const userReducer = new UserReducer()
 const imagesReducer = new ImagesReducer()
+const heartReducer = new HeartReducer()
 
 const UserPage: React.FC = () => {
 	const { user } = useParams()
-	const [userState, userDispatch] = React.useReducer(userReducer.reducer, { status: 'loading' })
-	const [imagesState, imagesDispatch] = React.useReducer(imagesReducer.reducer, { status: 'loading' })
+	const [userState, userDispatch] = useReducer(userReducer.reducer, { status: 'loading' })
+	const [imagesState, imagesDispatch] = useReducer(imagesReducer.reducer, { status: 'loading' })
+	const [hearState, heartDispatch] = useReducer(heartReducer.reducer, { status: 'loading' })
 
 	const classes = makeStyles()
 	const profileStyles = makeProfileStyles()
+
 	useEffect(() => {
 		userReducer.getUser(userDispatch, user)
 		imagesReducer.getImagesForSpecificUser(imagesDispatch, user)
@@ -39,7 +43,7 @@ const UserPage: React.FC = () => {
 						</Grid>
 						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
 							<div style={{ display: 'flex' }}>
-								<Typography variant='h4' style={{ lineHeight: 0.8, marginBottom: '0.5em', fontWeight: 'bold' }}>
+								<Typography variant='h4' style={{ fontWeight: 'bold' }}>
 									{userState.data.firstName}
 								</Typography>
 								<div style={{ flexGrow: 1 }}></div>

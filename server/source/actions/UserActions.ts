@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { User, PublicProfile, userModel } from '../models/User'
 import { InterestModel } from '../models/Interest'
 import { LookingForModel } from '../models/LookingFor'
+import { Heart, heartModel } from '../models/Heart'
 import ResManager, { ResInfo } from '../util/ResManager'
 import { imageModel } from '../models/Image'
 
@@ -110,7 +111,7 @@ export default class UserActions {
 		return user
 	}
 
-	static async getProfileData(user: User): Promise<PublicProfile> {
+	static async getProfileData(user: User, currentUSerId: number): Promise<PublicProfile> {
 		// const userAccessibleData = userModel.fillAccessibleColumns({ ...user })
 		const interests = await UserActions.getInterests(Number(user.id))
 		const lookingFor = await UserActions.getLookingFor(Number(user.id))
@@ -124,7 +125,18 @@ export default class UserActions {
 				thumbnail: thumbnail,
 			}
 		}
-		const profile: PublicProfile = { ...user, interests: interests, lookingFor: lookingFor, avatar: avatar }
+		let heartIsGiven: boolean = false
+		if (currentUSerId) {
+			const hearts = await heartModel.getWhere({ from: currentUSerId, to: user.id })
+			heartIsGiven = hearts.length > 0 ? true : false
+		}
+		const profile: PublicProfile = {
+			...user,
+			interests: interests,
+			lookingFor: lookingFor,
+			avatar: avatar,
+			heartIsGiven: heartIsGiven,
+		}
 		return profile
 	}
 
@@ -150,7 +162,7 @@ export default class UserActions {
 		)
 		let users: any[] = []
 		for (const elem of results[0]) {
-			const profile = await this.getProfileData(elem)
+			const profile = await this.getProfileData(elem, user.id)
 			users.push(profile)
 		}
 		return users

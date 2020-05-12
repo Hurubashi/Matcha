@@ -4,6 +4,7 @@ type Gender = 'male' | 'female' | ''
 type Preferences = 'male' | 'female' | 'male and female'
 
 export type User = {
+	id: number
 	username: string
 	email: string
 	firstName: string
@@ -21,12 +22,21 @@ export type User = {
 	biography: string
 	lat: number
 	lon: number
+	heartIsGiven: boolean
 }
 
 class UserReducer extends RequesReduser<User> {
 	baseUrl = '/user'
 	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
-		this.requestDefault(this.getReq(`/user/${url}`), dispatch)
+		this.request(
+			this.getReq(`/user/${url}`),
+			(res) => {
+				dispatch({ type: 'success', results: res['data']['data'] })
+			},
+			(err) => {
+				dispatch({ type: 'failure', error: err })
+			},
+		)
 	}
 
 	saveUser(data: User, dispatch: React.Dispatch<Action<User>>, onSuccess: () => void) {

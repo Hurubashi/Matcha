@@ -13,12 +13,13 @@ export default class UserController {
 	 */
 
 	public static async getUser(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		const [user, err] = await UserActions.getUserFromRequest(req)
+		const [requestedUser, requestedUserErr] = await UserActions.getUserFromRequest(req)
+		const [currentUser, currentUserErr] = await UserActions.getUserFromCookeis(req)
 
-		if (err) {
-			return res.status(err.code).json(err.resBody)
-		} else if (user) {
-			const userAccessibleData = await UserActions.getProfileData(user)
+		if (requestedUserErr) {
+			return res.status(requestedUserErr.code).json(requestedUserErr.resBody)
+		} else if (requestedUser && currentUser) {
+			const userAccessibleData = await UserActions.getProfileData(requestedUser, currentUser.id)
 			return res.status(200).json(ResManager.success(userAccessibleData))
 		}
 		return res.sendStatus(500)
@@ -44,7 +45,7 @@ export default class UserController {
 				await UserActions.setLookingFor(Number(user.id), req.body.lookingFor)
 				const [updateUser, updateErr] = await UserActions.getUserById(user.id)
 				if (updateUser) {
-					const updatedProfile = await UserActions.getProfileData(updateUser)
+					const updatedProfile = await UserActions.getProfileData(updateUser, user.id)
 					return res.status(200).json(ResManager.success(updatedProfile))
 				}
 			} catch (e) {

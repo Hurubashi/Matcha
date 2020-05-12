@@ -39,6 +39,7 @@ export interface PublicProfile {
 	lat: number | undefined
 	lon: number | undefined
 	distance?: number
+	heartIsGiven: boolean
 }
 
 class UserModel extends Model<User> {
