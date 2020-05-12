@@ -56,9 +56,7 @@ class UserReducer extends RequesReduser<User> {
 		const success = (position: Position) => {
 			const latitude = position.coords.latitude
 			const longitude = position.coords.longitude
-
 			//   `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-			console.log(`Latitude: ${latitude} °, Longitude: ${longitude} °`)
 
 			this.request(
 				this.putReq({ lat: latitude, lon: longitude }),
@@ -96,6 +94,39 @@ class UserReducer extends RequesReduser<User> {
 
 		const d = Math.round(((R * c) / 1000 + Number.EPSILON) * 100) / 100 // in km
 		return d
+	}
+
+	giveHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
+		console.log('give heart')
+		this.request(
+			this.postReq({}, `/heart/${user.id}`),
+			(res) => {
+				console.log(res.data)
+				if (res.data['success']) {
+					dispatch({ type: 'success', results: { ...user, heartIsGiven: true } })
+				}
+			},
+			(err) => {
+				dispatch({ type: 'failure', error: err })
+			},
+		)
+	}
+
+	returnHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
+		console.log('return heart')
+		this.request(
+			this.delReq(`/heart/${user.id}`),
+			(res) => {
+				console.log(res.data)
+
+				if (res.data['success']) {
+					dispatch({ type: 'success', results: { ...user, heartIsGiven: false } })
+				}
+			},
+			(err) => {
+				dispatch({ type: 'failure', error: err })
+			},
+		)
 	}
 }
 

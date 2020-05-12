@@ -7,7 +7,7 @@ class HeartReducer extends RequesReduser<HeartStatus> {
 
 	giveHurt(dispatch: React.Dispatch<Action<HeartStatus>>, userId: number) {
 		this.request(
-			this.postReq(`/heart/${userId}`),
+			this.postReq({}, `/heart/${userId}`),
 			(res) => {
 				dispatch({ type: 'success', results: res['data']['data'] })
 			},

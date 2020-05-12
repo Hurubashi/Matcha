@@ -6,19 +6,16 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import { UserContextConsumer } from '../../helpers/UserContextProvider'
 import UserReducer from '../../reducers/UserReducer'
 import ImagesReducer from '../../reducers/ImagesReducer'
-import HeartReducer from '../../reducers/HeartReducer'
 import makeProfileStyles from '../profile/styles'
 import makeStyles from './styles'
 
 const userReducer = new UserReducer()
 const imagesReducer = new ImagesReducer()
-const heartReducer = new HeartReducer()
 
 const UserPage: React.FC = () => {
 	const { user } = useParams()
 	const [userState, userDispatch] = useReducer(userReducer.reducer, { status: 'loading' })
 	const [imagesState, imagesDispatch] = useReducer(imagesReducer.reducer, { status: 'loading' })
-	const [hearState, heartDispatch] = useReducer(heartReducer.reducer, { status: 'loading' })
 
 	const classes = makeStyles()
 	const profileStyles = makeProfileStyles()
@@ -47,8 +44,19 @@ const UserPage: React.FC = () => {
 									{userState.data.firstName}
 								</Typography>
 								<div style={{ flexGrow: 1 }}></div>
-								<IconButton style={{ marginTop: '-12px' }}>
-									<FavoriteBorderIcon style={{ width: '1.5em', height: '1.5em' }}></FavoriteBorderIcon>
+								<IconButton
+									style={{ marginTop: '-12px' }}
+									onClick={
+										userState.data.heartIsGiven
+											? () => userReducer.returnHurt(userDispatch, userState.data)
+											: () => userReducer.giveHurt(userDispatch, userState.data)
+									}>
+									<FavoriteBorderIcon
+										style={{
+											width: '1.5em',
+											height: '1.5em',
+											color: userState.data.heartIsGiven ? '#d73652' : '#fff',
+										}}></FavoriteBorderIcon>
 								</IconButton>
 							</div>
 							<Typography style={{ borderBottom: '2px solid #28272c', paddingBottom: '1em' }}>
