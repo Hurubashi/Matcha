@@ -42,14 +42,14 @@ const VerifyEmail: React.FC = () => {
 
 	if (props.responded === false) {
 		axios
-			.get('/api/auth/verify/' + params.userid + '/' + params.uuid)
-			.then(function(res) {
+			.get('/auth/verify/' + params.userid + '/' + params.uuid)
+			.then(function (res) {
 				console.log(params.userid)
 				if (res['data']['success'] === true) {
 					setProps({ success: true, msg: 'You email successufully verified.', responded: true })
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				if (error.response['data'] && error.response['data']['success'] === false) {
 					setProps({ success: false, msg: error.response['data']['msg'], responded: true })
 				}

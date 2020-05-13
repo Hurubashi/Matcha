@@ -106,6 +106,8 @@ class UserModel extends Model<User> {
 			.error((errors: Joi.ValidationErrorItem[]) => {
 				return this.manageJoiErrors(errors, 'Password')
 			}),
+		birth: Joi.date().required(),
+		gender: Joi.string().required(),
 	}
 
 	private manageJoiErrors(errors: Joi.ValidationErrorItem[], field: string) {
