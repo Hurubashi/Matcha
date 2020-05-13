@@ -49,36 +49,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 					/>
 					{touched.password && errors.password && <div>{errors.password}</div>}
 
-					{/** Remember me, ForgotPassword **/}
-
-					<Box display='flex' width='100%' component='span' justifyContent='space-between'>
-						<FormControlLabel
-							control={
-								<Checkbox
-									title='Remember me'
-									color='primary'
-									name='remember'
-									onChange={props.handleChange}
-									defaultChecked={props.values.remember}
-								/>
-							}
-							label='Rememeber me'
-						/>
-						<Link
-							underline='always'
-							component='button'
-							type='button'
-							variant='body1'
-							onClick={() => {
-								console.info("I'm a button.")
-							}}>
-							{'Forgot password?'}
-						</Link>
-					</Box>
-
-					{/** Log In **/}
-
-					<Button type='submit' variant='contained' fullWidth={true} disabled={isSubmitting}>
+					<Button
+						type='submit'
+						variant='contained'
+						fullWidth={true}
+						disabled={isSubmitting}
+						style={{ marginTop: '2em' }}>
 						{'Log In'}
 					</Button>
 				</Form>
