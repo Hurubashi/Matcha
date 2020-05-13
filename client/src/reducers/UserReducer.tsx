@@ -24,6 +24,8 @@ export type User = {
 	lon: number
 	heartIsGiven: boolean
 	heartsNumber: number
+	birth: Date | string
+	age: number
 }
 
 class UserReducer extends RequesReduser<User> {
@@ -32,7 +34,10 @@ class UserReducer extends RequesReduser<User> {
 		this.request(
 			this.getReq(`/user/${url}`),
 			(res) => {
-				dispatch({ type: 'success', results: res['data']['data'] })
+				dispatch({
+					type: 'success',
+					results: { ...res['data']['data'], birth: this.formatDate(res['data']['data'].birth) },
+				})
 			},
 			(err) => {
 				dispatch({ type: 'failure', error: err })
@@ -44,13 +49,23 @@ class UserReducer extends RequesReduser<User> {
 		this.request(
 			this.putReq(data),
 			(res) => {
-				dispatch({ type: 'success', results: res['data']['data'] })
+				dispatch({
+					type: 'success',
+					results: { ...res['data']['data'], birth: this.formatDate(res['data']['data'].birth) },
+				})
 				onSuccess()
 			},
 			(err) => {
 				dispatch({ type: 'failure', error: err })
 			},
 		)
+	}
+
+	formatDate(date: string) {
+		const d = new Date(date)
+		const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' })
+		const [{ value: mo }, , { value: da }, , { value: ye }] = dtf.formatToParts(d)
+		return `${ye}-${mo}-${da}`
 	}
 
 	getLocation(dispatch: React.Dispatch<Action<User>>, onSuccess: (lat: number, lon: number) => void) {

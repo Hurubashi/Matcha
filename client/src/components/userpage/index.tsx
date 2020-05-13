@@ -41,7 +41,7 @@ const UserPage: React.FC = () => {
 						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
 							<div style={{ display: 'flex', fontSize: '1.8em', lineHeight: '1.5em' }}>
 								<Typography variant='h4' style={{ fontWeight: 'bold' }}>
-									{userState.data.firstName}
+									{`${userState.data.firstName}, ${userState.data.age}`}
 								</Typography>
 								<div style={{ flexGrow: 1 }}></div>
 								{userState.data.heartsNumber}

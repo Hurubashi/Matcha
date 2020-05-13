@@ -127,8 +127,17 @@ const Editable: React.FC<Props> = (props: Props) => {
 					</Box>
 				</Grid>
 			</Grid>
+			<TextField
+				id='date'
+				label='Birthday'
+				type='date'
+				defaultValue={profile.birth}
+				onChange={changeProfileData('birth')}
+				InputLabelProps={{
+					shrink: true,
+				}}
+			/>
 			<Typography>Location</Typography>
-
 			<Grid container>
 				<Grid xs={4} item>
 					<TextField

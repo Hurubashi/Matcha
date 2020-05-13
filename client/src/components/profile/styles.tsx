@@ -20,7 +20,6 @@ const styles = makeStyles((theme: Theme) =>
 			display: 'block',
 			margin: 'auto',
 			position: 'relative',
-			// border: `1px solid ${theme.palette.primary.main}`,
 			cursor: 'pointer',
 		},
 		visibleAvatarChange: {

@@ -55,6 +55,14 @@ const NotEditable: React.FC<Props> = (props: Props) => {
 				</Grid>
 			</Grid>
 			<Typography align='left' className={classes.profileTextField}>
+				Birthday:{' '}
+				{new Date(user.birth).toLocaleDateString('en-US', {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+				})}
+			</Typography>
+			<Typography align='left' className={classes.profileTextField}>
 				Latitude: {user.lat}
 			</Typography>
 			<Typography align='left' className={classes.profileTextField}>

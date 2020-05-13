@@ -129,6 +129,7 @@ export default class UserActions {
 			heartIsGiven = hearts.length > 0 ? true : false
 		}
 		const allUserHearts = await heartModel.getWhere({ to: user.id })
+		const age = this.calculateAge(user.birth)
 		const profile: PublicProfile = {
 			...user,
 			interests: interests,
@@ -136,8 +137,15 @@ export default class UserActions {
 			avatar: avatar,
 			heartIsGiven: heartIsGiven,
 			heartsNumber: allUserHearts.length,
+			age: age,
 		}
 		return profile
+	}
+
+	static calculateAge(birthday: Date) {
+		var ageDifMs = Date.now() - birthday.getTime()
+		var ageDate = new Date(ageDifMs) // miliseconds from epoch
+		return Math.abs(ageDate.getUTCFullYear() - 1970)
 	}
 
 	static async search(req: Request, user: User) {
