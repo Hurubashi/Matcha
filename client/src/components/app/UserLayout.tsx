@@ -38,13 +38,16 @@ const PrivateLayout: React.FC<Props> = (props: Props) => {
 								<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
 									<ChatList setChat={setChat} />
 								</Grid>
-								<Grid item xs={9} className={mainClasses.rightScrollingContainer}>
-									{!chat && <PrimaryAppBar />}
-									{chat ? <ChatBox chat={chat} setChat={setChat} /> : ''}
-									<div style={{ height: 'calc(100% - 5em)', overflowY: 'scroll' }}>
-										<props.component />
-									</div>
-								</Grid>
+
+								<Route>
+									<Grid item xs={9} className={mainClasses.rightScrollingContainer}>
+										{!chat && <PrimaryAppBar />}
+										{chat ? <ChatBox chat={chat} setChat={setChat} /> : ''}
+										<div style={{ height: 'calc(100% - 5em)', overflowY: 'scroll' }}>
+											<props.component />
+										</div>
+									</Grid>
+								</Route>
 							</Grid>
 						</Card>
 					</Container>
