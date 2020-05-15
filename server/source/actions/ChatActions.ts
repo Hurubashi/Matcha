@@ -30,6 +30,7 @@ export default class ChatActions {
 		for (const chat of chats) {
 			const conterpartyId = chat.firstUser === userId ? chat.secondUser : chat.firstUser
 			const [interlocutor, err] = await UserActions.getUserById(conterpartyId)
+			const lastMsg = await db<Message>('message').where({ chatId: chat.id }).orderBy('time', 'desc').limit(1)
 			if (interlocutor) {
 				let profile = await UserActions.getProfileData(interlocutor, userId)
 				chatResp.push({
@@ -37,6 +38,14 @@ export default class ChatActions {
 					interlocutorId: conterpartyId,
 					interlocutorName: profile.firstName + ' ' + profile.lastName,
 					interlocutorAvatar: profile.avatar?.thumbnail,
+					lastMsg:
+						lastMsg.length > 0
+							? {
+									senderId: lastMsg[0].senderId,
+									text: lastMsg[0].message,
+									time: lastMsg[0].time,
+							  }
+							: undefined,
 				})
 			}
 		}

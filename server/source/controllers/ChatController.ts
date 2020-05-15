@@ -21,22 +21,4 @@ export default class ImageController {
 		}
 		return res.sendStatus(500)
 	}
-
-	/**
-	 * @desc        Post chat
-	 * @route       POST /chat
-	 * @access      public
-	 */
-
-	public static async postChat(req: Request, res: Response, next: NextFunction): Promise<Response> {
-		// const [user, err] = await UserActions.getUserFromCookeis(req)
-
-		// if (err) {
-		// 	return res.status(err.code).json(err.resBody)
-		// } else if (user) {
-		// 	await imageModel.create({ userId: user.id, image: req.file.filename })
-		// 	return res.status(201).json(ResManager.success({}, 'Image successfuly saved'))
-		// }
-		return res.sendStatus(500)
-	}
 }

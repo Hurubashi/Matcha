@@ -42,13 +42,7 @@ const Gallery: React.FC = () => {
 								}}
 							/>
 							<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-							<Edit id={image.id} dispatch={dispatch} />
-							{/* <Button key={idx} size='small' className={`${classes.iconButton} ${classes.thumbUp}`}>
-								<ThumbUpAltIcon />
-								<Typography component='span' variant='subtitle1' color='inherit' className={classes.thumbsCount}>
-									{image.likes}
-								</Typography>
-							</Button> */}
+							<Edit id={image.id} dispatch={dispatch} />w
 						</div>
 					))}
 				</Card>

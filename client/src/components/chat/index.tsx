@@ -27,7 +27,6 @@ const ChatList: React.FC<Props> = (props: Props) => {
 				ctx &&
 				ctx.socket.socket.removeListener('chatlist') &&
 				ctx.socket.socket.on('chatlist', (data: any) => {
-					console.log('chatlist!!')
 					chatListReducer.getChats(chatListDispatch)
 				}) && (
 					<Box className={cl.chatsList}>
@@ -45,8 +44,8 @@ const ChatList: React.FC<Props> = (props: Props) => {
 											<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
 											<Typography className={cl.chatTime}>{chat.lastMsg?.time}</Typography>
 											<Box style={{ display: 'flex' }}>
-												{/* {chat.msgStatus === 'readed' && <ArrowBackIcon fontSize='small' />}
-										{chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
+												{chat.interlocutorId === chat.lastMsg?.senderId && <ArrowBackIcon fontSize='small' />}
+												{/* {chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
 												<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
 											</Box>
 										</Box>

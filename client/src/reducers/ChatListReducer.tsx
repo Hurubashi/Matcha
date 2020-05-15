@@ -9,6 +9,7 @@ export type Chat = {
 	interlocutorAvatar?: string
 	lastMsg?:
 		| {
+				senderId: number
 				text: string
 				time: Date
 		  }

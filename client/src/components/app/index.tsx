@@ -26,6 +26,7 @@ export default function App() {
 			<CssBaseline />
 			<Router>
 				<Switch>
+					<Route path='/' exact component={SingIn} />
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />
@@ -37,4 +38,8 @@ export default function App() {
 			</Router>
 		</ThemeProvider>
 	)
+}
+
+const NoPage: React.FC = () => {
+	return <div>404</div>
 }

@@ -48,7 +48,6 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 						handleBlur={props.handleBlur}
 					/>
 					{touched.password && errors.password && <div>{errors.password}</div>}
-
 					<Button
 						type='submit'
 						variant='contained'

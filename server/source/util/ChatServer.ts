@@ -45,24 +45,14 @@ class ChatServer {
 			})
 
 			socket.on('message', async (message: any) => {
-				// console.log('[server](message): %s', JSON.stringify(message))
-				// var time = new Date().toLocaleTimeString()
-				// Уведомляем клиента, что его сообщение успешно дошло до сервера
 				if (socket.handshake.headers.cookie) {
 					var cookies = cookie.parse(socket.handshake.headers.cookie)
 					var decoded = jwt.decode(cookies['jwt'])
 					if (decoded && typeof decoded !== 'string') {
-						console.log('senderId: ' + decoded.id)
-						// socket.id = decoded.id
-						console.log(JSON.stringify(message))
 						await this.sendPrivateMessage(message.chatId, decoded.id, message.receiverId, message.text)
 					}
 				}
 			})
-		})
-
-		this.io.on('message', (message: any) => {
-			console.log('[server](message): %s', JSON.stringify(message))
 		})
 	}
 
@@ -76,6 +66,7 @@ class ChatServer {
 
 			this.io.to(this.ids[senderId]).emit('messageSent', messages)
 			this.io.to(this.ids[receiverId]).emit('message', messages)
+			await this.refreshChatListForUsers(senderId, receiverId)
 		}
 	}
 

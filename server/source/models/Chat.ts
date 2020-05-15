@@ -17,8 +17,9 @@ export interface ChatResponce {
 	interlocutorAvatar?: string
 	lastMsg?:
 		| {
-				lastMsg: string
-				lastMsgTime: Date
+				senderId: number
+				text: string
+				time: Date
 		  }
 		| undefined
 }
