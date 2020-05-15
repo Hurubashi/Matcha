@@ -69,7 +69,7 @@ export default abstract class Model<T> {
 		try {
 			await db(this.tableName).where(where).update(update)
 		} catch (e) {
-			throw this.errorMsg(e.sqlMessage)
+			throw Error('Something went wrong')
 		}
 	}
 

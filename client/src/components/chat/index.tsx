@@ -42,7 +42,9 @@ const ChatList: React.FC<Props> = (props: Props) => {
 										<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
 										<Box style={{ overflow: 'hidden' }}>
 											<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
-											<Typography className={cl.chatTime}>{chat.lastMsg?.time}</Typography>
+											<Typography className={cl.chatTime}>
+												{chat.lastMsg?.time ? new Date(chat.lastMsg.time).toLocaleString() : ''}
+											</Typography>
 											<Box style={{ display: 'flex' }}>
 												{chat.interlocutorId === chat.lastMsg?.senderId && <ArrowBackIcon fontSize='small' />}
 												{/* {chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}

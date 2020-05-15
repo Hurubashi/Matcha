@@ -65,6 +65,7 @@ class UserModel extends Model<User> {
 		'lat',
 		'lon',
 		'birth',
+		'avatar',
 	]
 
 	validate(obj: Object): Error | null {

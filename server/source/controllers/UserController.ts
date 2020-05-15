@@ -40,15 +40,17 @@ export default class UserController {
 			let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
 
 			try {
+				console.log(userAccessibleData)
 				await userModel.updateWhere({ id: user.id }, userAccessibleData)
-				await UserActions.setInterests(Number(user.id), req.body.interests)
-				await UserActions.setLookingFor(Number(user.id), req.body.lookingFor)
-				const [updateUser, updateErr] = await UserActions.getUserById(user.id)
-				if (updateUser) {
-					const updatedProfile = await UserActions.getProfileData(updateUser, user.id)
+				if (req.body.interests) await UserActions.setInterests(Number(user.id), req.body.interests)
+				if (req.body.lookingFor) await UserActions.setLookingFor(Number(user.id), req.body.lookingFor)
+				const [updatedUser, updatedErr] = await UserActions.getUserById(user.id)
+				if (updatedUser) {
+					const updatedProfile = await UserActions.getProfileData(updatedUser, user.id)
 					return res.status(200).json(ResManager.success(updatedProfile))
 				}
 			} catch (e) {
+				console.log(e)
 				return res.status(406).json(ResManager.error(e.message))
 			}
 		}
