@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import ChatActions from '../actions/ChatActions'
 
+import knex from 'knex'
+import { knexConfig } from '../config'
+let db = knex(knexConfig)
+
 class ChatServer {
 	public static readonly PORT: number = 8080
 	private app: express.Application
@@ -21,7 +25,7 @@ class ChatServer {
 		// this.app.use(cors())
 		this.port = process.env.SOCKET_PORT || ChatServer.PORT
 		this.server = http.createServer(this.app)
-		this.io = require('socket.io').listen(this.server, { origins: '*:*' })
+		this.io = require('socket.io').listen(this.server, { origins: '*:*', cookie: false })
 		this.listen()
 	}
 
@@ -57,15 +61,15 @@ class ChatServer {
 	}
 
 	async sendPrivateMessage(chatId: number, senderId: number, receiverId: number, text: string) {
-		console.log('tring to send to: ' + this.ids[receiverId])
-
 		const [message, err] = await ChatActions.postMessage(chatId, senderId, text)
 		if (message) {
-			console.log(message)
-			const messages = await messageModel.getWhere({ chatId: chatId })
+			const messages = await db<Message>('message').where({ chatId: chatId }).orderBy('time', 'desc').limit(40)
 
-			this.io.to(this.ids[senderId]).emit('messageSent', messages)
-			this.io.to(this.ids[receiverId]).emit('message', messages)
+			const reverced = messages.reverse()
+			this.io.to(this.ids[senderId]).emit('messageSent', reverced)
+			if (senderId !== receiverId) {
+				this.io.to(this.ids[receiverId]).emit('message', reverced)
+			}
 			await this.refreshChatListForUsers(senderId, receiverId)
 		}
 	}

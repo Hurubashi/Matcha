@@ -8,23 +8,21 @@ import {
 	ExpansionPanel,
 	ExpansionPanelSummary,
 	ExpansionPanelDetails,
-	Divider,
 	ExpansionPanelActions,
 	Button,
 	TextField,
 } from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import SearchReducer from '../../reducers/SearchReducer'
 import { Link } from 'react-router-dom'
 
-import mainStyles from '../../styles'
 import styles from './styles'
 
 const searchReducer = new SearchReducer()
 
 const Search: React.FC = () => {
 	const classes = styles()
-	const mainClasses = mainStyles()
 
 	const [searchState, searchDispatch] = React.useReducer(searchReducer.reducer, { status: 'loading' })
 	const scrollEl = useRef<HTMLDivElement>(null)
@@ -34,7 +32,7 @@ const Search: React.FC = () => {
 	const [interest, setInterest] = React.useState(params.get('interest'))
 	const [distance, setDistance] = React.useState(Number(params.get('distance')) || 10)
 
-	const pagesToshow = 1
+	// const pagesToshow = 1
 
 	useEffect(() => {
 		console.log('location')
@@ -113,7 +111,7 @@ const Search: React.FC = () => {
 							<TextField
 								type='text'
 								fullWidth={true}
-								value={lookingFor}
+								value={lookingFor ? lookingFor : ''}
 								onChange={(e) => setLookingFor(e.currentTarget.value)}
 							/>
 						</Grid>
@@ -124,7 +122,7 @@ const Search: React.FC = () => {
 							<TextField
 								type='text'
 								fullWidth={true}
-								value={interest}
+								value={interest ? interest : ''}
 								onChange={(e) => setInterest(e.currentTarget.value)}
 							/>
 						</Grid>
@@ -139,7 +137,11 @@ const Search: React.FC = () => {
 			<Box className={`${classes.root}`}>
 				{searchState.status === 'success' &&
 					searchState.data.map((user, idx) => (
-						<ButtonBase focusRipple key={idx} className={classes.image} focusVisibleClassName={classes.focusVisible}>
+						<ButtonBase
+							focusRipple
+							key={'user' + idx}
+							className={classes.image}
+							focusVisibleClassName={classes.focusVisible}>
 							<Link to={user.username}>
 								<span
 									className={classes.imageSrc}
@@ -156,6 +158,10 @@ const Search: React.FC = () => {
 								</span>
 							</Link>
 						</ButtonBase>
+					))}
+				{searchState.status === 'loading' &&
+					[...Array(9)].map((e, i) => (
+						<Skeleton key={'skel' + i} variant='rect' className={classes.image} style={{ backgroundColor: 'gray' }} />
 					))}
 			</Box>
 		</div>

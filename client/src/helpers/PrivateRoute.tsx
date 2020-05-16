@@ -9,7 +9,7 @@ interface Props {
 }
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
-	return isUser() ? <PrivateLayout component={props.component} /> : <Redirect to='/login' />
+	return isUser() ? <PrivateLayout component={props.component} path={props.path} /> : <Redirect to='/login' />
 }
 
 export default PrivateRoute

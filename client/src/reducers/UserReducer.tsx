@@ -73,7 +73,6 @@ class UserReducer extends RequesReduser<User> {
 			const latitude = position.coords.latitude
 			const longitude = position.coords.longitude
 			//   `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-
 			this.request(
 				this.putReq({ lat: latitude, lon: longitude }),
 				(res) => {
@@ -87,13 +86,11 @@ class UserReducer extends RequesReduser<User> {
 
 		const error = (positionError: PositionError) => {
 			console.log('PositionError:' + positionError.message)
-			console.log('Unable to retrieve your location')
 		}
 
 		if (!navigator.geolocation) {
 			console.log('Geolocation is not supported by your browser')
 		} else {
-			//   status.textContent = 'Locating…';
 			console.log(navigator.geolocation.getCurrentPosition(success, error))
 		}
 	}
@@ -113,7 +110,6 @@ class UserReducer extends RequesReduser<User> {
 	}
 
 	giveHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
-		console.log('give heart')
 		this.request(
 			this.postReq({}, `/heart/${user.id}`),
 			(res) => {
@@ -128,12 +124,9 @@ class UserReducer extends RequesReduser<User> {
 	}
 
 	returnHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
-		console.log('return heart')
 		this.request(
 			this.delReq(`/heart/${user.id}`),
 			(res) => {
-				console.log(res.data)
-
 				if (res.data['success']) {
 					dispatch({ type: 'success', results: { ...user, heartsNumber: user.heartsNumber - 1, heartIsGiven: false } })
 				}

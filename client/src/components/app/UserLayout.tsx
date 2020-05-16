@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import PrimaryAppBar from '../layout/PrimaryAppBar'
 import UserReducer from '../../reducers/UserReducer'
 import { Chat } from '../../reducers/ChatListReducer'
@@ -16,6 +16,7 @@ import mainStyles from '../../styles'
 const userReducer = new UserReducer()
 const socketManager = new SocketManager()
 interface Props {
+	path: string
 	component: React.FC
 }
 
@@ -24,34 +25,32 @@ const PrivateLayout: React.FC<Props> = (props: Props) => {
 	const [chat, setChat] = React.useState<Chat | null>(null)
 	const mainClasses = mainStyles()
 	React.useEffect(() => {
-		console.log('private route useEffect')
 		userReducer.getUser(dispatch)
 	}, [])
 
 	return (
 		<React.Fragment>
 			<UserContextProvider value={{ state, dispatch }}>
-				<SocketContextProvider value={{ socket: socketManager }}>
-					<Container style={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}>
-						<Card style={{ border: '1px solid bisque', paddingLeft: '1em' }}>
-							<Grid container style={{ height: 'calc(100vh - 2em)' }}>
-								<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
-									<ChatList setChat={setChat} />
-								</Grid>
-
-								<Route>
-									<Grid item xs={9} className={mainClasses.rightScrollingContainer}>
-										{!chat && <PrimaryAppBar />}
-										{chat ? <ChatBox chat={chat} setChat={setChat} /> : ''}
-										<div style={{ height: 'calc(100% - 5em)', overflowY: 'scroll' }}>
-											<props.component />
-										</div>
-									</Grid>
-								</Route>
+				{/* <SocketContextProvider value={{ socket: socketManager }}> */}
+				<Container style={{ paddingTop: '0.5em', paddingBottom: '0.5em' }}>
+					<Card style={{ border: '1px solid bisque', paddingLeft: '1em' }}>
+						<Grid container style={{ height: 'calc(100vh - 2em)' }}>
+							<Grid item xs={3} style={{ borderRight: '1px solid bisque' }}>
+								<ChatList setChat={setChat} socketManager={socketManager} />
 							</Grid>
-						</Card>
-					</Container>
-				</SocketContextProvider>
+							<Route path={props.path}>
+								<Grid item xs={9} className={mainClasses.rightScrollingContainer}>
+									<PrimaryAppBar />
+									{chat ? <ChatBox chat={chat} setChat={setChat} socketManager={socketManager} /> : ''}
+									<div style={{ height: 'calc(100% - 5em)', overflowY: 'scroll' }}>
+										<props.component />
+									</div>
+								</Grid>
+							</Route>
+						</Grid>
+					</Card>
+				</Container>
+				{/* </SocketContextProvider> */}
 			</UserContextProvider>
 		</React.Fragment>
 	)

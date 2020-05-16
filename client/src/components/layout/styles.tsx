@@ -8,6 +8,7 @@ const styles = makeStyles((theme: Theme) =>
 		appBar: {
 			backgroundColor: theme.palette.background.default,
 			boxShadow: 'none',
+			zIndex: 2,
 		},
 		iconButton: {
 			borderRadius: '0.1em',

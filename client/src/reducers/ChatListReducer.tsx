@@ -18,8 +18,17 @@ export type Chat = {
 
 class ChatListReducer extends RequesReduser<Chat[]> {
 	baseUrl = '/chat'
-	getChats(dispatch: React.Dispatch<Action<Chat[]>>, url?: string) {
-		this.requestDefault(this.getReq(), dispatch)
+	getChats(dispatch: React.Dispatch<Action<Chat[]>>, onSuccess: () => void) {
+		this.request(
+			this.getReq(),
+			(res) => {
+				dispatch({ type: 'success', results: res['data']['data'] })
+				onSuccess()
+			},
+			(err) => {
+				dispatch({ type: 'failure', error: err })
+			},
+		)
 	}
 }
 

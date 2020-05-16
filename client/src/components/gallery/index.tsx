@@ -21,30 +21,34 @@ const Gallery: React.FC = () => {
 			{state.status === 'success' && (
 				<Card className={classes.card}>
 					<Typography align='center'>Gallery</Typography>
-					<div className={classes.image}>
-						<Tooltip title='Add new photo' aria-label='add'>
-							<Button className={classes.centered} size='small' component='label'>
-								<Input
-									type='file'
-									style={{ display: 'none' }}
-									onChange={(event: React.ChangeEvent<HTMLInputElement>) => imagesReducer.uploadImage(event, dispatch)}
-								/>
-								<AddCircleOutlineIcon color='primary' fontSize='large' />
-							</Button>
-						</Tooltip>
-					</div>
-					{state.data.map((image, idx) => (
-						<div key={idx} className={classes.image}>
-							<span
-								className={classes.imageSrc}
-								style={{
-									backgroundImage: `url(${image.image.thumbnail})`,
-								}}
-							/>
-							<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
-							<Edit id={image.id} dispatch={dispatch} />w
+					<div className={classes.imagesContainer}>
+						<div className={classes.image}>
+							<Tooltip title='Add new photo' aria-label='add'>
+								<Button className={classes.centered} size='small' component='label'>
+									<Input
+										type='file'
+										style={{ display: 'none' }}
+										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+											imagesReducer.uploadImage(event, dispatch)
+										}
+									/>
+									<AddCircleOutlineIcon color='primary' fontSize='large' />
+								</Button>
+							</Tooltip>
 						</div>
-					))}
+						{state.data.map((image, idx) => (
+							<div key={idx} className={classes.image}>
+								<span
+									className={classes.imageSrc}
+									style={{
+										backgroundImage: `url(${image.image.thumbnail})`,
+									}}
+								/>
+								<div className={`${classes.imageBackdrop} ${classes.imageSrc}`} />
+								<Edit id={image.id} dispatch={dispatch} />
+							</div>
+						))}
+					</div>
 				</Card>
 			)}
 		</Container>

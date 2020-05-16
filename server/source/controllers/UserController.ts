@@ -36,11 +36,8 @@ export default class UserController {
 		if (err) {
 			return res.status(err.code).json(err.resBody)
 		} else if (user) {
-			console.log(req.body)
 			let userAccessibleData = userModel.fillAccessibleColumns({ ...req.body })
-
 			try {
-				console.log(userAccessibleData)
 				await userModel.updateWhere({ id: user.id }, userAccessibleData)
 				if (req.body.interests) await UserActions.setInterests(Number(user.id), req.body.interests)
 				if (req.body.lookingFor) await UserActions.setLookingFor(Number(user.id), req.body.lookingFor)
@@ -50,7 +47,6 @@ export default class UserController {
 					return res.status(200).json(ResManager.success(updatedProfile))
 				}
 			} catch (e) {
-				console.log(e)
 				return res.status(406).json(ResManager.error(e.message))
 			}
 		}

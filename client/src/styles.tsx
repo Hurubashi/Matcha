@@ -30,6 +30,7 @@ const styles = makeStyles((theme: Theme) =>
 		rightScrollingContainer: {
 			height: 'inherit',
 			overflow: 'hidden',
+			position: 'relative',
 		},
 	}),
 )

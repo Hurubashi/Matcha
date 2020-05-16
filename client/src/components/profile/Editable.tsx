@@ -186,7 +186,9 @@ const Editable: React.FC<Props> = (props: Props) => {
 				</Button>
 				<Button
 					onClick={() =>
-						userReducer.saveUser({ ...profile, interests: profile.interests }, dispatch, () => setEditable(false))
+						userReducer.saveUser({ ...profile, interests: profile.interests, avatar: undefined }, dispatch, () =>
+							setEditable(false),
+						)
 					}
 					variant='outlined'
 					className={classes.marginSm}>

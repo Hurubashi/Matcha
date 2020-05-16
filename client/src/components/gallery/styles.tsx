@@ -12,6 +12,10 @@ const styles = makeStyles((theme: Theme) =>
 				padding: '0.5em',
 			},
 		},
+		imagesContainer: {
+			display: 'flex',
+			flexWrap: 'wrap',
+		},
 		root: {
 			display: 'flex',
 			flexWrap: 'wrap',
