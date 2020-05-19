@@ -29,7 +29,9 @@ export type User = {
 }
 
 class UserReducer extends RequesReduser<User> {
-	baseUrl = '/user'
+	url = '/user'
+	baseURL = process.env.REACT_APP_API_URL
+
 	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
 		this.request(
 			this.getReq(`/user/${url}`),

@@ -42,7 +42,7 @@ const VerifyEmail: React.FC = () => {
 
 	if (props.responded === false) {
 		axios
-			.get('/auth/verify/' + params.userid + '/' + params.uuid)
+			.get(process.env.REACT_APP_API_URL + '/auth/verify/' + params.userid + '/' + params.uuid)
 			.then(function (res) {
 				console.log(params.userid)
 				if (res['data']['success'] === true) {

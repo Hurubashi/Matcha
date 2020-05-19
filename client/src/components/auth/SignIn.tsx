@@ -86,12 +86,18 @@ const SignIn = withFormik<{}, FormValues>({
 	}),
 
 	handleSubmit: (values: FormValues, props) => {
-		axios
-			.post('/auth/login', {
+		const api = axios.create({
+			withCredentials: true,
+		})
+
+		api
+			.post(process.env.REACT_APP_API_URL + '/auth/login', {
 				username: values.username,
 				password: values.password,
 			})
 			.then(function (res) {
+				console.log('responce')
+				console.log(res)
 				if (res['data']['success'] === true) {
 					props.setStatus(true)
 				} else {
@@ -100,12 +106,14 @@ const SignIn = withFormik<{}, FormValues>({
 				}
 			})
 			.catch(function (error) {
-				if (error.response['data']['success'] === true) {
-					props.setStatus(true)
-				} else {
-					props.setErrors({ username: error.response['data']['msg'] })
-					props.setSubmitting(false)
-				}
+				console.log('error')
+				console.log(error)
+				// if (error.response['data']['success'] === true) {
+				// 	props.setStatus(true)
+				// } else {
+				// 	props.setErrors({ username: error.response['data']['msg'] })
+				// 	props.setSubmitting(false)
+				// }
 			})
 	},
 })(InnerForm)

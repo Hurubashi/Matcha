@@ -6,7 +6,8 @@ interface Results {
 	pages: number
 }
 class UserReducer extends RequesReduser<User[]> {
-	baseUrl = '/search'
+	url = '/search'
+	baseURL = process.env.REACT_APP_API_URL
 
 	searchUsers(dispatch: React.Dispatch<Action<User[]>>, query?: string) {
 		console.log('search users: ' + query)

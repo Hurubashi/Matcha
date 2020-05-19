@@ -2,6 +2,8 @@ import express, { Application, Request, Response, NextFunction } from 'express'
 import './config/env'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
+import cors from 'cors'
+
 import users from './routes/user'
 import auth from './routes/auth'
 import image from './routes/image'
@@ -20,6 +22,12 @@ app.use(cookieParser())
 // Middleware
 // if(process.env.NODE_ENV == 'development'){
 app.use(morgan('dev'))
+// app.use(
+// 	cors({
+// 		credentials: true,
+// 		// origin: 'localhost',
+// 	}),
+// )
 // }
 // app.use(function(req: Request, res: Response, next: NextFunction) {
 //   if (req.headers.origin) {
@@ -30,6 +38,18 @@ app.use(morgan('dev'))
 //   }
 //   next()
 // })
+// app.use(function (req, res, next) {
+// 	res.header('Access-Control-Allow-Origin', 'http://localhost:3000/') // update to match the domain you will make the request from
+// 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+// 	next()
+// })
+const corsConfig = {
+	origin: true,
+	credentials: true,
+}
+
+app.use(cors(corsConfig))
+app.options('*', cors(corsConfig))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
