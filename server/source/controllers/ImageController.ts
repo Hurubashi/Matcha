@@ -42,8 +42,8 @@ export default class ImageController {
 				const newResImg = {
 					id: elem.id,
 					image: {
-						normal: `http://localhost:5000/public/uploads/normal/${elem.image}`,
-						thumbnail: `http://localhost:5000/public/uploads/thumbnail/${elem.image}`,
+						normal: `${process.env.API_SERVER}/public/uploads/normal/${elem.image}`,
+						thumbnail: `${process.env.API_SERVER}/public/uploads/thumbnail/${elem.image}`,
 					},
 				}
 				respondImages.push(newResImg)

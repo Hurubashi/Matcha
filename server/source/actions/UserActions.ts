@@ -116,8 +116,8 @@ export default class UserActions {
 		let avatar
 		if (user.avatar) {
 			const image = await imageModel.getWhere({ id: user.avatar })
-			const normal = `http://localhost:5000/public/uploads/normal/${image[0].image}`
-			const thumbnail = `http://localhost:5000/public/uploads/thumbnail/${image[0].image}`
+			const normal = `${process.env.API_SERVER}/public/uploads/normal/${image[0].image}`
+			const thumbnail = `${process.env.API_SERVER}/public/uploads/thumbnail/${image[0].image}`
 			avatar = {
 				normal: normal,
 				thumbnail: thumbnail,
