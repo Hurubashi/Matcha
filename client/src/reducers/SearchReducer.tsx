@@ -10,7 +10,7 @@ class UserReducer extends RequesReduser<User[]> {
 
 	searchUsers(dispatch: React.Dispatch<Action<User[]>>, query?: string) {
 		console.log('search users: ' + query)
-		this.requestDefault(this.getReq(`/search?${query}`), dispatch)
+		this.requestDefault(this.getReq(`/api/search?${query}`), dispatch)
 	}
 }
 

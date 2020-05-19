@@ -15,7 +15,7 @@ class ImagesReducer extends RequesReduser<Image[]> {
 	}
 
 	getImagesForSpecificUser(dispatch: React.Dispatch<Action<Image[]>>, username?: string) {
-		this.requestDefault(this.getReq('/image/' + username), dispatch)
+		this.requestDefault(this.getReq('/api/image/' + username), dispatch)
 	}
 
 	uploadImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch: React.Dispatch<Action<Image[]>>) => {
@@ -23,7 +23,6 @@ class ImagesReducer extends RequesReduser<Image[]> {
 		if (elem.files) {
 			const fd = new FormData()
 			fd.append('image', elem.files[0])
-			console.log('upload image')
 			this.request(
 				this.postReq(fd),
 				() => {
@@ -38,7 +37,7 @@ class ImagesReducer extends RequesReduser<Image[]> {
 
 	deleteImage = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
 		this.request(
-			this.delReq(`/image/${id}`),
+			this.delReq(`/api/image/${id}`),
 			() => {
 				this.getImages(dispatch)
 			},
@@ -50,7 +49,7 @@ class ImagesReducer extends RequesReduser<Image[]> {
 
 	setAvatar = (id: number, dispatch: React.Dispatch<Action<Image[]>>) => {
 		this.request(
-			this.putReq({ avatar: id }, '/user'),
+			this.putReq({ avatar: id }, '/api/user'),
 			() => {
 				this.getImages(dispatch)
 			},

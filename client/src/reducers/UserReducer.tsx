@@ -111,7 +111,7 @@ class UserReducer extends RequesReduser<User> {
 
 	giveHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
 		this.request(
-			this.postReq({}, `/heart/${user.id}`),
+			this.postReq({}, `/api/heart/${user.id}`),
 			(res) => {
 				if (res.data['success']) {
 					dispatch({ type: 'success', results: { ...user, heartsNumber: user.heartsNumber + 1, heartIsGiven: true } })
@@ -125,7 +125,7 @@ class UserReducer extends RequesReduser<User> {
 
 	returnHurt(dispatch: React.Dispatch<Action<User>>, user: User) {
 		this.request(
-			this.delReq(`/heart/${user.id}`),
+			this.delReq(`/api/heart/${user.id}`),
 			(res) => {
 				if (res.data['success']) {
 					dispatch({ type: 'success', results: { ...user, heartsNumber: user.heartsNumber - 1, heartIsGiven: false } })
