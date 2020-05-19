@@ -191,7 +191,7 @@ const SignUp = withFormik<{}, FormValues>({
 	handleSubmit: (values: FormValues, props) => {
 		console.log(values)
 		axios
-			.post('/auth/register', {
+			.post('/api/auth/register', {
 				email: values.email,
 				username: values.username,
 				firstName: values.firstName,

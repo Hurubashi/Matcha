@@ -9,7 +9,7 @@ export type Image = {
 }
 
 class ImagesReducer extends RequesReduser<Image[]> {
-	baseUrl = '/image'
+	baseUrl = '/api/image'
 	getImages(dispatch: React.Dispatch<Action<Image[]>>, url?: string) {
 		this.requestDefault(this.getReq(), dispatch)
 	}

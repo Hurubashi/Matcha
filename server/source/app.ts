@@ -72,13 +72,13 @@ chatServer
 
 // });
 
-app.use('/message', message)
-app.use('/chat', chat)
-app.use('/search', search)
-app.use('/user', users)
-app.use('/auth', auth)
-app.use('/image', image)
-app.use('/heart', heart)
+app.use('/api/message', message)
+app.use('/api/chat', chat)
+app.use('/api/search', search)
+app.use('/api/user', users)
+app.use('/api/auth', auth)
+app.use('/api/image', image)
+app.use('/api/heart', heart)
 
 app.listen(process.env.APP_PORT, () => {
 	console.log(`Server is running on port ${process.env.APP_PORT}`)

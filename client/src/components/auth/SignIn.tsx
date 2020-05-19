@@ -87,7 +87,7 @@ const SignIn = withFormik<{}, FormValues>({
 
 	handleSubmit: (values: FormValues, props) => {
 		axios
-			.post('/auth/login', {
+			.post('/api/auth/login', {
 				username: values.username,
 				password: values.password,
 			})

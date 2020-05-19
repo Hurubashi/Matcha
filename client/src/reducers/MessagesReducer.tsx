@@ -9,10 +9,10 @@ export type Message = {
 }
 
 class MessageReducer extends RequesReduser<Message[]> {
-	baseUrl = '/message'
+	baseUrl = '/api/message'
 	getMessages(dispatch: React.Dispatch<Action<Message[]>>, chatId: number, onSuccess: () => void) {
 		this.request(
-			this.getReq(`/message/chat/${chatId}`),
+			this.getReq(`/api/message/chat/${chatId}`),
 			(res) => {
 				dispatch({ type: 'success', results: res['data']['data'] })
 				onSuccess()

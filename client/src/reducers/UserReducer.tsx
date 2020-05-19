@@ -29,10 +29,10 @@ export type User = {
 }
 
 class UserReducer extends RequesReduser<User> {
-	baseUrl = '/user'
+	baseUrl = '/api/user'
 	getUser(dispatch: React.Dispatch<Action<User>>, url?: string) {
 		this.request(
-			this.getReq(`/user/${url}`),
+			this.getReq(`/api/user/${url}`),
 			(res) => {
 				dispatch({
 					type: 'success',
