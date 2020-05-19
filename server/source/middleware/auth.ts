@@ -10,8 +10,6 @@ export default async function protect(req: Request, res: Response, next: NextFun
 	// 	token = req.headers.authorization.split(' ')[1]
 	// 	// Set token from cookie
 	// } else
-	console.log(req.cookies)
-	console.log(req.cookies['jwt'])
 	if (req.cookies['jwt']) {
 		token = req.cookies['jwt']
 	} else {

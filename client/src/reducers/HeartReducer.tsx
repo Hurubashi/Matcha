@@ -3,8 +3,7 @@ import RequesReduser, { Action } from './RequestReducer'
 export type HeartStatus = { hearIsGiven: boolean }
 
 class HeartReducer extends RequesReduser<HeartStatus> {
-	url = '/heart'
-	baseURL = process.env.REACT_APP_API_URL
+	baseUrl = '/heart'
 
 	giveHurt(dispatch: React.Dispatch<Action<HeartStatus>>, userId: number) {
 		this.request(

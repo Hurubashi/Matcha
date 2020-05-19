@@ -22,8 +22,7 @@ export default class AuthActions {
 		const token = jwt.sign({ id: userId }, session.uuid, {
 			expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
 		})
-		console.log('tring to set cookies')
-		res.cookie('user', true, { expires: session.expire })
+		res.cookie('user', true, { expires: session.expire, sameSite: true })
 		res.cookie('jwt', token, options)
 	}
 

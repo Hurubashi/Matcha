@@ -17,8 +17,7 @@ export type Chat = {
 }
 
 class ChatListReducer extends RequesReduser<Chat[]> {
-	url = '/chat'
-	baseURL = process.env.REACT_APP_API_URL
+	baseUrl = '/chat'
 	getChats(dispatch: React.Dispatch<Action<Chat[]>>, onSuccess: () => void) {
 		this.request(
 			this.getReq(),

@@ -6,8 +6,7 @@ export type State<T> = { status: 'loading' } | { status: 'error'; error: string 
 export type Action<T> = { type: 'request' } | { type: 'success'; results: T } | { type: 'failure'; error: string }
 
 export default abstract class RequesReduser<T> {
-	abstract url: string
-	abstract baseURL: string | undefined
+	abstract baseUrl: string
 
 	reducer = (state: State<T>, action: Action<T>): State<T> => {
 		switch (action.type) {
@@ -54,32 +53,28 @@ export default abstract class RequesReduser<T> {
 
 	protected getReq(url?: string): AxiosRequestConfig {
 		return {
-			url: url === undefined ? this.url : url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'GET',
-			baseURL: this.baseURL,
 		}
 	}
 	protected postReq(data: any, url?: string): AxiosRequestConfig {
 		return {
-			url: url === undefined ? this.url : url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'POST',
 			data: data,
-			baseURL: this.baseURL,
 		}
 	}
 	protected putReq(data: any, url?: string): AxiosRequestConfig {
 		return {
-			url: url === undefined ? this.url : url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'PUT',
 			data: data,
-			baseURL: this.baseURL,
 		}
 	}
 	protected delReq(url?: string): AxiosRequestConfig {
 		return {
-			url: url === undefined ? this.url : url,
+			url: url === undefined ? this.baseUrl : url,
 			method: 'DELETE',
-			baseURL: this.baseURL,
 		}
 	}
 }
