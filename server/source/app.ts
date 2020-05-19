@@ -39,7 +39,7 @@ app.use(function (error: Error, req: Request, res: Response, next: NextFunction)
 	res.json(ResManager.error('JSON parsing error'))
 })
 
-app.use('/public', express.static(__dirname.slice(0, __dirname.length - 4) + 'public'))
+app.use('/api/public', express.static(__dirname.slice(0, __dirname.length - 4) + 'public'))
 
 import { chatServer } from './util/ChatServer'
 chatServer
