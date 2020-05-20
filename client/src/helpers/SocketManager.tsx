@@ -15,6 +15,8 @@ export class SocketManager {
 	}
 
 	sendMessage(message: { chatId: number; receiverId: number; text: string }) {
+		console.log('sending message')
+		console.log(message)
 		this.socket.emit('message', message)
 	}
 }

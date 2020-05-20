@@ -49,6 +49,7 @@ class ChatServer {
 			})
 
 			socket.on('message', async (message: any) => {
+				console.log(message)
 				if (socket.handshake.headers.cookie) {
 					var cookies = cookie.parse(socket.handshake.headers.cookie)
 					var decoded = jwt.decode(cookies['jwt'])

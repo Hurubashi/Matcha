@@ -46,6 +46,8 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			scrollToBottom(true)
 		})
 		socketManager.socket.on('message', (data: any) => {
+			console.log('incoming message')
+			console.log(data)
 			if (messageState.status === 'success') messageDispatch({ type: 'success', results: data })
 			scrollToBottom(true)
 		})
