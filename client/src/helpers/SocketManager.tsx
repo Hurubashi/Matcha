@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 
 export class SocketManager {
-	socket: SocketIOClient.Socket = io('http://localhost:5001')
+	socket: SocketIOClient.Socket = io(process.env.SOCKET_SERVER || 'http://localhost:5001')
 
 	constructor() {
 		this.socket.on('error', function (err: any) {

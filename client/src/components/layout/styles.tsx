@@ -16,6 +16,7 @@ const styles = makeStyles((theme: Theme) =>
 		link: {
 			textDecoration: 'none',
 			color: theme.palette.text.primary,
+			padding: '1em',
 		},
 	}),
 )
