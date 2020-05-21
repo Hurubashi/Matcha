@@ -12,7 +12,6 @@ export class SocketManager {
 
 		this.socket.on('connect', function () {
 			console.log('socket successfuly connected!')
-			console.log(process.env.REACT_APP_SOCKET_SERVER)
 		})
 	}
 
