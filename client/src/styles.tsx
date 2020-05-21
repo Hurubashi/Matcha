@@ -31,6 +31,9 @@ const styles = makeStyles((theme: Theme) =>
 			height: 'inherit',
 			overflow: 'hidden',
 			position: 'relative',
+			[theme.breakpoints.down('xs')]: {
+				position: 'initial',
+			},
 		},
 	}),
 )

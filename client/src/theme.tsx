@@ -84,11 +84,6 @@ const useTheme = (palette: Palette) => (): Theme => {
 					},
 				},
 			},
-			MuiDrawer: {
-				paper: {
-					backgroundColor: '#FE6B8B',
-				},
-			},
 			MuiChip: {
 				root: {
 					color: '#fff',

@@ -2,7 +2,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 const styles = makeStyles((theme: Theme) =>
 	createStyles({
-		chatsList: {},
+		chatsList: { padding: '1em' },
 		chatListHeader: { position: 'static', minHeight: '64px', marginBottom: '1.5em', display: 'flex' },
 		chatItem: {
 			display: 'flex',

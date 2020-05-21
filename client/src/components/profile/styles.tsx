@@ -49,7 +49,6 @@ const styles = makeStyles((theme: Theme) =>
 			borderBottom: '1px solid #28272c',
 		},
 		profileCard: {
-			padding: '1em',
 			marginBottom: '2em',
 		},
 		basicInputFieldsContainer: {
