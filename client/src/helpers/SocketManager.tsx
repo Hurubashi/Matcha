@@ -1,7 +1,8 @@
 import io from 'socket.io-client'
 
 export class SocketManager {
-	socket: SocketIOClient.Socket = io(process.env.SOCKET_SERVER || 'http://localhost:5001')
+	address = process.env.REACT_APP_SOCKET_SERVER || 'http://localhost:5001'
+	socket: SocketIOClient.Socket = io(this.address)
 
 	constructor() {
 		this.socket.on('error', function (err: any) {
@@ -11,6 +12,7 @@ export class SocketManager {
 
 		this.socket.on('connect', function () {
 			console.log('socket successfuly connected!')
+			console.log(process.env.REACT_APP_SOCKET_SERVER)
 		})
 	}
 

@@ -10,7 +10,6 @@ import search from './routes/search'
 import chat from './routes/chat'
 import message from './routes/message'
 import ResManager from './util/ResManager'
-
 import cookieParser from 'cookie-parser'
 
 const app: Application = express()
@@ -43,34 +42,6 @@ app.use('/api/public', express.static(__dirname.slice(0, __dirname.length - 4) +
 
 import { chatServer } from './util/ChatServer'
 chatServer
-// io.on("connection", function(socket: any) {
-//   console.log("a user connected");
-//   // whenever we receive a 'message' we log it out
-//   socket.on("message", function(message: any) {
-//     console.log(message);
-
-//     var ID = (socket.id).toString().substr(0, 5);
-//     var time = (new Date).toLocaleTimeString();
-//     // Посылаем клиенту сообщение о том, что он успешно подключился и его имя
-//     socket.json.send({'event': 'connected', 'name': ID, 'time': time});
-//     // Посылаем всем остальным пользователям, что подключился новый клиент и его имя
-//     socket.broadcast.json.send({'event': 'userJoined', 'name': ID, 'time': time});
-//     // Навешиваем обработчик на входящее сообщение
-//     socket.on('message', function (message: any) {
-//       var time = (new Date).toLocaleTimeString();
-//       // Уведомляем клиента, что его сообщение успешно дошло до сервера
-//       socket.json.send({'event': 'messageSent', 'name': ID, 'text': message, 'time': time});
-//       // Отсылаем сообщение остальным участникам чата
-//       socket.broadcast.json.send({'event': 'messageReceived', 'name': ID, 'text': message, 'time': time})
-//     });
-//     // При отключении клиента - уведомляем остальных
-//     socket.on('disconnect', function() {
-//       var time = (new Date).toLocaleTimeString();
-//       io.sockets.json.send({'event': 'userSplit', 'name': ID, 'time': time});
-//     });
-//   });
-
-// });
 
 app.use('/api/message', message)
 app.use('/api/chat', chat)
