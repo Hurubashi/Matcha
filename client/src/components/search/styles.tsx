@@ -14,7 +14,7 @@ const styles = makeStyles((theme: Theme) =>
 			width: '31%',
 			margin: '1.16%',
 			[theme.breakpoints.down('xs')]: {
-				width: '100% !important', // Overrides inline-style
+				width: '47.6%',
 				height: 100,
 			},
 		},
