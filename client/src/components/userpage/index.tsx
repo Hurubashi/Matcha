@@ -31,15 +31,15 @@ const UserPage: React.FC = () => {
 			{(ctx) =>
 				ctx?.state.status === 'success' &&
 				userState.status === 'success' && (
-					<Grid container style={{ height: 'inherit', padding: '2em' }}>
-						<Grid item xs={6}>
+					<Grid container style={{ height: 'inherit', padding: '2em' }} spacing={2}>
+						<Grid item xs={12} md={6}>
 							<CardMedia
 								image={
 									userState.data.avatar ? userState.data.avatar.normal : `/images/noavatar${userState.data.gender}.jpg`
 								}
 								style={{ paddingTop: '150%' }}></CardMedia>
 						</Grid>
-						<Grid item xs={6} style={{ paddingLeft: '2em' }}>
+						<Grid item xs={12} md={6}>
 							<div style={{ display: 'flex', fontSize: '1.8em', lineHeight: '1.5em' }}>
 								<Typography variant='h4' style={{ fontWeight: 'bold' }}>
 									{`${userState.data.firstName}, ${userState.data.age}`}

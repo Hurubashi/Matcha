@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Menu, Avatar, IconButton } from '@material-ui/core/'
+import { AppBar, Toolbar, Typography, Menu, Avatar, IconButton, Hidden } from '@material-ui/core/'
 
 import axios from 'axios'
 import appBarMakeStyles from './styles'
@@ -68,9 +68,11 @@ const PrimaryAppBar: React.FC<Props> = (props: Props) => {
 				ctx?.state.status === 'success' && (
 					<AppBar position='static' className={classes.appBar}>
 						<Toolbar>
-							<IconButton onClick={() => setMobileChatlist(true)}>
-								<ChatIcon />
-							</IconButton>
+							<Hidden mdUp>
+								<IconButton onClick={() => setMobileChatlist(true)}>
+									<ChatIcon />
+								</IconButton>
+							</Hidden>
 							<Link to='/search' className={classes.link}>
 								<Typography variant='h3'>Matcha</Typography>
 							</Link>
