@@ -10,13 +10,18 @@ const styles = makeStyles((theme: Theme) =>
 			boxShadow: 'none',
 			zIndex: 2,
 		},
+		menuList: {
+			padding: 0,
+		},
 		iconButton: {
 			borderRadius: '0.1em',
+			padding: '1em',
+			width: '100%',
+			justifyContent: 'start',
 		},
 		link: {
 			textDecoration: 'none',
 			color: theme.palette.text.primary,
-			padding: '1em',
 		},
 	}),
 )

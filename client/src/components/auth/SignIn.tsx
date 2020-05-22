@@ -9,6 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import styles from '../../styles'
 import TextFieldWithIcon from '../reusableComponents/TextFieldWithIcon'
+import { CookieManager } from '../../helpers/CoookieManager'
 
 interface FormValues {
 	username: string
@@ -93,6 +94,7 @@ const SignIn = withFormik<{}, FormValues>({
 			})
 			.then(function (res) {
 				if (res['data']['success'] === true) {
+					CookieManager.setAuthorized(true)
 					props.setStatus(true)
 				} else {
 					props.setErrors({ username: res['data']['msg'] })

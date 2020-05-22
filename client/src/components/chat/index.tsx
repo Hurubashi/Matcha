@@ -44,7 +44,7 @@ const ChatList: React.FC<Props> = (props: Props) => {
 				{chatListState.data.map((chat, idx) => {
 					return (
 						<ButtonBase className={cl.chatItem} key={idx} onClick={() => setChat(chat)}>
-							<Avatar className={cl.chatItemAvatar} alt='Vasya' src={chat.interlocutorAvatar} />
+							<Avatar className={cl.chatItemAvatar} alt='avatar' src={chat.interlocutorAvatar} />
 							<Box style={{ overflow: 'hidden' }}>
 								<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
 								<Typography className={cl.chatTime}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { isUser } from './getJwt'
+import { CookieManager } from './CoookieManager'
 import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 	component: React.FC | React.ComponentType
 }
 const GuestRoute: React.FC<Props> = (props: Props) => {
-	return isUser() ? (
+	return CookieManager.isAuthorized() ? (
 		<Redirect to='/search' />
 	) : (
 		<React.Fragment>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { isUser } from './getJwt'
+import { CookieManager } from './CoookieManager'
 import PrivateLayout from '../components/app/UserLayout'
 
 interface Props {
@@ -9,7 +9,11 @@ interface Props {
 }
 
 const PrivateRoute: React.FC<Props> = (props: Props) => {
-	return isUser() ? <PrivateLayout component={props.component} path={props.path} /> : <Redirect to='/login' />
+	return CookieManager.isAuthorized() ? (
+		<PrivateLayout component={props.component} path={props.path} />
+	) : (
+		<Redirect to='/login' />
+	)
 }
 
 export default PrivateRoute
