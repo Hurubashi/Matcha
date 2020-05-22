@@ -31,7 +31,7 @@ const UserPage: React.FC = () => {
 			{(ctx) =>
 				ctx?.state.status === 'success' &&
 				userState.status === 'success' && (
-					<Grid container style={{ height: 'inherit', padding: '2em' }} spacing={2}>
+					<Grid container style={{ height: 'inherit', width: '100%', padding: '2em' }} spacing={2}>
 						<Grid item xs={12} md={6}>
 							<CardMedia
 								image={
