@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import ResManager, { ResInfo } from '../util/ResManager'
 import { userModel } from '../models/User'
 import bcrypt from 'bcrypt'
-import uuidv1 from 'uuid/v1'
 import { UserActivationUUID, UserActivationUUIDModel } from '../models/UserActivationUUID'
-import pug from 'pug'
-import MailService from '../util/MailService'
-import path from 'path'
 import AuthActions from '../actions/AuthActions'
 
 export default class AuthController {
@@ -25,6 +21,7 @@ export default class AuthController {
 		// Insert to db
 		let user = await userModel.create(req.body)
 		if (userModel.isInstance(user)) {
+			/** Registration mailing
 			const uuid = uuidv1()
 			const userActivationUUID: UserActivationUUID = {
 				userId: user.id,
@@ -39,6 +36,7 @@ export default class AuthController {
 				imgSrc: process.env.APP_SERVER + '/images/dating.jpg',
 			})
 			let mail = await MailService.sendMail(user.email, 'registration', letter)
+			*/
 
 			return res.status(201).json(ResManager.success(user))
 		} else {
