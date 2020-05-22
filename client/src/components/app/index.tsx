@@ -26,7 +26,7 @@ export default function App() {
 			<CssBaseline />
 			<Router>
 				<Switch>
-					<Route path='/' exact component={SingIn} />
+					{/* <Route path='/' exact component={SingIn} /> */}
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />

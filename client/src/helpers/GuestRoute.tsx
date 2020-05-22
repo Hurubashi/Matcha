@@ -9,7 +9,7 @@ interface Props {
 }
 const GuestRoute: React.FC<Props> = (props: Props) => {
 	return isUser() ? (
-		<Redirect to='/profile' />
+		<Redirect to='/search' />
 	) : (
 		<React.Fragment>
 			<PrimaryAppBar />

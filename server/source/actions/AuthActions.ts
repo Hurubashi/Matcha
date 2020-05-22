@@ -9,20 +9,18 @@ const userSessionModel = new UserSessionModel()
 
 export default class AuthActions {
 	static clearSessionCookies(res: Response): void {
-		res.clearCookie('user')
 		res.clearCookie('jwt')
 	}
 
 	static setSessionCookies(res: Response, userId: Number, session: UserSession) {
 		const options = {
 			expires: session.expire,
-			httpOnly: true,
+			// httpOnly: true,
 			sameSite: true,
 		}
 		const token = jwt.sign({ id: userId }, session.uuid, {
 			expiresIn: Number(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60,
 		})
-		res.cookie('user', true, { expires: session.expire, sameSite: true })
 		res.cookie('jwt', token, options)
 	}
 
