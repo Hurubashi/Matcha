@@ -1,7 +1,6 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { CookieManager } from './CoookieManager'
-import PrimaryAppBar from '../components/layout/PrimaryAppBar'
 
 interface Props {
 	path: string

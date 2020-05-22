@@ -8,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar'
 import SendIcon from '@material-ui/icons/Send'
 import CloseIcon from '@material-ui/icons/Close'
 
-import MessagesReducer, { Message } from '../../reducers/MessagesReducer'
+import MessagesReducer from '../../reducers/MessagesReducer'
 import { SocketManager } from '../../helpers/SocketManager'
 import { Chat } from '../../reducers/ChatListReducer'
 import styles from './chatBoxStyles'
@@ -46,8 +46,6 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			scrollToBottom(true)
 		})
 		socketManager.socket.on('message', (data: any) => {
-			console.log('incoming message')
-			console.log(data)
 			if (messageState.status === 'success') messageDispatch({ type: 'success', results: data })
 			scrollToBottom(true)
 		})
@@ -56,7 +54,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			socketManager.socket.removeListener('message')
 			socketManager.socket.removeListener('messageSent')
 		}
-	}, [chat])
+	}, [chat, messageState, socketManager])
 
 	const sendMsg = () => {
 		const res = newMessage.replace(/(\r\n|\n|\r)/gm, '')

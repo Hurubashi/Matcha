@@ -16,7 +16,6 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import SearchReducer from '../../reducers/SearchReducer'
 import { Link } from 'react-router-dom'
-
 import styles from './styles'
 
 const searchReducer = new SearchReducer()
@@ -35,15 +34,16 @@ const Search: React.FC = () => {
 	// const pagesToshow = 1
 
 	useEffect(() => {
-		console.log('location')
-		console.log(window.location.search)
-		scrollEl.current?.addEventListener('scroll', loadMore)
+		const current = scrollEl.current
+		current?.addEventListener('scroll', loadMore)
 		searchReducer.searchUsers(searchDispatch, window.location.search)
-		return () => scrollEl.current?.removeEventListener('scroll', loadMore)
+		return () => current?.removeEventListener('scroll', loadMore)
 	}, [])
 
 	const loadMore = () => {
 		if (scrollEl.current) {
+			console.log(scrollEl.current.scrollHeight)
+
 			const scrollHeight = scrollEl.current.scrollHeight
 			const scrollTop = scrollEl.current.scrollTop + scrollEl.current.offsetHeight
 			if (scrollHeight === scrollTop) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, Chip, Typography, CardMedia, GridList, GridListTile, CardContent, IconButton } from '@material-ui/core'
+import { Grid, Chip, Typography, CardMedia, GridList, GridListTile, IconButton } from '@material-ui/core'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import { UserContextConsumer } from '../../helpers/UserContextProvider'

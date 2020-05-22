@@ -12,7 +12,6 @@ import {
 	Typography,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import MaskedInput from 'react-text-mask'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import profileClasses from './styles'
 import fields from './BasicFields'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { CookieManager } from './CoookieManager'
 import PrivateLayout from '../components/app/UserLayout'
 

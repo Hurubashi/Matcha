@@ -4,7 +4,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { Chat } from '../../reducers/ChatListReducer'
 import { State } from '../../reducers/RequestReducer'
 import styles from './chatsListStyles'
-import { SocketManager } from '../../helpers/SocketManager'
 
 interface Props {
 	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
@@ -16,7 +15,6 @@ const ChatList: React.FC<Props> = (props: Props) => {
 	const { setChat, chatListState } = props
 
 	return chatListState.status === 'success' ? (
-		// <SocketContextConsumer>
 		<Box className={cl.chatsList}>
 			<Box className={cl.chatListHeader}>
 				<Typography variant='h5' style={{ alignSelf: 'center' }}>
@@ -45,7 +43,6 @@ const ChatList: React.FC<Props> = (props: Props) => {
 			</Box>
 		</Box>
 	) : (
-		// </SocketContextConsumer>
 		<div>loading...</div>
 	)
 }

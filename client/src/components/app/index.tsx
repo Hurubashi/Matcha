@@ -39,7 +39,3 @@ export default function App() {
 		</ThemeProvider>
 	)
 }
-
-const NoPage: React.FC = () => {
-	return <div>404</div>
-}
