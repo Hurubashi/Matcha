@@ -1,8 +1,6 @@
 import express from 'express'
 import * as http from 'http'
-// import cors from "cors"
 import { Message, messageModel } from '../models/Message'
-import { User } from '../models/User'
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import ChatActions from '../actions/ChatActions'
@@ -22,7 +20,6 @@ class ChatServer {
 
 	constructor() {
 		this.app = express()
-		// this.app.use(cors())
 		this.port = process.env.SOCKET_PORT || ChatServer.PORT
 		this.server = http.createServer(this.app)
 		this.io = require('socket.io').listen(this.server, { origins: '*:*', cookie: false })

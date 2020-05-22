@@ -17,7 +17,6 @@ export default class AuthActions {
 		const options = {
 			expires: session.expire,
 			httpOnly: true,
-			// secure: true,
 			sameSite: true,
 		}
 		const token = jwt.sign({ id: userId }, session.uuid, {
@@ -33,8 +32,6 @@ export default class AuthActions {
 				return new ResInfo(422, ResManager.error('No such user'))
 			} else if (user.password != password) {
 				return new ResInfo(422, ResManager.error('Incorrect username or password'))
-			} else if (!user.isVerified) {
-				return new ResInfo(403, ResManager.error('User is not verified. Check your email for verification link.'))
 			}
 			return user
 		} catch (err) {

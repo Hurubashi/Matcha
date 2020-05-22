@@ -1,36 +1,19 @@
 import React from 'react'
 import { Box, Typography, Avatar, ButtonBase } from '@material-ui/core/'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import ChatListReducer, { Chat } from '../../reducers/ChatListReducer'
+import { Chat } from '../../reducers/ChatListReducer'
+import { State } from '../../reducers/RequestReducer'
 import styles from './chatsListStyles'
-import { SocketContextConsumer } from '../../helpers/SocketContextProvider'
 import { SocketManager } from '../../helpers/SocketManager'
 
 interface Props {
 	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
-	socketManager: SocketManager
+	chatListState: State<Chat[]>
 }
 
 const ChatList: React.FC<Props> = (props: Props) => {
-	const chatListReducer = new ChatListReducer()
 	const cl = styles()
-	const { setChat, socketManager } = props
-
-	const [chatListState, chatListDispatch] = React.useReducer(chatListReducer.reducer, { status: 'loading' })
-
-	React.useEffect(() => {
-		console.log('useEffect /chat')
-		chatListReducer.getChats(chatListDispatch, () => {
-			socketManager.socket.on('chatlist', (data: any) => {
-				chatListReducer.getChats(chatListDispatch, () => {})
-			})
-		})
-
-		return () => {
-			socketManager.socket.removeListener('chatlist')
-		}
-	}, [])
+	const { setChat, chatListState } = props
 
 	return chatListState.status === 'success' ? (
 		// <SocketContextConsumer>

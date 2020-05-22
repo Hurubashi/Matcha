@@ -12,7 +12,6 @@ const GuestRoute: React.FC<Props> = (props: Props) => {
 		<Redirect to='/search' />
 	) : (
 		<React.Fragment>
-			<PrimaryAppBar />
 			<Route path={props.path} component={props.component} />
 		</React.Fragment>
 	)

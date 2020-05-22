@@ -8,7 +8,7 @@ import Gallery from '../gallery'
 import Search from '../search'
 import UserPage from '../userpage'
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import PrivateRoute from '../../helpers/PrivateRoute'
 
 import CssBaseline from '@material-ui/core/CssBaseline'

@@ -1,36 +1,21 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Card, Hidden, Menu, MenuItem, Avatar } from '@material-ui/core/'
+import { AppBar, Toolbar, Typography, Menu, Avatar, IconButton } from '@material-ui/core/'
 
 import axios from 'axios'
 import appBarMakeStyles from './styles'
 import { Link } from 'react-router-dom'
-import IconButton from '@material-ui/core/IconButton'
 import { UserContextConsumer } from '../../helpers/UserContextProvider'
-import SettingsIcon from '@material-ui/icons/Settings'
-import MenuIcon from '@material-ui/icons/Menu'
 import ChatIcon from '@material-ui/icons/Chat'
-import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
 import { Button } from '@material-ui/core'
 import { CookieManager } from '../../helpers/CoookieManager'
 
-const menu = [
-	{
-		name: 'Gallery',
-		route: '/gallery',
-	},
-	{
-		name: 'Settings',
-		route: '/profile',
-	},
-]
+interface Props {
+	setMobileChatlist: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const PrimaryAppBar: React.FC = () => {
+const PrimaryAppBar: React.FC<Props> = (props: Props) => {
 	const classes = appBarMakeStyles()
-
-	const [modal, setModal] = React.useState<boolean>(false)
-
+	const { setMobileChatlist } = props
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
 	const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -46,12 +31,10 @@ const PrimaryAppBar: React.FC = () => {
 		axios
 			.post('/api/auth/logout')
 			.then(function (res) {
-				console.log(res)
 				CookieManager.setAuthorized(false)
 				window.location.reload()
 			})
 			.catch(function (error) {
-				console.log(error)
 				// props.setErrors({ username: error })
 			})
 	}
@@ -71,11 +54,9 @@ const PrimaryAppBar: React.FC = () => {
 								{'Settings'}
 							</Button>
 						</Link>
-						{/* <Link to='/login' className={classes.link} onClick={handleClose}> */}
 						<Button className={classes.iconButton} color='inherit' onClick={handleLogOut}>
 							{'Exit'}
 						</Button>
-						{/* </Link> */}
 					</div>
 				)
 			}
@@ -87,27 +68,19 @@ const PrimaryAppBar: React.FC = () => {
 				ctx?.state.status === 'success' && (
 					<AppBar position='static' className={classes.appBar}>
 						<Toolbar>
-							<ChatIcon style={{ marginRight: '1em' }} />
-							<Typography variant='h3'>Matcha</Typography>
+							<IconButton onClick={() => setMobileChatlist(true)}>
+								<ChatIcon />
+							</IconButton>
+							<Link to='/search' className={classes.link}>
+								<Typography variant='h3'>Matcha</Typography>
+							</Link>
 							<div className={classes.grow} />
 							<div onClick={handleClick}>
-								<Avatar alt='Avatar' src={ctx.state.data.avatar?.thumbnail} />
+								<Avatar alt='Avatar' src={ctx.state.data.avatar?.thumbnail} style={{ cursor: 'pointer' }} />
 							</div>
 							<Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
 								{menuList}
-								{/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-								<MenuItem onClick={handleClose}>My account</MenuItem>
-								<MenuItem onClick={handleClose}>Logout</MenuItem> */}
 							</Menu>
-							{/* {menu.map((elem, idx) => {
-								return (
-									<Link to={elem.route} className={classes.link}>
-										<IconButton className={classes.iconButton} color='inherit' key={idx}>
-											{elem.name}
-										</IconButton>
-									</Link>
-								)
-							})} */}
 						</Toolbar>
 					</AppBar>
 				)
