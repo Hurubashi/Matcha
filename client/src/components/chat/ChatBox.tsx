@@ -46,7 +46,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			scrollToBottom(true)
 		})
 		socketManager.socket.on('message', (data: any) => {
-			if (messageState.status === 'success') messageDispatch({ type: 'success', results: data })
+			messageDispatch({ type: 'success', results: data })
 			scrollToBottom(true)
 		})
 
@@ -54,7 +54,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			socketManager.socket.removeListener('message')
 			socketManager.socket.removeListener('messageSent')
 		}
-	}, [chat, messageState, socketManager])
+	}, [chat, socketManager.socket])
 
 	const sendMsg = () => {
 		const res = newMessage.replace(/(\r\n|\n|\r)/gm, '')
@@ -70,20 +70,19 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 
 	return (
 		<Card className={classes.chatBox}>
-			{messageState.status === 'success' && (
-				<Box className={classes.close}>
-					<Avatar src={chat.interlocutorAvatar} style={{ width: '3em', height: '3em' }} />
-					<Typography variant='h6' style={{ padding: '0.5em' }}>
-						{chat.interlocutorName}
-					</Typography>
-					<div style={{ flexGrow: 1 }}></div>
-					<IconButton style={{ width: '2em', height: '2em' }} onClick={() => setChat(null)}>
-						<CloseIcon fontSize='default' />
-					</IconButton>
-				</Box>
-			)}
+			<Box className={classes.close}>
+				<Avatar src={chat.interlocutorAvatar} style={{ width: '3em', height: '3em' }} />
+				<Typography variant='h6' style={{ padding: '0.5em' }}>
+					{chat.interlocutorName}
+				</Typography>
+				<div style={{ flexGrow: 1 }}></div>
+				<IconButton style={{ width: '2em', height: '2em' }} onClick={() => setChat(null)}>
+					<CloseIcon fontSize='default' />
+				</IconButton>
+			</Box>
 			<Box color='text.primary' className={classes.messageBox}>
-				{messageState.status === 'success' &&
+				{messageState.status === 'loading' && <div>loading..</div>}
+				{/* {messageState.status === 'success' &&
 					messageState.data.map((elem, idx) => {
 						const msgStyle = chat.interlocutorId === elem.senderId ? classes.leftMessage : classes.rightMessage
 						return (
@@ -91,7 +90,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 								<Typography className={classes.messageContent}>{elem.message}</Typography>
 							</div>
 						)
-					})}
+					})} */}
 				<div ref={messagesEndRef} />
 			</Box>
 			<TextField

@@ -14,7 +14,7 @@ const ChatList: React.FC<Props> = (props: Props) => {
 	const cl = styles()
 	const { setChat, chatListState } = props
 
-	return chatListState.status === 'success' ? (
+	return (
 		<Box className={cl.chatsList}>
 			<Box className={cl.chatListHeader}>
 				<Typography variant='h5' style={{ alignSelf: 'center' }}>
@@ -22,28 +22,27 @@ const ChatList: React.FC<Props> = (props: Props) => {
 				</Typography>
 			</Box>
 			<Box>
-				{chatListState.data.map((chat, idx) => {
-					return (
-						<ButtonBase className={cl.chatItem} key={idx} onClick={() => setChat(chat)}>
-							<Avatar className={cl.chatItemAvatar} alt='avatar' src={chat.interlocutorAvatar} />
-							<Box style={{ overflow: 'hidden' }}>
-								<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
-								<Typography className={cl.chatTime}>
-									{chat.lastMsg?.time ? new Date(chat.lastMsg.time).toLocaleString() : ''}
-								</Typography>
-								<Box style={{ display: 'flex' }}>
-									{chat.interlocutorId === chat.lastMsg?.senderId && <ArrowBackIcon fontSize='small' />}
-									{/* {chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
-									<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
+				{chatListState.status === 'success' &&
+					chatListState.data.map((chat, idx) => {
+						return (
+							<ButtonBase className={cl.chatItem} key={idx} onClick={() => setChat(chat)}>
+								<Avatar className={cl.chatItemAvatar} alt='avatar' src={chat.interlocutorAvatar} />
+								<Box style={{ overflow: 'hidden' }}>
+									<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>
+									<Typography className={cl.chatTime}>
+										{chat.lastMsg?.time ? new Date(chat.lastMsg.time).toLocaleString() : ''}
+									</Typography>
+									<Box style={{ display: 'flex' }}>
+										{chat.interlocutorId === chat.lastMsg?.senderId && <ArrowBackIcon fontSize='small' />}
+										{/* {chat.msgStatus === 'unreaded' && <FiberManualRecordIcon fontSize='small' color='error' />} */}
+										<Typography className={cl.chatMessage}>{chat.lastMsg?.text || 'No messages'}</Typography>
+									</Box>
 								</Box>
-							</Box>
-						</ButtonBase>
-					)
-				})}
+							</ButtonBase>
+						)
+					})}
 			</Box>
 		</Box>
-	) : (
-		<div>loading...</div>
 	)
 }
 
