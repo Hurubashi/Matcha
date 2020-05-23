@@ -8,11 +8,17 @@ import styles from './chatsListStyles'
 interface Props {
 	setChat: React.Dispatch<React.SetStateAction<Chat | null>>
 	chatListState: State<Chat[]>
+	setMobileChatlist?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ChatList: React.FC<Props> = (props: Props) => {
 	const cl = styles()
-	const { setChat, chatListState } = props
+	const { setChat, chatListState, setMobileChatlist } = props
+
+	const handleChatSelection = (chat: Chat) => {
+		if (setMobileChatlist) setMobileChatlist(false)
+		setChat(chat)
+	}
 
 	return (
 		<Box className={cl.chatsList}>
@@ -25,7 +31,7 @@ const ChatList: React.FC<Props> = (props: Props) => {
 				{chatListState.status === 'success' &&
 					chatListState.data.map((chat, idx) => {
 						return (
-							<ButtonBase className={cl.chatItem} key={idx} onClick={() => setChat(chat)}>
+							<ButtonBase className={cl.chatItem} key={idx} onClick={() => handleChatSelection(chat)}>
 								<Avatar className={cl.chatItemAvatar} alt='avatar' src={chat.interlocutorAvatar} />
 								<Box style={{ overflow: 'hidden' }}>
 									<Typography className={cl.chatName}>{chat.interlocutorName}</Typography>

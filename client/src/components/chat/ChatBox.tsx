@@ -82,7 +82,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 			</Box>
 			<Box color='text.primary' className={classes.messageBox}>
 				{messageState.status === 'loading' && <div>loading..</div>}
-				{/* {messageState.status === 'success' &&
+				{messageState.status === 'success' &&
 					messageState.data.map((elem, idx) => {
 						const msgStyle = chat.interlocutorId === elem.senderId ? classes.leftMessage : classes.rightMessage
 						return (
@@ -90,7 +90,7 @@ const ChatBox: React.FC<Props> = (props: Props) => {
 								<Typography className={classes.messageContent}>{elem.message}</Typography>
 							</div>
 						)
-					})} */}
+					})}
 				<div ref={messagesEndRef} />
 			</Box>
 			<TextField

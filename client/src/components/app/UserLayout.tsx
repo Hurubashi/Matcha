@@ -60,7 +60,7 @@ const PrivateLayout: React.FC<Props> = (props: Props) => {
 									open={mobileChatlist}
 									onClose={() => setMobileChatlist(false)}
 									onOpen={() => setMobileChatlist(true)}>
-									<ChatList setChat={setChat} chatListState={chatListState} />
+									<ChatList setChat={setChat} chatListState={chatListState} setMobileChatlist={setMobileChatlist} />
 								</SwipeableDrawer>
 							</Hidden>
 							<Route path={props.path}>
