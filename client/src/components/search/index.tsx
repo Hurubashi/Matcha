@@ -42,12 +42,10 @@ const Search: React.FC = () => {
 
 	const loadMore = () => {
 		if (scrollEl.current) {
-			console.log(scrollEl.current.scrollHeight)
-
 			const scrollHeight = scrollEl.current.scrollHeight
 			const scrollTop = scrollEl.current.scrollTop + scrollEl.current.offsetHeight
 			if (scrollHeight === scrollTop) {
-				console.log('load more')
+				//load more
 			}
 		}
 	}

@@ -44,7 +44,6 @@ const VerifyEmail: React.FC = () => {
 		axios
 			.get('/api/auth/verify/' + params.userid + '/' + params.uuid)
 			.then(function (res) {
-				console.log(params.userid)
 				if (res['data']['success'] === true) {
 					setProps({ success: true, msg: 'You email successufully verified.', responded: true })
 				}

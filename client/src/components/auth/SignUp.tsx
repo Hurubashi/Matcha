@@ -189,7 +189,6 @@ const SignUp = withFormik<{}, FormValues>({
 	}),
 
 	handleSubmit: (values: FormValues, props) => {
-		console.log(values)
 		axios
 			.post('/api/auth/register', {
 				email: values.email,
@@ -210,7 +209,6 @@ const SignUp = withFormik<{}, FormValues>({
 			})
 			.catch(function (error) {
 				if (!error.response) {
-					console.log('No Connection')
 					props.setSubmitting(false)
 					return
 				}

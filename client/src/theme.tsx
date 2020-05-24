@@ -44,8 +44,6 @@ function getPalette(name: Palette): PaletteOptions {
 // nice grey #f5f5f5
 
 const useTheme = (palette: Palette) => (): Theme => {
-	console.log('THEME: ' + palette)
-
 	const paletteOptions = getPalette(palette)
 	return createMuiTheme({
 		palette: paletteOptions,

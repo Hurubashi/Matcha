@@ -21,7 +21,6 @@ const UserPage: React.FC = () => {
 	const profileStyles = makeProfileStyles()
 
 	useEffect(() => {
-		console.log(user)
 		userReducer.getUser(userDispatch, user)
 		imagesReducer.getImagesForSpecificUser(imagesDispatch, user)
 	}, [user])

@@ -22,7 +22,6 @@ export default abstract class RequesReduser<T> {
 		axios(reqConfig)
 			.then(function (res) {
 				if (res['data']['success'] === true) {
-					console.log(res['data']['data'])
 					dispatch({ type: 'success', results: res['data']['data'] })
 				} else {
 					dispatch({ type: 'failure', error: res['data']['message'] })

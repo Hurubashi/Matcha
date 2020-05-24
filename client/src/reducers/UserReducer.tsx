@@ -85,13 +85,13 @@ class UserReducer extends RequesReduser<User> {
 		}
 
 		const error = (positionError: PositionError) => {
-			console.log('PositionError:' + positionError.message)
+			// console.log('PositionError:' + positionError.message)
 		}
 
 		if (!navigator.geolocation) {
-			console.log('Geolocation is not supported by your browser')
+			// Geolocation is not supported by your browser
 		} else {
-			console.log(navigator.geolocation.getCurrentPosition(success, error))
+			navigator.geolocation.getCurrentPosition(success, error)
 		}
 	}
 
