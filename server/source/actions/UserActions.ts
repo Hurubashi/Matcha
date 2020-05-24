@@ -116,11 +116,13 @@ export default class UserActions {
 		let avatar
 		if (user.avatar) {
 			const image = await imageModel.getWhere({ id: user.avatar })
-			const normal = `${process.env.API_SERVER}/public/uploads/normal/${image[0].image}`
-			const thumbnail = `${process.env.API_SERVER}/public/uploads/thumbnail/${image[0].image}`
-			avatar = {
-				normal: normal,
-				thumbnail: thumbnail,
+			if (image.length > 0) {
+				const normal = `${process.env.API_SERVER}/public/uploads/normal/${image[0].image}`
+				const thumbnail = `${process.env.API_SERVER}/public/uploads/thumbnail/${image[0].image}`
+				avatar = {
+					normal: normal,
+					thumbnail: thumbnail,
+				}
 			}
 		}
 		let heartIsGiven: boolean = false
