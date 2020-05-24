@@ -8,7 +8,7 @@ import Gallery from '../gallery'
 import Search from '../search'
 import UserPage from '../userpage'
 
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import PrivateRoute from '../../helpers/PrivateRoute'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -26,7 +26,9 @@ export default function App() {
 			<CssBaseline />
 			<Router>
 				<Switch>
-					{/* <Route path='/' exact component={SingIn} /> */}
+					<Route path='/' exact component={SingIn}>
+						<GuestRoute path='/' component={SingIn} />
+					</Route>
 					<GuestRoute path='/login' component={SingIn} />
 					<GuestRoute path='/register' component={SingUp} />
 					<GuestRoute path='/verify/:userid/:uuid' component={VerifyEmail} />
