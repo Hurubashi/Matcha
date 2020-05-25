@@ -44,6 +44,11 @@ const PrimaryAppBar: React.FC<Props> = (props: Props) => {
 			{(ctx) =>
 				ctx?.state.status === 'success' && (
 					<div style={{ display: 'flex', flexDirection: 'column' }}>
+						<Link to='/search' className={classes.link} onClick={handleClose}>
+							<Button className={classes.iconButton} color='inherit'>
+								{'Search'}
+							</Button>
+						</Link>
 						<Link to={ctx.state.data.username} className={classes.link} onClick={handleClose}>
 							<Button className={classes.iconButton} color='inherit'>
 								{'My profile'}
